@@ -325,7 +325,7 @@ Compatibility depends on the manufacturer, not all of the devices written down o
 
 ### Will this project be open-source soon?
 
-Yes! The project will be open-source soon. There is still some code that needs to be cleaned up and adjusted to make the project easier to understand and contribute to.
+Yes! Infact, it is now fully open-source now!
 
 # Credits
 
