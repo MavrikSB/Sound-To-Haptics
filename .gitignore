@@ -1,0 +1,17 @@
+# Build outputs
+/build
+/app/build
+/.gradle
+/.kotlin
+/.idea
+*.iml
+
+# Reference clone of the BitChord upstream project (not part of this app)
+/reference/
+
+# Local machine config
+local.properties
+
+# Release keystore (not committed)
+key0
+release.keystore
