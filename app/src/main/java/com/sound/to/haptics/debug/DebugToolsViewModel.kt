@@ -616,7 +616,7 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
 
     fun stopEightDAudio() = eightDPlayer.stop()
 
-    fun clearSpotifyHapticCache() = hapticCache.clearAll()
+    fun clearBitChordHapticCache() = hapticCache.clearAll()
 
     // ---- Transient Mode musical-haptic quality test (spec section 31) ----
     // Generates a known synthetic PCM signal, runs it through the real

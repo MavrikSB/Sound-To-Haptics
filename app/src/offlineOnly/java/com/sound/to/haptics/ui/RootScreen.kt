@@ -50,7 +50,7 @@ import com.sound.to.haptics.debug.DebugToolsScreen
 import com.sound.to.haptics.debug.DebugToolsViewModel
 import com.sound.to.haptics.settings.AppSettings
 import com.sound.to.haptics.settings.BackgroundStyle
-import com.sound.to.haptics.ui.icons.SpotifyLogo
+import com.sound.to.haptics.ui.icons.BitChordLogo
 import com.sound.to.haptics.ui.motion.reducedMotionTransition
 import com.sound.to.haptics.ui.motion.sharedAxisXTransition
 import kotlinx.coroutines.NonCancellable
@@ -64,12 +64,12 @@ private data class BottomTab(val label: String, val debugOnly: Boolean = false)
 
 private val bottomTabs = buildList {
     add(BottomTab("Offline"))
-    add(BottomTab("Spotify"))
+    add(BottomTab("BitChord"))
     add(BottomTab("Settings"))
     if (BuildConfig.DEBUG) add(BottomTab("Debug", debugOnly = true))
 }
 private const val OFFLINE_TAB_INDEX = 0
-private const val SPOTIFY_TAB_INDEX = 1
+private const val BITCHORD_TAB_INDEX = 1
 private const val SETTINGS_TAB_INDEX = 2
 
 @Composable
@@ -173,7 +173,7 @@ fun RootScreen() {
                                     Box(Modifier.scale(iconScale)) {
                                         when {
                                             tab.debugOnly -> Icon(Icons.Rounded.BugReport, contentDescription = tab.label)
-                                            index == SPOTIFY_TAB_INDEX -> SpotifyLogo(
+                                            index == BITCHORD_TAB_INDEX -> BitChordLogo(
                                                 modifier = Modifier.size(24.dp),
                                                 tint = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                                                 waveTint = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
@@ -213,9 +213,9 @@ fun RootScreen() {
                     ) { tab ->
                         when (tab) {
                             OFFLINE_TAB_INDEX -> HapticStudioScreen(offlineViewModel)
-                            SPOTIFY_TAB_INDEX -> SpotifyUnavailablePlaceholder()
+                            BITCHORD_TAB_INDEX -> BitChordUnavailablePlaceholder()
                             SETTINGS_TAB_INDEX -> SettingsScreen(
-                                onClearHapticCache = debugViewModel::clearSpotifyHapticCache,
+                                onClearHapticCache = debugViewModel::clearBitChordHapticCache,
                                 onClearLibrary = offlineViewModel::clearLibrary,
                                 onOpenTutorial = {
                                     AppSettings.reopenOnboarding()
@@ -253,13 +253,13 @@ fun RootScreen() {
 }
 
 @Composable
-private fun SpotifyUnavailablePlaceholder() {
+private fun BitChordUnavailablePlaceholder() {
     val cs = MaterialTheme.colorScheme
     Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
         androidx.compose.material3.Surface(shape = MaterialTheme.shapes.extraLarge, color = cs.surfaceContainer, tonalElevation = 2.dp) {
             androidx.compose.foundation.layout.Column(Modifier.padding(32.dp), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
-                Icon(Icons.Rounded.GraphicEq, null, tint = cs.primary, modifier = Modifier.size(42.dp))
-                Text("Spotify mode", style = MaterialTheme.typography.headlineSmall, color = cs.onSurface, modifier = Modifier.padding(top = 16.dp))
+                BitChordLogo(modifier = Modifier.size(42.dp), tint = cs.primary)
+                Text("BitChord mode", style = MaterialTheme.typography.headlineSmall, color = cs.onSurface, modifier = Modifier.padding(top = 16.dp))
                 Text("Still Work In Progress!", style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant, textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.padding(top = 8.dp))
             }
         }

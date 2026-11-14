@@ -91,8 +91,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 Icons.Rounded.GraphicEq,
             ) { SignalArtwork(cs.primary, cs.secondary, mode = 1) },
             TutorialPage(
-                "Spotify",
-                "Connect Spotify and allow Android playback capture. The app listens to Spotify's device output.",
+                "BitChord",
+                "Connect BitChord to your YouTube Music account. The app plays through ExoPlayer and learns each track from the decoded audio itself — no microphone.",
                 Icons.Rounded.MusicNote,
             ) { SignalArtwork(cs.tertiary, cs.primary, mode = 2) },
             TutorialPage(
@@ -107,7 +107,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
             ) { StrengthArtwork(cs) },
             TutorialPage(
                 "Start Listening",
-                "Choose Offline or Spotify below and begin.",
+                "Choose Offline or BitChord below and begin.",
                 Icons.Rounded.SkipNext,
             ) { SignalArtwork(cs.primary, cs.error, mode = 3) },
         )

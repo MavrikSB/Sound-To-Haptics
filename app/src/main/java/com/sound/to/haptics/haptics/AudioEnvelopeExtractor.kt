@@ -10,7 +10,7 @@ import kotlin.math.sqrt
 
 /**
  * Legacy PCM-to-waveform extractor retained for compatibility with older
- * diagnostic/serialized envelope data. The active Offline and Spotify paths
+ * diagnostic/serialized envelope data. The active Offline and BitChord paths
  * do not use it: both now preserve and play the haptic-enabled OGG produced
  * by FFmpeg. In particular, a failed OGG playback never falls back to this
  * direct-vibrator representation.

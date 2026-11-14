@@ -78,7 +78,7 @@ object TransientConfig {
     // candidate at all. This is what makes a quietly mastered track still
     // produce onsets (the local mean is quiet too) while a hot, dense mix
     // doesn't just fire on every sample above some fixed absolute number.
-    const val ONSET_ADAPTIVE_RATIO = 1.55f
+    const val ONSET_ADAPTIVE_RATIO = 1.8f
 
     // Absolute floor beneath which nothing is ever treated as an onset,
     // regardless of how it compares to the (possibly near-silent) local
@@ -127,16 +127,16 @@ object TransientConfig {
     // slow, felt "presence" rather than its own rhythm competing with real
     // percussion. ~220ms is close to a slow 8th-note pulse at typical
     // tempos without feeling like a separate beat.
-    const val BED_PULSE_INTERVAL_MS = 220L
+    const val BED_PULSE_INTERVAL_MS = 480L
 
     // Bed pulses never exceed this fraction of full scale -- it is
     // deliberately the quietest layer in the system (see spec: "should not
     // be constantly strong").
-    const val BED_MAX_INTENSITY = 0.34f
+    const val BED_MAX_INTENSITY = 0.22f
 
     // Below this smoothed bass envelope level, no bed pulse is scheduled at
     // all -- true silence should stay silent rather than idly ticking.
-    const val BED_ACTIVATION_FLOOR = 0.09f
+    const val BED_ACTIVATION_FLOOR = 0.14f
 
     // A bed pulse this close to an already-scheduled accent/texture event
     // is dropped rather than doubling up the motor on the same instant.
@@ -146,16 +146,22 @@ object TransientConfig {
     // Minimum spacing between two ACCENT-layer events. This is the main
     // knob that stops "wall of impacts" -- events closer than this to a
     // stronger neighbor are demoted to TEXTURE (reduced, not deleted).
-    const val MIN_ACCENT_SPACING_MS = 85L
+    const val MIN_ACCENT_SPACING_MS = 140L
 
     // Texture-layer events are capped at this rate so dense hi-hats become
     // a controlled shimmer, never a buzz (spec Test F).
-    const val MAX_TEXTURE_EVENTS_PER_SECOND = 6f
+    const val MAX_TEXTURE_EVENTS_PER_SECOND = 2.0f
 
     // A demoted (suppressed) event keeps this fraction of its original
     // intensity when downgraded from ACCENT to TEXTURE, rather than being
     // silently discarded -- dense sections stay felt, just gentler.
     const val SUPPRESSED_INTENSITY_RETENTION = 0.55f
+
+    // Density below which the beat estimate cannot justify accented hits.
+    // When the estimate is this weak, everything that is not a MAJOR accent
+    // is demoted into the texture layer (or dropped) instead of firing as an
+    // accent — prevents "tap–crash-bang–tap" patterns over ambiguous grooves.
+    const val MIN_BEAT_CONFIDENCE_FOR_ACCENT = 0.30f
 
     // Fraction of the track's own 95th-percentile onset priority an event
     // must clear to be tagged MAJOR (a chorus hit, a big drop) -- relative
@@ -248,7 +254,7 @@ object TransientConfig {
     // like HapticProcessing.VERSION does for the continuous pipeline. Kept
     // independent of HapticProcessing.VERSION on purpose: Continuous mode's
     // cache must never be invalidated by a Transient-only algorithm change.
-    const val PROCESSING_VERSION = 1
+    const val PROCESSING_VERSION = 2
 
     /**
      * Density scaling derived from the user's existing "Haptic Density"
@@ -261,7 +267,7 @@ object TransientConfig {
         val d = hapticDensity.coerceIn(0f, 1f)
         // 1.5x spacing at density=0, 0.7x spacing at density=1.
         val factor = 1.5f - d * 0.8f
-        return (MIN_ACCENT_SPACING_MS * factor).toLong().coerceAtLeast(24L)
+        return (MIN_ACCENT_SPACING_MS * factor).toLong().coerceAtLeast(40L)
     }
 
     fun densityScaledMaxTextureEventsPerSecond(hapticDensity: Float): Float {

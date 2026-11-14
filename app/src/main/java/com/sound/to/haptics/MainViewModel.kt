@@ -469,7 +469,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             // Analyze the same decoded source that feeds the
                             // converted OGG. The result is a versioned three-layer
                             // timeline: bass weight, sustained vocal/melodic flow,
-                            // and percussive impacts. Both offline and Spotify
+                            // and percussive impacts. Both offline and BitChord
                             // use this exact representation after their input
                             // mechanisms converge on PCM.
                             currentLayerAnalysis = analyzeLayersOrEmpty(input, s.bassBoost, s.density)
@@ -1133,7 +1133,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateSensitivity(v: Float) {
         // One user-facing strength value is shared by the encoded Offline
-        // OGG conversion, optional transient accents, and Spotify capture.
+        // OGG conversion, optional transient accents, and BitChord capture.
         AppSettings.setHapticStrength(v)
         _uiState.update { it.copy(sensitivity = v.coerceIn(0f, 1f)) }
     }

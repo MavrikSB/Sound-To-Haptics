@@ -29,6 +29,7 @@ object TransientAudioAnalyzer {
         val frames = TransientFeatureExtractor.extract(pcmFile, sampleRate, channelCount) ?: return null
         if (frames.isEmpty()) return null
 
+        val scenePlan = TransientScenePlanner.plan(frames)
         val candidates = TransientOnsetDetector.detect(frames)
         val beatEstimate = TransientBeatTracker.track(candidates.map { it.timestampMs })
         val events = TransientHapticComposer.compose(
@@ -37,6 +38,7 @@ object TransientAudioAnalyzer {
             beatEstimate = beatEstimate,
             bassEmphasis = bassEmphasis,
             hapticDensity = hapticDensity,
+            scenePlan = scenePlan,
         )
 
         val durationMs = frames.last().timestampMs + TransientConfig.HOP_MS

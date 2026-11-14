@@ -8,7 +8,7 @@ import java.util.Locale
  * percussive compressor -> gain -> limiter.
  *
  * This used to be duplicated by hand: the offline converter had its own
- * copy inlined in [com.sound.to.haptics.MainViewModel], and the Spotify
+ * copy inlined in [com.sound.to.haptics.MainViewModel], and the BitChord
  * capture pipeline shaped audio with a completely separate, simpler RMS
  * extractor that ignored bass-focus/density entirely. Both now call
  * [filterChain] so a track is shaped identically no matter which pipeline

@@ -23,7 +23,7 @@ import kotlin.math.abs
 /**
  * Legacy direct-vibrator renderer for old serialized envelope experiments.
  *
- * The active Offline and Spotify playback paths do not instantiate this
+ * The active Offline and BitChord playback paths do not instantiate this
  * class: their persisted haptic-enabled OGG is the source of truth and is
  * played through Android's haptic-aware MediaPlayer channel. It remains
  * isolated for compatibility/debug tooling and is intentionally not a
@@ -80,8 +80,8 @@ class VibrationEnvelopePlayer(context: Context) {
     /**
      * Feed this whenever you have a fresh position/pause reading.
      *
-     * Callers like SpotifyViewModel call this on every emission from
-     * Spotify's App Remote player-state flow, which fires far more often
+     * Callers like BitChordViewModel call this on every emission from
+     * BitChord's player position flow, which fires far more often
      * than once a second even during ordinary uninterrupted playback — not
      * just on real seeks or pause/resume. The previous version restarted
      * the entire vibration waveform (driveFrom) unconditionally on every

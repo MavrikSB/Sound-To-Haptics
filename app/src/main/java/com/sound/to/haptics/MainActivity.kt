@@ -1,6 +1,6 @@
 package com.sound.to.haptics
 
-import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -15,17 +15,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.sound.to.haptics.BuildConfig
 import com.sound.to.haptics.debug.DebugFlags
 import com.sound.to.haptics.settings.AppSettings
 import com.sound.to.haptics.settings.PlaybackActivity
 import com.sound.to.haptics.settings.ThemeMode
-import com.sound.to.haptics.spotify.SpotifyConfig
 import com.sound.to.haptics.ui.RootScreen
 import com.sound.to.haptics.ui.theme.HapticStudioTheme
 
 class MainActivity : ComponentActivity() {
-
-    var pendingSpotifyAuthHandler: ((Int, Int, Intent?) -> Boolean)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Show the branded splash until the first Compose frame is ready,
@@ -33,6 +31,16 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         AppSettings.init(applicationContext)
+        // The media notification for BitChord playback needs this on Android 13+;
+        // gated to the flavor that actually posts one so offlineOnly stays untouched.
+        if (BuildConfig.FLAVOR == "withBitChord" && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            androidx.core.content.ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.POST_NOTIFICATIONS,
+            ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 10_001)
+        }
         enableEdgeToEdge()
         setContent {
             // Debug menu's "Monet engine" / "Fallback theme" / "Force dark
@@ -73,14 +81,6 @@ class MainActivity : ComponentActivity() {
                     RootScreen()
                 }
             }
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SpotifyConfig.AUTH_REQUEST_CODE) {
-            pendingSpotifyAuthHandler?.invoke(requestCode, resultCode, data)
         }
     }
 }

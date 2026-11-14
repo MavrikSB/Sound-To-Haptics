@@ -3,10 +3,11 @@ package com.sound.to.haptics.haptics
 import android.content.Context
 import android.os.Build
 import android.os.Handler
-import android.os.Looper
+import android.os.HandlerThread
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.media.AudioManager
 import android.util.Log
 import com.sound.to.haptics.settings.AppSettings
 import kotlin.math.roundToInt
@@ -61,6 +62,9 @@ class TransientHapticRenderer(context: Context) {
     companion object {
         private const val TAG = "SoundToHaptics"
 
+        /** Used when the system reports nothing (or an out-of-range estimate). */
+        private const val DEFAULT_OUTPUT_LATENCY_MS = 40L
+
         /** True if this device has *any* usable rendering path (even the safest fallback tier). */
         fun isSupported(context: Context): Boolean = vibratorFrom(context)?.hasVibrator() == true
 
@@ -77,8 +81,36 @@ class TransientHapticRenderer(context: Context) {
     }
 
     private val vibrator = vibratorFrom(context)
-    private val handler = Handler(Looper.getMainLooper())
+    private val rendererThread = HandlerThread("TransientHapticRenderer").apply { start() }
+    private val handler = Handler(rendererThread.looper)
     private val lookaheadToken = Any()
+
+    /**
+     * Output latency, in milliseconds, from the system.
+     *
+     * `MediaPlayer.currentPosition` is the position written to the audio
+     * pipeline — not what the listener hears. The audible sound trails by the
+     * pipeline's output latency, so events scheduled against the raw position
+     * clock fire *before* the beat is heard — "haptics ahead of the music".
+     * Shifting due times forward by [outputLatencyMs] cancels that offset.
+     *
+     * If a device turns out to report a sink-timed position clock instead
+     * (listener hears exactly the reported position), flip the sign of the
+     * offset in [tick] — one line. Physical verification required; this
+     * direction follows the AudioTrack submission-position semantics.
+     */
+    private val outputLatencyMs: Long by lazy {
+        val am = context.applicationContext.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+        // No PROPERTY_OUTPUT_LATENCY exists; the documented probe is
+        // framesPerBuffer / sampleRate for the output path, in ms.
+        val frames = runCatching { am?.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER) }.getOrNull()?.toLongOrNull()
+        val rate = runCatching { am?.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE) }.getOrNull()?.toLongOrNull()
+        val estimate = if (frames != null && frames > 0 && rate != null && rate > 0) (frames * 1000L) / rate else null
+        // Sanity clamp: an estimate outside [4, 500] ms is treated as missing.
+        val latency = estimate?.takeIf { it in 4..500 } ?: DEFAULT_OUTPUT_LATENCY_MS
+        Log.d(TAG, "output latency ~ ${latency}ms (frames=$frames rate=$rate)")
+        latency
+    }
 
     private val tier: RenderTier = detectTier()
     private var hasThud = false
@@ -173,6 +205,10 @@ class TransientHapticRenderer(context: Context) {
     fun release() {
         stop()
         positionProvider = null
+        // Done with the thread for good. The analyzer/playback path builds a
+        // fresh renderer via lazy {} for the next session, which starts its
+        // own thread.
+        rendererThread.quitSafely()
     }
 
     private val pollRunnable = object : Runnable {
@@ -197,8 +233,10 @@ class TransientHapticRenderer(context: Context) {
             resyncIndexToPosition(position)
         }
 
-        // Catch-up: anything already due gets fired immediately.
-        while (nextEventIndex < events.size && events[nextEventIndex].timestampMs <= position) {
+        // Catch-up: anything already due gets fired immediately. Due means
+        // the *heard-time* of the event (media time + output latency) has
+        // arrived, not the submission-time of the corresponding audio frame.
+        while (nextEventIndex < events.size && events[nextEventIndex].timestampMs + outputLatencyMs <= position) {
             fire(events[nextEventIndex])
             nextEventIndex++
             if (scheduledUpToIndex < nextEventIndex) scheduledUpToIndex = nextEventIndex
@@ -209,9 +247,9 @@ class TransientHapticRenderer(context: Context) {
         // poll tick (spec section 17) — this is only ever a couple of events
         // at a time (bounded by density control upstream), never unbounded.
         val lookaheadHorizon = position + TransientConfig.LOOKAHEAD_MS
-        while (scheduledUpToIndex < events.size && events[scheduledUpToIndex].timestampMs <= lookaheadHorizon) {
+        while (scheduledUpToIndex < events.size && events[scheduledUpToIndex].timestampMs + outputLatencyMs <= lookaheadHorizon) {
             val event = events[scheduledUpToIndex]
-            val delay = (event.timestampMs - position).coerceAtLeast(0L)
+            val delay = (event.timestampMs + outputLatencyMs - position).coerceAtLeast(0L)
             handler.postDelayed({ fire(event) }, lookaheadToken, delay)
             scheduledUpToIndex++
         }
@@ -246,7 +284,7 @@ class TransientHapticRenderer(context: Context) {
             recentFireTimestamps.addLast(now)
             while (recentFireTimestamps.isNotEmpty() && now - recentFireTimestamps.first() > 1000L) recentFireTimestamps.removeFirst()
             val positionNow = positionProvider?.invoke() ?: 0
-            TransientDiagnostics.reportFired(event.type, event.layer, scale, (event.timestampMs - positionNow), recentFireTimestamps.size)
+            TransientDiagnostics.reportFired(event.type, event.layer, scale, (event.timestampMs + outputLatencyMs - positionNow), recentFireTimestamps.size)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to fire transient event ${event.type}", e)
         }

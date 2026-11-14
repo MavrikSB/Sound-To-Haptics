@@ -34,6 +34,7 @@ object TransientHapticComposer {
         beatEstimate: BeatEstimate,
         bassEmphasis: Float,
         hapticDensity: Float,
+        scenePlan: TransientScenePlan? = null,
     ): List<TransientEvent> {
         if (frames.isEmpty()) return emptyList()
 
@@ -62,6 +63,17 @@ object TransientHapticComposer {
         val minAccentSpacingMs = TransientConfig.densityScaledMinAccentSpacingMs(hapticDensity)
         val maxTexturePerSecond = TransientConfig.densityScaledMaxTextureEventsPerSecond(hapticDensity)
 
+        // Scene plan (Apple/Immersion-style silence/salience) translated into
+        // per-time accent + intensity multipliers.
+        val scene = scenePlan ?: TransientScenePlan(emptyList())
+
+        // MAJORS are decided from the full candidate priority distribution,
+        // before layering, so they survive the weak-beat gate.
+        val allPriorities = scored.map { it.priority }.sorted()
+        val majorThresholdPre = percentile(allPriorities, TransientConfig.MAJOR_ACCENT_PERCENTILE)
+        // Hi-hats fire textures, never accents; MAJORS always survive.
+        val weakBeat = beatEstimate.confidence < TransientConfig.MIN_BEAT_CONFIDENCE_FOR_ACCENT
+
         data class Placed(val scored: Scored, var layer: TransientLayer, var priorityRetained: Float)
 
         val placed = ArrayList<Placed>()
@@ -72,10 +84,21 @@ object TransientHapticComposer {
 
         for (entry in scored) {
             val ts = entry.candidate.timestampMs
-            val closeToPreviousAccent = ts - lastAccentTimestamp < minAccentSpacingMs
+            val sceneBudget = scene.accentBudget(ts)
+            // Apple/Immersion rule: silence stays silent. No haptic at all.
+            if (sceneBudget <= 0f) continue
 
-            if (!closeToPreviousAccent) {
-                placed += Placed(entry, TransientLayer.ACCENT, 1f)
+            val closeToPreviousAccent = ts - lastAccentTimestamp < minAccentSpacingMs
+            val forcedTexture = entry.type == TransientEventType.HIHAT
+            // Active accents only when the scene allows them (build/drop) and the
+            // beat is either confident or the candidate is a MAJOR.
+            val keepAsAccent = !forcedTexture &&
+                !closeToPreviousAccent &&
+                sceneBudget >= 0.85f &&
+                (entry.priority >= majorThresholdPre || !weakBeat)
+
+            if (keepAsAccent) {
+                placed += Placed(entry, TransientLayer.ACCENT, sceneBudget.coerceAtLeast(1f))
                 lastAccentTimestamp = ts
                 continue
             }
@@ -130,7 +153,7 @@ object TransientHapticComposer {
         }
 
         // ── Step 4: Musical Bed (Layer A) — independent continuous pulses ──
-        finalEvents += buildBedPulses(frames, bassEmphasis, finalEvents)
+        finalEvents += buildBedPulses(frames, bassEmphasis, finalEvents, scene)
 
         return finalEvents.sortedBy { it.timestampMs }
     }
@@ -149,6 +172,7 @@ object TransientHapticComposer {
         frames: List<RawSpectralFrame>,
         bassEmphasis: Float,
         existingEvents: List<TransientEvent>,
+        scene: TransientScenePlan? = null,
     ): List<TransientEvent> {
         val bedEvents = ArrayList<TransientEvent>()
         var smoothedBass = 0f
@@ -161,6 +185,11 @@ object TransientHapticComposer {
         if (subBassPeak <= 1e-5f) return emptyList()
 
         for (frame in frames) {
+            // Apple/Immersion compliance: silence produces no events.
+            if (scene != null && scene.accentBudget(frame.timestampMs) <= 0f) {
+                smoothedBass *= 0.5f
+                continue
+            }
             val lowEnergyNorm = ((frame.subBass + frame.lowMid) / subBassPeak).coerceIn(0f, 1f)
             val isSustain = TransientEventClassifier.isBassSustainFrame(frame)
             val target = if (isSustain) lowEnergyNorm else lowEnergyNorm * 0.6f

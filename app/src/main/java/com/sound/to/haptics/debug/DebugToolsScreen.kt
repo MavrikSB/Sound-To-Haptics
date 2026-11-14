@@ -234,7 +234,7 @@ fun DebugToolsScreen(viewModel: DebugToolsViewModel = viewModel()) {
                 }
                 Spacer(Modifier.height(Spacing.Lg))
                 StaggeredEntrance(16) {
-                    SectionCard(title = "Spotify Capture Diagnostics", icon = Icons.Rounded.GraphicEq) {
+                    SectionCard(title = "Capture Diagnostics", icon = Icons.Rounded.GraphicEq) {
                         CaptureDiagnosticsSection()
                     }
                 }
@@ -991,7 +991,7 @@ private fun SoundMeterSection(viewModel: DebugToolsViewModel) {
 
     if (!hasPermission) {
         Text(
-            "Needs mic access. Grant it from the Spotify tab, then come back.",
+            "Needs mic access. Grant it from the BitChord tab, then come back.",
             color = cs.onSurfaceVariant,
             style = MaterialTheme.typography.bodySmall,
         )
@@ -1038,7 +1038,7 @@ private fun AnalysisDiagnosticsSection() {
     val cs = MaterialTheme.colorScheme
     val analysis by AnalysisDiagnostics.state.collectAsState()
     if (analysis.bass.isEmpty()) {
-        Text("Run an Offline conversion or finish a Spotify learning pass to populate the analyzer timeline.", color = cs.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
+        Text("Run an Offline conversion or finish a BitChord learning pass to populate the analyzer timeline.", color = cs.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
         return
     }
     LayerGraph("RAW / MIX", analysis.raw, cs.onSurfaceVariant)
@@ -1255,7 +1255,7 @@ private fun CaptureDiagnosticsSection() {
     }
     Spacer(Modifier.height(Spacing.Sm))
     Text(
-        "These values are intentionally kept out of the normal Spotify error copy. They identify whether consent, MediaProjection, AudioRecord initialization, PCM delivery, or encoding is the failing stage.",
+        "These values are intentionally kept out of the normal BitChord error copy. They identify whether the audio tap, PCM delivery, or encoding is the failing stage.",
         color = cs.onSurfaceVariant,
         style = MaterialTheme.typography.labelSmall,
     )
@@ -1265,15 +1265,15 @@ private fun CaptureDiagnosticsSection() {
 private fun StorageSection(viewModel: DebugToolsViewModel, onCopyReport: () -> Unit) {
     val cs = MaterialTheme.colorScheme
     Text(
-        "Clears saved Spotify vibration patterns. They'll be rebuilt next time you play each track.",
+        "Clears saved BitChord haptic profiles. They'll be rebuilt next time you play each track.",
         color = cs.onSurfaceVariant,
         style = MaterialTheme.typography.bodySmall,
     )
     Spacer(Modifier.height(Spacing.Md))
-    PressableOutlinedButton(onClick = viewModel::clearSpotifyHapticCache, modifier = Modifier.fillMaxWidth()) {
+    PressableOutlinedButton(onClick = viewModel::clearBitChordHapticCache, modifier = Modifier.fillMaxWidth()) {
         AnimatedIcon(Icons.Rounded.DeleteSweep, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(Spacing.Sm))
-        Text("Clear Spotify Cache")
+        Text("Clear BitChord Cache")
     }
     Spacer(Modifier.height(Spacing.Md))
     PressableFilledTonalButton(onClick = onCopyReport, modifier = Modifier.fillMaxWidth()) {

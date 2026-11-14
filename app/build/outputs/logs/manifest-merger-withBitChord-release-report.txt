@@ -1,0 +1,567 @@
+-- Merging decision tree log ---
+provider#androidx.core.content.FileProvider
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:29:9-37:20
+	android:authorities
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml
+manifest
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:1-40:12
+MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-14:12
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-14:12
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-14:12
+MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.media3:media3-datasource-okhttp:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\168882f56db3881e0cebd005b2e442fc\transformed\jetified-media3-datasource-okhttp-1.11.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-extractor:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\c6fa8e6f81e8f178c80466a94c816271\transformed\jetified-media3-extractor-1.11.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-container:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\86364c270a35b13ac6d4f15c694b6d0e\transformed\jetified-media3-container-1.11.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-datasource:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\733d65f95cf40b709a3d08b56cfe2702\transformed\jetified-media3-datasource-1.11.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-decoder:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\04278442390612c6f0abe1fe18ad5232\transformed\jetified-media3-decoder-1.11.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-database:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\d27f1481f9f7c38975f2ec17660f0bee\transformed\jetified-media3-database-1.11.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:17:1-46:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\c54da6030c68a3e05e7405ab18cf9c37\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
+MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.mediarouter:mediarouter:1.8.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\73c1a5e419af38a3f1dcac4248383392\transformed\mediarouter-1.8.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-compose:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b79317e31a753634eae13490fe4a71f4\transformed\jetified-coil-compose-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-compose-base:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0da369d945d37d52de13db39c7a0f9c3\transformed\jetified-coil-compose-base-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0205ac444af6f764c315b13a96e4c511\transformed\jetified-coil-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-base:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\ac0b743e059e93951f4b51fb36d403be\transformed\jetified-coil-base-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\8296c849f1991b9beb9d1224f876286a\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\f0dd3d78d116bd1492baed9330af166e\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6e1f8eca21cc3a8e97099a6e78936c40\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\13698e31f1eeb0724d8b246963999039\transformed\drawerlayout-1.1.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bab5344281271617d0a4cf58c22cb298\transformed\transition-1.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\781e8afcc97bd13d014b6a01f5dee754\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\5ea33f6356c2aa998206a80e8eea1703\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\36152be7d79bfdd194417937bd2f332e\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\014afa16e5930bde2bdb4456893419fa\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.7.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bdad07e1a71f33d7257364504afafab5\transformed\media-1.7.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\d104d0e77e622b546dc95a3c49ecfb04\transformed\navigation-common-2.7.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\4f3653d60313329208b476c52e350d1f\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\9cbdc293dc94c84f2c7b98904eeff4be\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\089909fdc79060a6b6b0a047565a4c52\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\57b6274a2890031aefe45d5ee22cf7ae\transformed\jetified-navigation-compose-2.7.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b525fe27eb08b9fda973693bdfa4ea4d\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b0771fa08b08e48f68806b44aa97f972\transformed\jetified-activity-1.9.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\f4129d2c1bb113032c80bb9083c3c7ce\transformed\jetified-activity-ktx-1.9.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material3:material3-android:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\1e53b0f953f6b65810de9809029bba17\transformed\jetified-material3-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-compose:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\2617795f60e2d00b79a7416b3d020317\transformed\jetified-activity-compose-1.9.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b38b6cfe2cc320e1afe5e13dc33a5a6d\transformed\jetified-foundation-layout-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\2cb7b10938b4c031c063f000f5cebc65\transformed\jetified-material-ripple-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\09849246a8ff23054819a756bf2a1d59\transformed\jetified-foundation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b1e91a740df15a45bba2675cae19bf20\transformed\jetified-animation-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\f336eab68187a78af79faa04c42c778d\transformed\jetified-animation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\6790b20840385ed71c07606cbd55991c\transformed\jetified-ui-unit-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\eb3faa85355657dc2121cba07b3b8588\transformed\jetified-ui-text-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\01516c455c3f4e1d82131fe08ff6db2f\transformed\jetified-ui-util-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\098cc64288259a14d4a45c612a0b0f19\transformed\jetified-ui-geometry-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\28f4c2f02ff1837c4b387134f1d11e3a\transformed\jetified-ui-tooling-preview-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\91de9da7f7e7a1fb74622a3e166d3eb6\transformed\jetified-ui-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\52531df94de61886668f59cf53fdd0ee\transformed\jetified-accompanist-drawablepainter-0.32.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\4abf906087899c9d318c99a53950569c\transformed\jetified-material-icons-extended-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\582f966b370de1c2a6bc27c60278e0ed\transformed\jetified-material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.palette:palette:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\1cfd24187b42cde6d012eb4b4a9a7503\transformed\palette-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\5396f4d936870780485bbd52f6504b03\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\fb88fff2358fc116e431187d58022b05\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\17f3047d135db26cb57244dd70cde039\transformed\jetified-savedstate-ktx-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\f856de07d9d1a9ca45e0eb865dfadb40\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0e1a3d873e095d59b4b8a474d5aef9e3\transformed\jetified-emoji2-views-helper-1.3.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\29022d5d4731fa9c58faf0c15952fac6\transformed\lifecycle-viewmodel-2.8.3\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\11a4f8cac399235d65bd1367cb382ed1\transformed\jetified-lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\4316274a932bc4481c91f52346857290\transformed\jetified-lifecycle-livedata-core-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\5ca7e8e8114f6d3f20a0674466faa393\transformed\jetified-lifecycle-runtime-ktx-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\4ef83290c1436f9a5f5b4305fa66fb65\transformed\jetified-lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\af5b2039e87bc0b27d2a7fe4b3de28ee\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\625b3b33951680a05ba381ee8a56dc9f\transformed\jetified-lifecycle-viewmodel-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-service:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\cb8d1d80a0358a3bb0f08c0ff31e8327\transformed\jetified-lifecycle-service-2.8.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\6a72232f6fc417834ec0b539045eb015\transformed\lifecycle-livedata-core-2.8.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\32d12faf0c8617c0ba89431058a05cea\transformed\lifecycle-livedata-2.8.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\8ef325de4d60cf9f44688699a5ee28ae\transformed\jetified-lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\48c113b2ec53584118629ebddd2c4fef\transformed\jetified-lifecycle-viewmodel-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\bfb8cc357d2ca2d254661353cd1d9003\transformed\jetified-ui-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\02c23c79c37a9a5367f5fec9a0ffcee3\transformed\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b4dc443bd075fcc9647a75c57881e169\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\262b01fb71aecef63872fdb5c6569bde\transformed\customview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0d73ae6211efdc81fc2ca8229917184b\transformed\jetified-autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\14a541397c03cc72832e7c02c09a4eba\transformed\jetified-graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\e7ca0d029144ce59ebfe5059cb53334b\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\2ec576f140be589d53ba4332b3b2eaeb\transformed\jetified-core-ktx-1.13.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\028a4fc317cd297fc6be27d3479f6daf\transformed\jetified-core-splashscreen-1.0.1\AndroidManifest.xml:17:1-24:12
+MERGED from [com.github.MetrolistGroup.innertubex:innertubex-android:v0.11.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\6054886f9ccf70c886518deb94949d33\transformed\jetified-innertubex-android-v0.11.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b3c9c8a913ad5f3aed4e4fd7158461ea\transformed\jetified-runtime-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\519dfcb9d4080ad146b87137d9fabdec\transformed\jetified-runtime-saveable-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\d8300b1323fd1f48ed157efac954c69d\transformed\jetified-annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [com.github.MetrolistGroup.quackjs:quackjs-android:0.1.4] C:\Users\asser\.gradle\caches\8.11.1\transforms\24a53e49d4f27a8e1a4049b2816d1110\transformed\jetified-quackjs-android-0.1.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.security:security-crypto:1.1.0-alpha06] C:\Users\asser\.gradle\caches\8.11.1\transforms\5291c79ff0ddbe7b17b6698a03c34e67\transformed\jetified-security-crypto-1.1.0-alpha06\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\a2a0bf7162ee2e236f4ff3deb3d61c2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:2:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\d75ab8026f59fd3a5ef7a0beadf963f9\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\4ca3308f7bc9871b566bd9ea20cb83ca\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0e6808a214059ce02edebd2ecc903d6a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\3ca234498221845a07a2ccf0df66f1e9\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\1c12042aecb6140af6c6a165de3f85ec\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6c50ffb8587ce8942ede862de64aa2e8\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\955e635a736cc7cbd9a8679413e7ca09\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\9acdeba905dfa063b09a64ed9b6e2da7\transformed\exifinterface-1.3.7\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\43855325fcfe94c410172180d59c7e22\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\34fb2f49755a1c608b01330a357a1cf8\transformed\jetified-ffmpeg-kit-16kb-6.1.1\AndroidManifest.xml:2:1-7:12
+	package
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.VIBRATE
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:4:5-66
+MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:7:5-66
+MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:7:5-66
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:4:22-63
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:5:5-67
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:8:5-67
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:8:5-67
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:5:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:6:5-79
+MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:22:5-79
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:6:22-76
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:7:5-77
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:7:22-74
+uses-permission#android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:8:5-92
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:8:22-89
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:9:5-77
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:9:22-74
+application
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
+MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
+MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:4:5-13:19
+MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
+MERGED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:22:5-44:19
+MERGED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:22:5-44:19
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\c54da6030c68a3e05e7405ab18cf9c37\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\c54da6030c68a3e05e7405ab18cf9c37\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:28:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\a2a0bf7162ee2e236f4ff3deb3d61c2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\a2a0bf7162ee2e236f4ff3deb3d61c2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:10:5-20:19
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:10:5-20:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:23:5-29:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:17:9-35
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:17:9-35
+	android:label
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:15:9-41
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:15:9-41
+	android:icon
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:14:9-43
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:14:9-43
+	android:allowBackup
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:13:9-35
+	android:theme
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:16:9-48
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:16:9-48
+	android:enableOnBackInvokedCallback
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:12:9-51
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:12:9-51
+activity#com.sound.to.haptics.MainActivity
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:19:9-27:20
+	android:launchMode
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:22:13-44
+	android:exported
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:21:13-36
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:20:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:23:13-26:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:24:17-69
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:24:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:25:17-77
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:25:27-74
+service#com.sound.to.haptics.bitchord.playback.BitChordPlaybackService
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:5:9-12:19
+	android:exported
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:7:13-36
+	android:foregroundServiceType
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:8:13-58
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:6:13-70
+intent-filter#action:name:androidx.media3.session.MediaSessionService
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:9:13-11:29
+action#androidx.media3.session.MediaSessionService
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:10:17-86
+	android:name
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:10:25-83
+uses-sdk
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-datasource-okhttp:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\168882f56db3881e0cebd005b2e442fc\transformed\jetified-media3-datasource-okhttp-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-datasource-okhttp:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\168882f56db3881e0cebd005b2e442fc\transformed\jetified-media3-datasource-okhttp-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-extractor:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\c6fa8e6f81e8f178c80466a94c816271\transformed\jetified-media3-extractor-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-extractor:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\c6fa8e6f81e8f178c80466a94c816271\transformed\jetified-media3-extractor-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-container:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\86364c270a35b13ac6d4f15c694b6d0e\transformed\jetified-media3-container-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-container:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\86364c270a35b13ac6d4f15c694b6d0e\transformed\jetified-media3-container-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-datasource:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\733d65f95cf40b709a3d08b56cfe2702\transformed\jetified-media3-datasource-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-datasource:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\733d65f95cf40b709a3d08b56cfe2702\transformed\jetified-media3-datasource-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-decoder:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\04278442390612c6f0abe1fe18ad5232\transformed\jetified-media3-decoder-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-decoder:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\04278442390612c6f0abe1fe18ad5232\transformed\jetified-media3-decoder-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-database:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\d27f1481f9f7c38975f2ec17660f0bee\transformed\jetified-media3-database-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-database:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\d27f1481f9f7c38975f2ec17660f0bee\transformed\jetified-media3-database-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\c54da6030c68a3e05e7405ab18cf9c37\transformed\constraintlayout-2.0.1\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\c54da6030c68a3e05e7405ab18cf9c37\transformed\constraintlayout-2.0.1\AndroidManifest.xml:5:5-7:41
+MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:5:5-44
+MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.mediarouter:mediarouter:1.8.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\73c1a5e419af38a3f1dcac4248383392\transformed\mediarouter-1.8.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.mediarouter:mediarouter:1.8.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\73c1a5e419af38a3f1dcac4248383392\transformed\mediarouter-1.8.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b79317e31a753634eae13490fe4a71f4\transformed\jetified-coil-compose-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b79317e31a753634eae13490fe4a71f4\transformed\jetified-coil-compose-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose-base:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0da369d945d37d52de13db39c7a0f9c3\transformed\jetified-coil-compose-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose-base:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0da369d945d37d52de13db39c7a0f9c3\transformed\jetified-coil-compose-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0205ac444af6f764c315b13a96e4c511\transformed\jetified-coil-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0205ac444af6f764c315b13a96e4c511\transformed\jetified-coil-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-base:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\ac0b743e059e93951f4b51fb36d403be\transformed\jetified-coil-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-base:2.6.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\ac0b743e059e93951f4b51fb36d403be\transformed\jetified-coil-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\8296c849f1991b9beb9d1224f876286a\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\8296c849f1991b9beb9d1224f876286a\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\f0dd3d78d116bd1492baed9330af166e\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\f0dd3d78d116bd1492baed9330af166e\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6e1f8eca21cc3a8e97099a6e78936c40\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6e1f8eca21cc3a8e97099a6e78936c40\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\13698e31f1eeb0724d8b246963999039\transformed\drawerlayout-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\13698e31f1eeb0724d8b246963999039\transformed\drawerlayout-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bab5344281271617d0a4cf58c22cb298\transformed\transition-1.5.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.transition:transition:1.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bab5344281271617d0a4cf58c22cb298\transformed\transition-1.5.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\781e8afcc97bd13d014b6a01f5dee754\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\781e8afcc97bd13d014b6a01f5dee754\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\5ea33f6356c2aa998206a80e8eea1703\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\5ea33f6356c2aa998206a80e8eea1703\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\36152be7d79bfdd194417937bd2f332e\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\36152be7d79bfdd194417937bd2f332e\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\014afa16e5930bde2bdb4456893419fa\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\014afa16e5930bde2bdb4456893419fa\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.7.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bdad07e1a71f33d7257364504afafab5\transformed\media-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.media:media:1.7.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bdad07e1a71f33d7257364504afafab5\transformed\media-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\d104d0e77e622b546dc95a3c49ecfb04\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\d104d0e77e622b546dc95a3c49ecfb04\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\4f3653d60313329208b476c52e350d1f\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\4f3653d60313329208b476c52e350d1f\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\9cbdc293dc94c84f2c7b98904eeff4be\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\9cbdc293dc94c84f2c7b98904eeff4be\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\089909fdc79060a6b6b0a047565a4c52\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\089909fdc79060a6b6b0a047565a4c52\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\57b6274a2890031aefe45d5ee22cf7ae\transformed\jetified-navigation-compose-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\57b6274a2890031aefe45d5ee22cf7ae\transformed\jetified-navigation-compose-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b525fe27eb08b9fda973693bdfa4ea4d\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b525fe27eb08b9fda973693bdfa4ea4d\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b0771fa08b08e48f68806b44aa97f972\transformed\jetified-activity-1.9.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b0771fa08b08e48f68806b44aa97f972\transformed\jetified-activity-1.9.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\f4129d2c1bb113032c80bb9083c3c7ce\transformed\jetified-activity-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\f4129d2c1bb113032c80bb9083c3c7ce\transformed\jetified-activity-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\1e53b0f953f6b65810de9809029bba17\transformed\jetified-material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\1e53b0f953f6b65810de9809029bba17\transformed\jetified-material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-compose:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\2617795f60e2d00b79a7416b3d020317\transformed\jetified-activity-compose-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\2617795f60e2d00b79a7416b3d020317\transformed\jetified-activity-compose-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b38b6cfe2cc320e1afe5e13dc33a5a6d\transformed\jetified-foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b38b6cfe2cc320e1afe5e13dc33a5a6d\transformed\jetified-foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\2cb7b10938b4c031c063f000f5cebc65\transformed\jetified-material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\2cb7b10938b4c031c063f000f5cebc65\transformed\jetified-material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\09849246a8ff23054819a756bf2a1d59\transformed\jetified-foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\09849246a8ff23054819a756bf2a1d59\transformed\jetified-foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b1e91a740df15a45bba2675cae19bf20\transformed\jetified-animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b1e91a740df15a45bba2675cae19bf20\transformed\jetified-animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\f336eab68187a78af79faa04c42c778d\transformed\jetified-animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\f336eab68187a78af79faa04c42c778d\transformed\jetified-animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\6790b20840385ed71c07606cbd55991c\transformed\jetified-ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\6790b20840385ed71c07606cbd55991c\transformed\jetified-ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\eb3faa85355657dc2121cba07b3b8588\transformed\jetified-ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\eb3faa85355657dc2121cba07b3b8588\transformed\jetified-ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\01516c455c3f4e1d82131fe08ff6db2f\transformed\jetified-ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\01516c455c3f4e1d82131fe08ff6db2f\transformed\jetified-ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\098cc64288259a14d4a45c612a0b0f19\transformed\jetified-ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\098cc64288259a14d4a45c612a0b0f19\transformed\jetified-ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\28f4c2f02ff1837c4b387134f1d11e3a\transformed\jetified-ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\28f4c2f02ff1837c4b387134f1d11e3a\transformed\jetified-ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\91de9da7f7e7a1fb74622a3e166d3eb6\transformed\jetified-ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\91de9da7f7e7a1fb74622a3e166d3eb6\transformed\jetified-ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\52531df94de61886668f59cf53fdd0ee\transformed\jetified-accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\52531df94de61886668f59cf53fdd0ee\transformed\jetified-accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\4abf906087899c9d318c99a53950569c\transformed\jetified-material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\4abf906087899c9d318c99a53950569c\transformed\jetified-material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\582f966b370de1c2a6bc27c60278e0ed\transformed\jetified-material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\582f966b370de1c2a6bc27c60278e0ed\transformed\jetified-material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.palette:palette:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\1cfd24187b42cde6d012eb4b4a9a7503\transformed\palette-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.palette:palette:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\1cfd24187b42cde6d012eb4b4a9a7503\transformed\palette-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\5396f4d936870780485bbd52f6504b03\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\5396f4d936870780485bbd52f6504b03\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\fb88fff2358fc116e431187d58022b05\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\fb88fff2358fc116e431187d58022b05\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\17f3047d135db26cb57244dd70cde039\transformed\jetified-savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\17f3047d135db26cb57244dd70cde039\transformed\jetified-savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\f856de07d9d1a9ca45e0eb865dfadb40\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\f856de07d9d1a9ca45e0eb865dfadb40\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0e1a3d873e095d59b4b8a474d5aef9e3\transformed\jetified-emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0e1a3d873e095d59b4b8a474d5aef9e3\transformed\jetified-emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\29022d5d4731fa9c58faf0c15952fac6\transformed\lifecycle-viewmodel-2.8.3\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\29022d5d4731fa9c58faf0c15952fac6\transformed\lifecycle-viewmodel-2.8.3\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\11a4f8cac399235d65bd1367cb382ed1\transformed\jetified-lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\11a4f8cac399235d65bd1367cb382ed1\transformed\jetified-lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\4316274a932bc4481c91f52346857290\transformed\jetified-lifecycle-livedata-core-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\4316274a932bc4481c91f52346857290\transformed\jetified-lifecycle-livedata-core-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\5ca7e8e8114f6d3f20a0674466faa393\transformed\jetified-lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\5ca7e8e8114f6d3f20a0674466faa393\transformed\jetified-lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\4ef83290c1436f9a5f5b4305fa66fb65\transformed\jetified-lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\4ef83290c1436f9a5f5b4305fa66fb65\transformed\jetified-lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\af5b2039e87bc0b27d2a7fe4b3de28ee\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\af5b2039e87bc0b27d2a7fe4b3de28ee\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\625b3b33951680a05ba381ee8a56dc9f\transformed\jetified-lifecycle-viewmodel-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\625b3b33951680a05ba381ee8a56dc9f\transformed\jetified-lifecycle-viewmodel-ktx-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\cb8d1d80a0358a3bb0f08c0ff31e8327\transformed\jetified-lifecycle-service-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\cb8d1d80a0358a3bb0f08c0ff31e8327\transformed\jetified-lifecycle-service-2.8.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\6a72232f6fc417834ec0b539045eb015\transformed\lifecycle-livedata-core-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\6a72232f6fc417834ec0b539045eb015\transformed\lifecycle-livedata-core-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\32d12faf0c8617c0ba89431058a05cea\transformed\lifecycle-livedata-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\32d12faf0c8617c0ba89431058a05cea\transformed\lifecycle-livedata-2.8.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\8ef325de4d60cf9f44688699a5ee28ae\transformed\jetified-lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\8ef325de4d60cf9f44688699a5ee28ae\transformed\jetified-lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\48c113b2ec53584118629ebddd2c4fef\transformed\jetified-lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\48c113b2ec53584118629ebddd2c4fef\transformed\jetified-lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\bfb8cc357d2ca2d254661353cd1d9003\transformed\jetified-ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\bfb8cc357d2ca2d254661353cd1d9003\transformed\jetified-ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\02c23c79c37a9a5367f5fec9a0ffcee3\transformed\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\02c23c79c37a9a5367f5fec9a0ffcee3\transformed\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b4dc443bd075fcc9647a75c57881e169\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b4dc443bd075fcc9647a75c57881e169\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\262b01fb71aecef63872fdb5c6569bde\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\262b01fb71aecef63872fdb5c6569bde\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0d73ae6211efdc81fc2ca8229917184b\transformed\jetified-autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0d73ae6211efdc81fc2ca8229917184b\transformed\jetified-autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\14a541397c03cc72832e7c02c09a4eba\transformed\jetified-graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\14a541397c03cc72832e7c02c09a4eba\transformed\jetified-graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\e7ca0d029144ce59ebfe5059cb53334b\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\e7ca0d029144ce59ebfe5059cb53334b\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\2ec576f140be589d53ba4332b3b2eaeb\transformed\jetified-core-ktx-1.13.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\2ec576f140be589d53ba4332b3b2eaeb\transformed\jetified-core-ktx-1.13.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\028a4fc317cd297fc6be27d3479f6daf\transformed\jetified-core-splashscreen-1.0.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\028a4fc317cd297fc6be27d3479f6daf\transformed\jetified-core-splashscreen-1.0.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.github.MetrolistGroup.innertubex:innertubex-android:v0.11.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\6054886f9ccf70c886518deb94949d33\transformed\jetified-innertubex-android-v0.11.7\AndroidManifest.xml:5:5-44
+MERGED from [com.github.MetrolistGroup.innertubex:innertubex-android:v0.11.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\6054886f9ccf70c886518deb94949d33\transformed\jetified-innertubex-android-v0.11.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b3c9c8a913ad5f3aed4e4fd7158461ea\transformed\jetified-runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\b3c9c8a913ad5f3aed4e4fd7158461ea\transformed\jetified-runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\519dfcb9d4080ad146b87137d9fabdec\transformed\jetified-runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] C:\Users\asser\.gradle\caches\8.11.1\transforms\519dfcb9d4080ad146b87137d9fabdec\transformed\jetified-runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\d8300b1323fd1f48ed157efac954c69d\transformed\jetified-annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\d8300b1323fd1f48ed157efac954c69d\transformed\jetified-annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [com.github.MetrolistGroup.quackjs:quackjs-android:0.1.4] C:\Users\asser\.gradle\caches\8.11.1\transforms\24a53e49d4f27a8e1a4049b2816d1110\transformed\jetified-quackjs-android-0.1.4\AndroidManifest.xml:5:5-44
+MERGED from [com.github.MetrolistGroup.quackjs:quackjs-android:0.1.4] C:\Users\asser\.gradle\caches\8.11.1\transforms\24a53e49d4f27a8e1a4049b2816d1110\transformed\jetified-quackjs-android-0.1.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.security:security-crypto:1.1.0-alpha06] C:\Users\asser\.gradle\caches\8.11.1\transforms\5291c79ff0ddbe7b17b6698a03c34e67\transformed\jetified-security-crypto-1.1.0-alpha06\AndroidManifest.xml:20:5-44
+MERGED from [androidx.security:security-crypto:1.1.0-alpha06] C:\Users\asser\.gradle\caches\8.11.1\transforms\5291c79ff0ddbe7b17b6698a03c34e67\transformed\jetified-security-crypto-1.1.0-alpha06\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\a2a0bf7162ee2e236f4ff3deb3d61c2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\a2a0bf7162ee2e236f4ff3deb3d61c2a\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:6:5-44
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:6:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\d75ab8026f59fd3a5ef7a0beadf963f9\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\d75ab8026f59fd3a5ef7a0beadf963f9\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\4ca3308f7bc9871b566bd9ea20cb83ca\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\4ca3308f7bc9871b566bd9ea20cb83ca\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0e6808a214059ce02edebd2ecc903d6a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\0e6808a214059ce02edebd2ecc903d6a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\3ca234498221845a07a2ccf0df66f1e9\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\3ca234498221845a07a2ccf0df66f1e9\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\1c12042aecb6140af6c6a165de3f85ec\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\1c12042aecb6140af6c6a165de3f85ec\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6c50ffb8587ce8942ede862de64aa2e8\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6c50ffb8587ce8942ede862de64aa2e8\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\955e635a736cc7cbd9a8679413e7ca09\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\955e635a736cc7cbd9a8679413e7ca09\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\9acdeba905dfa063b09a64ed9b6e2da7\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\asser\.gradle\caches\8.11.1\transforms\9acdeba905dfa063b09a64ed9b6e2da7\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\43855325fcfe94c410172180d59c7e22\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\43855325fcfe94c410172180d59c7e22\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\34fb2f49755a1c608b01330a357a1cf8\transformed\jetified-ffmpeg-kit-16kb-6.1.1\AndroidManifest.xml:5:5-44
+MERGED from [com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\34fb2f49755a1c608b01330a357a1cf8\transformed\jetified-ffmpeg-kit-16kb-6.1.1\AndroidManifest.xml:5:5-44
+	android:targetSdkVersion
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+uses-permission#android.permission.WAKE_LOCK
+ADDED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:23:5-68
+	android:name
+		ADDED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:23:22-65
+activity#androidx.media3.session.BluetoothValidationActivity
+ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:25:9-43:20
+	android:excludeFromRecents
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:27:13-46
+	android:noHistory
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:29:13-37
+	android:exported
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:28:13-36
+	android:permission
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:30:13-73
+	android:theme
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:31:13-59
+	android:name
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:26:13-79
+intent-filter#action:name:android.intent.action.VIEW+data:host:media+data:mimeType:audio/*+data:pathPrefix:/internal/audio/media/+data:scheme:content
+ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:32:13-42:29
+action#android.intent.action.VIEW
+ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:35:17-69
+	android:name
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:35:25-66
+data
+ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:37:17-50
+	android:scheme
+		ADDED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:37:23-47
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:24:9-32:20
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:11:9-19:20
+MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:11:9-19:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:24:9-28:34
+MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:24:9-28:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\736b221348a2741d6100e99147812b86\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\ca486319b48bbe15c6e9cb8aea7d8140\transformed\jetified-lifecycle-process-2.8.3\AndroidManifest.xml:30:17-78
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+permission#com.sound.to.haptics.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+uses-permission#com.sound.to.haptics.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+meta-data#okhttp3.internal.platform.PlatformInitializer
+ADDED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:16:13-18:52
+	android:value
+		ADDED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:18:17-49
+	android:name
+		ADDED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:17:17-77
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\b7f6c8276f1adfb2f18d8eb9aca3cf61\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92

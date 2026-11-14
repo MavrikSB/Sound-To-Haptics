@@ -25,7 +25,7 @@ val Secondary40 = Color(0xFF63536F)
 val Secondary80 = Color(0xFFCFBEDA)
 val Secondary90 = Color(0xFFECDBF7)
 
-// Tertiary (spotify-adjacent green, kept subtle so it stays "Material You"
+// Tertiary (kept subtle so it stays "Material You"
 // rather than reading as a brand color everywhere it's used)
 val Tertiary10 = Color(0xFF00210B)
 val Tertiary20 = Color(0xFF00390E)
@@ -56,6 +56,7 @@ val NeutralVariant80 = Color(0xFFCAC4CE)
 val ErrorColor = Color(0xFFFFB4A9)
 val ErrorContainer = Color(0xFF93000A)
 
-/** True Spotify brand green — only used as an accent inside the Spotify tab. */
-val SpotifyGreen = Color(0xFF1ED760)
-val SpotifyGreenDim = Color(0xFF17A34A)
+/** BitChord brand red (from BitChord's logo gradient, #FA233B) - only used as an accent inside the BitChord tab. */
+val BitChordBrandRed = Color(0xFFFA233B)
+/** Dimmer BitChord brand red - only used as an accent inside the BitChord tab. */
+val BitChordBrandRedDim = Color(0xFFD92B3D)

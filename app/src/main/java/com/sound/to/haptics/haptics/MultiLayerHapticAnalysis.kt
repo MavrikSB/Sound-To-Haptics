@@ -12,7 +12,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
- * Versioned analysis format shared by imported files and Spotify captures.
+ * Versioned analysis format shared by imported files and BitChord captures.
  *
  * This is deliberately a DSP/hybrid analyser rather than an embedded source
  * separation model. It is cheap enough to run on a mid-range Android device,

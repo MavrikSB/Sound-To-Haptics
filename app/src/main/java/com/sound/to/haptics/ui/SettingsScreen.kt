@@ -236,7 +236,7 @@ fun SettingsScreen(
                         ToggleSettingRow(
                             icon = Icons.Rounded.Settings,
                             label = "Confirm before clearing cache",
-                            description = "Ask before deleting cached Spotify haptic files",
+                            description = "Ask before deleting cached BitChord haptic files",
                             checked = settings.confirmBeforeClearingCache,
                             onCheckedChange = AppSettings::setConfirmBeforeClearingCache,
                         )
@@ -251,7 +251,7 @@ fun SettingsScreen(
                         Spacer(Modifier.height(Spacing.Lg))
                         SettingsActionRow(
                             label = "Clear cached haptic files",
-                            description = "Frees space; Spotify songs can be re-cached again",
+                            description = "Frees space; BitChord songs can be re-cached again",
                             onClick = {
                                 if (settings.confirmBeforeClearingCache) showClearCacheDialog = true
                                 else onClearHapticCache()
@@ -302,7 +302,7 @@ fun SettingsScreen(
     if (showClearCacheDialog) {
         SettingsConfirmDialog(
             title = "Clear cached haptics?",
-            message = "Cached haptic files for Spotify tracks will be deleted. They'll be regenerated automatically the next time you play those songs.",
+            message = "Cached haptic files for BitChord tracks will be deleted. They'll be regenerated automatically the next time you play those songs.",
             confirmLabel = "Clear",
             onConfirm = {
                 onClearHapticCache()
