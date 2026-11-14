@@ -1,0 +1,20 @@
+<resources>
+    <!--
+        Startup splash (androidx.core:core-splashscreen). The window background
+        uses a neutral Material surface tone so the launch moment feels calm
+        and continuous with the app instead of flashing white or black; the
+        icon is the adaptive launcher icon, which the platform renders inside
+        the standard circular mask on Android 12+.
+    -->
+    <style name="Theme.HapticTest" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.HapticTest.Main</item>
+    </style>
+
+    <style name="Theme.HapticTest.Main" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>
