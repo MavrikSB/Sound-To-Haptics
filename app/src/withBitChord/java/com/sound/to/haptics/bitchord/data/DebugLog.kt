@@ -5,12 +5,6 @@ package com.sound.to.haptics.bitchord.data
 // few files, minimally edited. Copyright remains with the BitChord authors.
 // See THIRD_PARTY_LICENSES.txt.
 
-/**
- * Debug logging for code both applications run.
- *
- * Silent until an application installs a [sink]: the phone routes it to
- * logcat on debug builds only, the desktop to its track log.
- */
 object DebugLog {
     fun interface Sink {
         fun log(level: Char, tag: String, message: String, error: Throwable?)

@@ -26,13 +26,11 @@ import com.sound.to.haptics.ui.theme.HapticStudioTheme
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Show the branded splash until the first Compose frame is ready,
-        // so the app never flashes an empty window at launch.
+
         installSplashScreen()
         super.onCreate(savedInstanceState)
         AppSettings.init(applicationContext)
-        // The media notification for BitChord playback needs this on Android 13+;
-        // gated to the flavor that actually posts one so offlineOnly stays untouched.
+
         if (BuildConfig.FLAVOR == "withBitChord" && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             androidx.core.content.ContextCompat.checkSelfPermission(
                 this,
@@ -43,13 +41,7 @@ class MainActivity : ComponentActivity() {
         }
         enableEdgeToEdge()
         setContent {
-            // Debug menu's "Monet engine" / "Fallback theme" / "Force dark
-            // tonal elevation" toggles live above RootScreen (which is where
-            // DebugToolsViewModel is actually scoped), so they're read here
-            // straight off the app-global DebugFlags object instead. The
-            // user-facing theme choice (Settings → Appearance) is the normal
-            // driver; a debug override, when active, wins over it so devs
-            // can still force a mode while testing.
+
             val flags by DebugFlags.featureFlags.collectAsState()
             val userSettings by AppSettings.state.collectAsState()
             val systemDark = isSystemInDarkTheme()
@@ -62,9 +54,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = if (flags.forceDarkTonalElevation) true else userDark,
                 dynamicColor = userSettings.dynamicColor && flags.monetEngine && !flags.fallbackTheme,
             ) {
-                // "Keep screen on while playing": only takes effect when the
-                // user has opted in AND something is actually playing right
-                // now, so it never keeps the screen on while idle.
+
                 val isPlaying by PlaybackActivity.isPlaying.collectAsState()
                 LaunchedEffect(userSettings.keepScreenOnWhilePlaying, isPlaying) {
                     val shouldKeepOn = userSettings.keepScreenOnWhilePlaying && isPlaying

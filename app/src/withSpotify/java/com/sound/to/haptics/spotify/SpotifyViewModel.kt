@@ -43,11 +43,6 @@ enum class BrowseStatus { IDLE, LOADING }
 
 private const val TRACK_END_TOLERANCE_MS = 2_000L
 
-/**
- * What the "Track Haptics" panel should show. Driven entirely by whichever
- * track [SpotifyController] reports as actually playing, so it follows
- * Spotify's own skip/previous/autoplay too, not just taps inside this app.
- */
 enum class HapticMode {
     IDLE,
     CAPTURING,
@@ -108,9 +103,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
     private var playlistJob: Job? = null
 
     private val _captureLevel = MutableStateFlow(0f)
-    /** Kept separate from [uiState] on purpose — this ticks ~10-15x/sec while capturing,
-     * and folding it into the combined screen state would recompose the whole screen
-     * on every tick instead of just the small VU meter that actually needs it. */
+
     val captureLevel: StateFlow<Float> = _captureLevel.asStateFlow()
     val captureDiagnostics: StateFlow<CaptureDiagnosticsState> = CaptureDiagnostics.state
 
@@ -146,9 +139,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
                 .collect { token -> if (token != null) loadLibrary(token) }
         }
 
-        // Reacts to whichever track is actually playing right now: starts a
-        // capture pass for a track we've never heard before, or loads its
-        // cached haptic file straight into sync playback if we have.
         viewModelScope.launch {
             controller.state
                 .map { it.track }
@@ -156,9 +146,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
                 .collect { track -> onActiveTrackChanged(track) }
         }
 
-        // Keeps the haptic replay locked to Spotify's real playback position,
-        // and pauses an in-progress capture so a paused track doesn't bake a
-        // silent gap into the recording.
         viewModelScope.launch {
             controller.state.collect { state ->
                 val track = state.track
@@ -170,10 +157,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
                     track.durationMs > 0L &&
                     track.positionMs >= track.durationMs - TRACK_END_TOLERANCE_MS
                 ) {
-                    // Some Spotify transitions briefly report the same track
-                    // paused at its final position instead of immediately
-                    // emitting the next track. Finalize once here so a normal
-                    // end still produces a cache entry.
+
                     finalizeTrack(activeTrackId, discard = false)
                     syncEngine.stop()
                 }
@@ -192,7 +176,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
     fun skipPrevious() = controller.skipPrevious()
     fun seekTo(positionMs: Long) = controller.seekTo(positionMs)
 
-    /** Re-arms capture/sync after the Spotify tab was temporarily left. */
     fun onScreenVisible() {
         val state = controller.state.value
         if (state.isConnected && trackIdOf(state.track) != null && activeTrackId == null) {
@@ -225,9 +208,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         _browse.update {
             it.copy(
                 query = query,
-                // Do not keep showing results for the previous query while a
-                // new one is being typed; the next explicit Search action
-                // owns the result list.
+
                 searchResults = if (query.trim() == it.query.trim()) it.searchResults else emptyList(),
                 status = BrowseStatus.IDLE,
                 error = null,
@@ -246,9 +227,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         _browse.update { it.copy(status = BrowseStatus.LOADING, error = null) }
         searchJob = viewModelScope.launch {
             val results = SpotifyWebApi.search(token, query)
-            // A newer query may have completed while this request was in
-            // flight. Only the latest query is allowed to replace the result
-            // list, preventing stale rows after rapid IME submits.
+
             if (_browse.value.query.trim() != query) return@launch
             _browse.update {
                 it.copy(
@@ -260,13 +239,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    /**
-     * Starts [item] playing in the real Spotify app via App Remote. Capture
-     * or haptic-sync playback isn't triggered from here directly — it's
-     * driven reactively by [controller]'s reported player state once Spotify
-     * actually starts the track (see the collector in [init]), which is what
-     * lets skip/previous/autoplay inside Spotify itself pick up haptics too.
-     */
     fun playTrack(item: SpotifyTrackItem) {
         _browse.update { it.copy(activeUri = item.uri) }
         controller.play(item.uri)
@@ -295,13 +267,11 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun updateSensitivity(v: Float) {
-        // Spotify capture and replay use the same persisted strength as
-        // Offline's encoded OGG path and its optional transient accents.
+
         AppSettings.setHapticStrength(v)
         _haptics.update { it.copy(sensitivity = v.coerceIn(0f, 1f)) }
     }
 
-    /** Discards any cached haptics for the current track and captures it again from scratch. */
     fun recaptureCurrentTrack() {
         val trackId = activeTrackId ?: return
         if (_haptics.value.mode == HapticMode.CAPTURING) finalizeTrack(trackId, discard = true)
@@ -310,7 +280,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         beginHapticsFor(trackId, controller.state.value.track)
     }
 
-    /** Stops the in-progress pass without caching a partial, out-of-sync track. */
     fun stopLearning() {
         val trackId = activeTrackId ?: return
         if (_haptics.value.mode != HapticMode.CAPTURING) return
@@ -323,8 +292,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
             )
         }
     }
-
-    // ---- Permission + system-consent flow ----
 
     fun hasRecordAudioPermission(): Boolean = ContextCompat.checkSelfPermission(
         appContext, Manifest.permission.RECORD_AUDIO
@@ -349,8 +316,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         val manager = mediaProjectionManager
         if (manager == null || resultCode != Activity.RESULT_OK || data == null) {
             CaptureDiagnostics.permissionResult(false)
-            // Keep NEEDS_PERMISSION visible so the user can retry without
-            // having to restart Spotify playback.
+
             return
         }
         CaptureDiagnostics.permissionResult(true)
@@ -410,8 +376,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    // ---- Capture / replay orchestration ----
-
     private fun onActiveTrackChanged(track: SpotifyTrack) {
         val newId = trackIdOf(track)
         if (newId == activeTrackId) return
@@ -420,10 +384,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         activeTrackId = newId
         activeTrackSnapshot = track
 
-        // Only a capture that reached the end of its source track is safe to
-        // cache. If the person skips away mid-song, discard the partial PCM
-        // rather than later replaying a short profile against a full Spotify
-        // timeline.
         val previousFinished = previousTrack?.durationMs?.let { duration ->
             duration > 0L && previousTrack.positionMs >= duration - TRACK_END_TOLERANCE_MS
         } == true
@@ -440,10 +400,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
     private fun beginHapticsFor(trackId: String, track: SpotifyTrack) {
         if (cache.exists(trackId)) {
             if (syncEngine.load(cache.fileFor(trackId))) {
-                // Spotify's SDK only pushes a new state on the next play/pause/seek
-                // event — encoding finishing isn't one of those. Without this, a
-                // freshly-loaded player just sits prepared and silent until the
-                // person happens to interact with Spotify again.
+
                 syncEngine.syncTo(track.positionMs, track.isPaused)
                 _haptics.update { it.copy(mode = HapticMode.SYNCED, lastError = null) }
             } else {
@@ -499,23 +456,13 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    /**
-     * Ends whatever [recorder] is doing for [trackId]. When [discard] is
-     * false (the normal "track finished/changed" path) a completed pass with
-     * real signal in it gets turned into a vibration pattern via
-     * [HapticCaptureConverter] and cached. When [discard] is true (e.g.
-     * leaving the Spotify section entirely) the partial capture is thrown
-     * away instead, since a pattern built from less than the full track
-     * would drift out of sync with the real thing on a later replay.
-     */
     private fun finalizeTrack(trackId: String?, discard: Boolean) {
         trackId ?: return
         val rec = recorder ?: return
         levelJob?.cancel()
         levelJob = null
         _captureLevel.value = 0f
-        // Detach it before launching finalization so a second player-state
-        // emission cannot finalize the same recorder twice.
+
         recorder = null
 
         if (discard) {
@@ -532,9 +479,7 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
 
             if (result != null && result.hadSignal && result.durationMs > 1500) {
                 val converted = withContext(Dispatchers.Default) {
-                    // Capture and offline conversion converge here: one
-                    // shared OGG shaping path plus the same versioned DSP
-                    // layer timeline used by the transient renderer.
+
                     val output = HapticCaptureConverter.convert(
                         pcmFile = result.pcmFile,
                         sampleRate = result.sampleRate,
@@ -599,7 +544,6 @@ class SpotifyViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    /** Stops everything Spotify-side — used when the app switches to another section. */
     fun stopAll() {
         controller.pause()
         val previous = activeTrackId

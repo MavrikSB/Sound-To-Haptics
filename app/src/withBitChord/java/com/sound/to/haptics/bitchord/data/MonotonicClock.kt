@@ -5,11 +5,6 @@ package com.sound.to.haptics.bitchord.data
 // few files, minimally edited. Copyright remains with the BitChord authors.
 // See THIRD_PARTY_LICENSES.txt.
 
-/**
- * Milliseconds on a monotonic clock. The phone installs
- * `SystemClock.elapsedRealtime`, which keeps counting through deep sleep; the
- * desktop keeps the JVM's own.
- */
 object MonotonicClock {
     private val origin = System.nanoTime()
 

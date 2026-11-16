@@ -26,34 +26,14 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.graphics.Path
 import com.sound.to.haptics.ui.motion.scaleDurationMs
 
-/**
- * A procedural audio field: one Canvas, no bitmaps, no blur layers, and no
- * restartable keyframe timeline. Each launch gets a different set of phase
- * offsets and frequencies. Three deliberately unrelated motion periods make
- * the combined field feel continuous for a very long time while remaining
- * cheap enough to run behind the UI.
- */
 @Composable
 fun DriftingBackground(
     modifier: Modifier = Modifier,
     energy: Float = 0f,
     interactionToken: Int = 0,
-    /**
-     * Cheap-render mode: drops the ribbon/marker layers and the extra ring
-     * decorations, keeping just the two soft gradient fields. Wired to the
-     * debug menu's "Simulate low-end GPU" toggle, and used automatically
-     * behind the startup screen (see StartupScreen.kt) where three animated
-     * Canvases already overlap and every draw call competes for the same
-     * frame budget.
-     */
+
     lowFx: Boolean = false,
-    /**
-     * Freezes the field as a single still frame: no infinite transitions are
-     * started at all (not just visually paused), so there's zero per-frame
-     * recomposition or redraw cost. Used for Settings → Background → Static.
-     * The interaction glow ripple still plays on tap even when frozen, since
-     * it's a one-shot animation rather than a continuous per-frame cost.
-     */
+
     frozen: Boolean = false,
 ) {
     val cs = MaterialTheme.colorScheme
@@ -83,8 +63,7 @@ fun DriftingBackground(
     val phaseB: Float
     val phaseC: Float
     if (frozen) {
-        // A fixed, pleasant-looking pose rather than 0f for all three —
-        // 0f/0f/0f draws a visibly flatter, less "in-progress" field.
+
         phaseA = 2.1f
         phaseB = 4.4f
         phaseC = 1.3f
@@ -110,13 +89,6 @@ fun DriftingBackground(
         ).value
     }
 
-    // Hoisted out of the Canvas draw scope and reused every frame instead of
-    // allocated fresh each time — Path() inside a continuously-animating
-    // Canvas draw lambda means 5 new Path allocations every single frame
-    // (4 ribbon layers + 1 marks path), which is exactly the kind of steady
-    // GC pressure that shows up as stutter, especially once it's competing
-    // with UI-thread work during transitions or button presses. Path.reset()
-    // clears the recorded segments without freeing the underlying object.
     val ribbonPaths = remember { List(4) { Path() } }
     val marksPath = remember { Path() }
 
@@ -141,7 +113,6 @@ fun DriftingBackground(
             ),
         )
 
-        // Large, low-contrast light fields establish depth without blur.
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(cs.primary.copy(alpha = 0.11f + musicEnergy * 0.12f + response), cs.primary.copy(alpha = 0f)),
@@ -161,11 +132,6 @@ fun DriftingBackground(
             center = Offset(w * 0.86f, h * (0.68f + 0.06f * cos(ultraSlowPhase))),
         )
 
-        // Audio-like ribbons. The varied phase multipliers keep the field from
-        // reading as a single looped sine wave. Each layer is built as one
-        // Path and issued as a single drawPath call instead of ~38 separate
-        // drawLine calls — same look, a fraction of the draw-call overhead
-        // (this loop alone used to be ~150 individual line draws per frame).
         if (!lowFx) {
             val ribbonLayers = 4
             val segments = 38
@@ -194,8 +160,6 @@ fun DriftingBackground(
                 )
             }
 
-            // Sparse signal marks move at different rates instead of marching in a
-            // single repeated row. Batched into one Path/drawPath as well.
             marksPath.reset()
             repeat(15) { i ->
                 val drift = (i * 0.071f + sin(phase * (0.45f + i * 0.013f) + i) * 0.035f + 1f) % 1f

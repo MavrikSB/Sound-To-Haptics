@@ -4,7 +4,6 @@ import android.media.MediaMetadataRetriever
 import java.io.BufferedInputStream
 import java.io.File
 
-/** Result of validating the persistent haptic OGG artifact before registration. */
 data class HapticOggValidationResult(
     val valid: Boolean,
     val reason: String,
@@ -12,12 +11,6 @@ data class HapticOggValidationResult(
     val hasHapticComment: Boolean = false,
 )
 
-/**
- * Validates the artifact that the library and haptic player will actually
- * consume. A successful FFmpeg return code alone is not enough: an interrupted
- * encode can still leave a non-empty file, and an ordinary OGG without the
- * ANDROID_HAPTIC comment would play audio without its haptic channel.
- */
 object HapticOggValidator {
     private val OGG_MAGIC = byteArrayOf('O'.code.toByte(), 'g'.code.toByte(), 'g'.code.toByte(), 'S'.code.toByte())
     private val HAPTIC_COMMENT = "ANDROID_HAPTIC=1".encodeToByteArray()

@@ -94,21 +94,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val library = HapticLibrary(application.applicationContext)
     private val _librarySongs = MutableStateFlow<List<HapticSong>>(emptyList())
-    /** Persistent converted songs, loaded from filesDir rather than cacheDir. */
+
     val librarySongs: StateFlow<List<HapticSong>> = _librarySongs.asStateFlow()
 
     private var mediaPlayer: MediaPlayer? = null
     private var hapticOnlyPlayer: MediaPlayer? = null
     private var progressJob: Job? = null
 
-    // Musical-haptic Transient engine — see AppSettings.HapticEngine and
-    // TransientHapticRenderer's kdoc. Lives alongside the continuous-OGG
-    // players above rather than replacing them: whichever engine is
-    // selected, this app still needs the OGG's stereo branch as the actual
-    // audible track, so playback always goes through mediaPlayer either
-    // way — the continuous OGG haptic channel remains the source of truth;
-    // only the preview mute and optional transient accent layer vary with
-    // the user's settings.
     private val transientRenderer by lazy { TransientHapticRenderer(getApplication<Application>()) }
     private var currentOnsetEvents: List<OnsetEvent> = emptyList()
     private var currentLayerAnalysis: LayeredHapticAnalysis? = null
@@ -128,24 +120,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val audioManager = application.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    // ─── Bluetooth device monitoring ────────────────────────────────────────
-
     private var cachedBluetoothDevice: AudioDeviceInfo? = null
 
     private val bluetoothReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
-                // This fires for ANY output route disappearing — wired
-                // headphones unplugged as much as Bluetooth disconnecting —
-                // and is Android's documented signal that playback is about
-                // to jump to the (loud) built-in speaker. The previous
-                // version only reacted to this when a Bluetooth device was
-                // known to have just dropped, so unplugging wired
-                // headphones left both MediaPlayer instances still trying
-                // to play into a route that had just vanished — on some
-                // devices that wedges the audio HAL badly enough that nothing
-                // plays again until the phone is rebooted. Pausing
-                // immediately here, for every route change, is the fix.
+
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY -> {
                     pausePlaybackForRouteLoss()
                     refreshBluetoothState()
@@ -159,15 +139,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /**
-     * Pauses both playback paths the instant the current output route is
-     * about to disappear, before Android reroutes audio anywhere else.
-     * Doesn't release/recreate the players (that already happens correctly
-     * in [releasePlayersAndRestart] for the Bluetooth-specific case above);
-     * this just stops them from continuing to push audio into a route
-     * that's gone, which is what was leaving the audio HAL in a bad state
-     * on wired-headphone disconnect.
-     */
     private fun pausePlaybackForRouteLoss() {
         if (mediaPlayer?.isPlaying != true && hapticOnlyPlayer?.isPlaying != true) return
         try { mediaPlayer?.pause() } catch (_: Exception) {}
@@ -178,9 +149,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     init {
-        // Library discovery is intentionally off the main thread. It also
-        // means songs created by an earlier process are visible immediately
-        // after a cold start, even if the UI was previously on another tab.
+
         viewModelScope.launch(Dispatchers.IO) {
             _librarySongs.value = library.scan()
         }
@@ -209,10 +178,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 .map { it.hapticEngine }
                 .distinctUntilChanged()
                 .collect {
-                    // Engine changes are a deliberate user action. Re-arm
-                    // the current song at its exact position so continuous
-                    // texture and transient thud/click mode never fight over
-                    // the motor at the same time.
+
                     val player = mediaPlayer ?: return@collect
                     if (currentPlaybackSource != PlaybackSource.FILE) return@collect
                     val path = currentPlaybackPath ?: return@collect
@@ -259,7 +225,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         cachedBluetoothDevice = btDevice
         _uiState.update { it.copy(bluetoothDeviceConnected = hasBt) }
 
-        // If BT disconnected mid-playback, restart in standard mode
         if (wasBt && !hasBt && mediaPlayer?.isPlaying == true) {
             val file = currentHapticFile ?: return
             val pos = mediaPlayer?.currentPosition ?: 0
@@ -277,13 +242,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // ─── Audio file selection ───────────────────────────────────────────────
-
     fun onFileSelected(uri: Uri) {
-        // FFmpegKit runs independently of the coroutine that launched it, so
-        // cancelling only the coroutine is not enough. Invalidate the request,
-        // cancel the native session, and remove its scratch files before a new
-        // conversion starts; an old callback can never promote stale output.
+
         cancelActiveConversion()
         startConversion(uri, conversionGeneration)
     }
@@ -329,18 +289,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }
 
-                // Content-provider queries and the source copy are disk work;
-                // keep them off the main thread so the progress screen remains
-                // responsive even when the picker returns cloud-backed media.
                 val sourceName = withContext(Dispatchers.IO) { getDisplayName(sourceUri, context) }
                 val ext = withContext(Dispatchers.IO) { getFileExtension(sourceUri, context) ?: "audio" }
                 if (generation != conversionGeneration) return@launch
                 pendingSourceName = sourceName
                 _uiState.update { it.copy(selectedSourceName = sourceName, progress = 0.08f) }
 
-                // Source and intermediate files are temporary by design. Only
-                // HapticLibrary.addConverted() promotes a successful result
-                // into filesDir/haptic_library where it survives restarts.
                 inputFile = File(context.cacheDir, "input_${System.currentTimeMillis()}.$ext")
                 activeInputFile = inputFile
                 withContext(Dispatchers.IO) {
@@ -404,8 +358,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             .getExtensionFromMimeType(ctx.contentResolver.getType(uri))
         else MimeTypeMap.getFileExtensionFromUrl(uri.toString())
 
-    // ─── FFmpeg conversion with source-faithful output ──────────────────────
-
     private fun performFFmpegConversion(
         input: File,
         output: File,
@@ -413,20 +365,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         sourceName: String = pendingSourceName,
         generation: Long,
     ) {
-        // The audible branch must stay neutral. loudnorm changes stereo
-        // dynamics and can create the distant/phasey "space" sound that was
-        // reported after conversion. Only the extra third channel is shaped.
-        // The output is explicitly kept as stereo audio + one mono haptic
-        // channel, which is the Android audio-coupled haptics layout.
+
         val graph =
             "[0:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asplit=2[a1][a2];" +
                     "[a1]aresample=44100:resampler=soxr:precision=28,asetpts=N/SR/TB," +
                     "aformat=sample_fmts=fltp:channel_layouts=stereo[a_sync];" +
                     HapticAudioShaping.filterChain(s.sensitivity, s.bassBoost, s.density, "[a2]", "[h]") + ";" +
-                    // join is explicit about the Android order: left, right,
-                    // then the single haptic channel. amerge can infer 2.1
-                    // for a stereo+mono pair, which makes Vorbis write the
-                    // third sample as an LFE channel instead.
+
                     "[a_sync][h]join=inputs=2:channel_layout=3.0:" +
                     "map=0.0-FL|0.1-FR|1.0-FC[out]"
 
@@ -453,12 +398,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             }
                             _uiState.update { it.copy(conversionStage = ConversionStage.OPTIMIZING, progress = 0.88f) }
 
-                            // FFmpeg success is not sufficient: the file must
-                            // still be a real, seekable haptic OGG before it is
-                            // promoted into persistent library storage. In
-                            // particular, an ordinary Vorbis OGG without the
-                            // ANDROID_HAPTIC comment would be a silent haptic
-                            // regression even though its audio plays.
                             val validation = withContext(Dispatchers.IO) {
                                 HapticOggValidator.validate(output)
                             }
@@ -466,25 +405,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                                 throw IllegalStateException("Converted haptic OGG validation failed: ${validation.reason}")
                             }
 
-                            // Analyze the same decoded source that feeds the
-                            // converted OGG. The result is a versioned three-layer
-                            // timeline: bass weight, sustained vocal/melodic flow,
-                            // and percussive impacts. Both offline and BitChord
-                            // use this exact representation after their input
-                            // mechanisms converge on PCM.
                             currentLayerAnalysis = analyzeLayersOrEmpty(input, s.bassBoost, s.density)
                             currentOnsetEvents = currentLayerAnalysis?.events.orEmpty()
-                            // Independent musical-haptic analysis for
-                            // Transient Mode — real spectral features,
-                            // classified events, multi-layer composition.
-                            // Uses its own decode call (same source file,
-                            // same FFmpeg decode parameters) rather than
-                            // sharing MultiLayerAudioAnalyzer's PCM buffer,
-                            // since the two analyzers are intentionally
-                            // fully independent pipelines (see
-                            // TransientAudioAnalyzer's kdoc) and this keeps
-                            // that separation clean; the decode itself is
-                            // fast relative to the FFT-based analysis pass.
+
                             currentTransientAnalysis = analyzeTransientOrEmpty(input, s.bassBoost, s.density)
                             if (generation != conversionGeneration) {
                                 input.delete()
@@ -500,9 +423,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                                     durationMs = durationMs,
                                     artist = artist,
                                 )
-                                // A successful conversion starts playing
-                                // immediately, so it should also become the
-                                // most-recently-felt item in the library.
+
                                 library.markPlayed(saved) ?: saved
                             }
                             if (generation != conversionGeneration) {
@@ -516,9 +437,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                                 withContext(Dispatchers.IO) { analysis.saveTo(song.transientFile) }
                             }
                             if (currentOnsetEvents.isNotEmpty()) {
-                                // Keep the compact legacy sidecar too so older
-                                // builds can still render the beat layer after
-                                // an in-place app update.
+
                                 withContext(Dispatchers.IO) { currentOnsetEvents.saveTo(song.onsetFile) }
                             }
                             input.delete()
@@ -624,9 +543,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
 
-        // Validate the exact persistent artifact before opening it. A missing
-        // or damaged OGG is an error, not permission to regenerate from an
-        // unavailable source or silently substitute primitive clicks.
         viewModelScope.launch {
             val validation = withContext(Dispatchers.IO) {
                 HapticOggValidator.validate(song.file)
@@ -697,12 +613,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /**
-     * Decodes a source to bounded, interleaved PCM and runs the shared
-     * three-layer analyser off the UI thread. Analysis failure never destroys
-     * an otherwise valid audible/haptic OGG conversion; it only disables the
-     * optional transient layer for that item.
-     */
     private suspend fun analyzeLayersOrEmpty(sourceFile: File, bassEmphasis: Float, density: Float): LayeredHapticAnalysis? {
         val context = getApplication<Application>().applicationContext
         val analysisPcm = File(context.cacheDir, "analysis_${System.currentTimeMillis()}.pcm")
@@ -740,17 +650,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /**
-     * Runs the independent Transient Mode musical-haptic analysis pipeline
-     * ([TransientAudioAnalyzer]) against the same source file, using its
-     * own short-lived decode to raw stereo PCM. Kept entirely separate from
-     * [analyzeLayersOrEmpty]/[MultiLayerAudioAnalyzer] (continuous mode's
-     * pipeline) — a failure here never affects the continuous OGG
-     * conversion or its own layer analysis; it only leaves Transient Mode
-     * without a musical event timeline for this track (falls back to no
-     * transient accents, same as Continuous-only tracks converted before
-     * this feature existed).
-     */
     private suspend fun analyzeTransientOrEmpty(sourceFile: File, bassEmphasis: Float, density: Float): TransientAnalysis? {
         val context = getApplication<Application>().applicationContext
         val analysisPcm = File(context.cacheDir, "transient_analysis_${System.currentTimeMillis()}.pcm")
@@ -788,8 +687,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // ─── Playback ───────────────────────────────────────────────────────────
-
     fun playFromFile(path: String, song: HapticSong? = activeLibrarySong) {
         currentPlaybackSource = PlaybackSource.FILE
         currentPlaybackPath = path
@@ -801,11 +698,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         currentOnsetEvents = currentLayerAnalysis?.events
             ?: activeLibrarySong?.let { loadOnsetEvents(it.onsetFile).orEmpty() }
             ?: emptyList()
-        // TransientAnalysis is versioned independently (TransientConfig.
-        // PROCESSING_VERSION, checked inside loadTransientAnalysis) — a
-        // library entry converted before this feature existed, or by an
-        // older Transient algorithm, simply yields null here rather than
-        // being gated by the continuous pipeline's HapticProcessing.VERSION.
+
         currentTransientAnalysis = activeLibrarySong?.let { loadTransientAnalysis(it.transientFile) }
         refreshBluetoothState()
         releaseAllPlayers()
@@ -818,25 +711,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun startStandardPlayback(path: String) {
-        // The converted OGG is the Offline haptic player. Its third channel
-        // carries the continuous signal produced by FFmpeg and is routed by
-        // Android's haptic-aware MediaPlayer path. Layer analysis remains a
-        // sidecar for diagnostics and optional sparse transient accents; it
-        // never replaces this OGG playback.
+
         mediaPlayer = MediaPlayer().apply {
             setAudioAttributes(buildHapticAudioAttributes())
             setDataSource(path)
-            prepare()
+            findBuiltInSpeaker()?.let { speaker ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) setPreferredDevice(speaker)
+            }
+            setVolume(1.0f, 1.0f)
             setOnErrorListener { _, what, extra ->
                 reportPlaybackError("The saved haptic OGG stopped playing (decoder error $what/$extra).")
                 true
             }
             setOnCompletionListener {
+                hapticOnlyPlayer?.let { try { it.pause() } catch (_: Exception) {} }
                 transientRenderer.stop()
                 onPlaybackFinished()
             }
+            prepare()
             start()
         }
+        hapticOnlyPlayer = null
         onPlaybackStarted()
         if (isTransientEngineActive() && _uiState.value.hapticPreviewEnabled) {
             transientRenderer.load(currentTransientAnalysis)
@@ -854,7 +749,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 "(null here means routing will fall back to default and haptics likely won't be heard)"
         )
 
-        // Player 1: full-quality stereo to Bluetooth headphones
         mediaPlayer = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -869,16 +763,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     .build()
             )
             setDataSource(path)
-            // setPreferredDevice before prepare(): several OEM audio HALs
-            // treat the preferred-device hint as informational rather than
-            // binding if it arrives after the track has already been
-            // prepared/routed by default policy, which on this project's
-            // testing device meant this call was silently a no-op — the
-            // previous version called it after prepare() and both players
-            // ended up on whichever device Android picked by default (in
-            // practice, always the Bluetooth device, since that's the
-            // active route), so no haptics were ever actually reaching the
-            // phone's vibrator-adjacent speaker path.
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && btDevice != null) {
                 val routed = setPreferredDevice(btDevice)
                 Log.d(TAG, "Stereo player setPreferredDevice(bt) succeeded=$routed")
@@ -895,9 +780,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-        // Player 2: haptic-carrying playback, explicitly forced onto the
-        // phone's own output (never the Bluetooth device) so its haptic
-        // channel has a chance of reaching the vibrator.
         hapticOnlyPlayer = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -922,17 +804,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 reportPlaybackError("The haptic OGG channel could not play on the phone route (decoder error $what/$extra).")
                 true
             }
-            // A clearly-nonzero, if still quiet, volume — not the earlier
-            // 0.02f. The actual bug here was the missing/late device
-            // routing above; this stays modest so it doesn't add an
-            // audible second copy of the song once routing is fixed, but
-            // isn't so close to zero it risks being treated as "not really
-            // playing" on stricter audio HALs.
+
             val strength = AppSettings.state.value.hapticStrength.coerceIn(0f, 1f)
             setVolume(0.08f * strength, 0.08f * strength)
         }
 
-        // Start both simultaneously with a tiny stagger to help the audio HAL
         mediaPlayer?.start()
         mainHandler.postDelayed({ hapticOnlyPlayer?.start() }, 16)
         onPlaybackStarted()
@@ -961,47 +837,42 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _uiState.update { it.copy(conversionStage = ConversionStage.SUCCESS, errorMessage = null) }
         } catch (e: Exception) {
             Log.e("SoundToHaptics", "Demo unavailable", e)
+
+            val detail = e.message?.takeIf { it.isNotBlank() }
+            reportPlaybackError(
+                if (detail != null) "The demo haptic OGG could not play ($detail)."
+                else "The demo haptic OGG could not play.",
+                e,
+            )
         }
     }
 
     private fun startDemoPlayback(position: Int = 0, autoStart: Boolean = true) {
         val ctx = getApplication<Application>().applicationContext
-        val afd = ctx.assets.openFd("Exported.ogg")
         mediaPlayer = MediaPlayer().apply {
+
             setAudioAttributes(buildHapticAudioAttributes())
+            val afd = ctx.assets.openFd("Exported.ogg")
             setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             afd.close()
-            prepare()
+            setVolume(1.0f, 1.0f)
             setOnErrorListener { _, what, extra ->
                 reportPlaybackError("The demo haptic OGG could not play (decoder error $what/$extra).")
                 true
             }
-            setOnCompletionListener { onPlaybackFinished() }
-            seekTo(position.coerceIn(0, duration.coerceAtLeast(0)))
+            setOnCompletionListener {
+                hapticOnlyPlayer?.let { try { it.pause() } catch (_: Exception) {} }
+                onPlaybackFinished()
+            }
+
+            prepare()
+            if (position > 0) seekTo(position.coerceAtMost(duration))
             if (autoStart) start()
         }
+        hapticOnlyPlayer = null
         onPlaybackStarted(isDemo = true, isPlaying = autoStart)
     }
 
-    /**
-     * Whether the discrete-beat engine should be used for the CURRENT
-     * playback path. Deliberately excludes Bluetooth split playback for
-     * now: that path already juggles two MediaPlayers on two separate
-     * routes to solve the "haptics over BT" problem, and layering a third,
-     * independent vibrator-owning mechanism on top of that without being
-     * able to test it on real BT hardware is a real risk rather than a
-     * validated improvement. Continuous mode remains the only option
-     * whenever a Bluetooth device is connected; this is intentional
-     * scoping, not an oversight.
-     *
-     * Also excludes the demo track: it's a bundled asset with its own
-     * baked-in continuous haptic channel and no corresponding onset data
-     * (layer analysis only ever runs against a real conversion — see
-     * analyzeLayersOrEmpty), so there's nothing for the transient engine to
-     * play there. The demo has no sidecar onset timeline, so starting an empty
-     * transient layer would add no value; its continuous OGG channel remains
-     * enabled.
-     */
     private fun isTransientEngineActive(): Boolean {
         if (_uiState.value.bluetoothDeviceConnected) return false
         if (currentPlaybackSource != PlaybackSource.FILE) return false
@@ -1010,15 +881,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             TransientHapticRenderer.isSupported(ctx)
     }
 
+    private fun buildNeutralAudioAttributes() = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_MEDIA)
+        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        .apply {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                setHapticChannelsMuted(true)
+            }
+        }
+        .build()
+
     private fun buildHapticAudioAttributes() = AudioAttributes.Builder()
         .setUsage(AudioAttributes.USAGE_MEDIA)
         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
         .apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // The continuous OGG channel is never muted for Offline
-                // playback. Transient mode, when explicitly selected, is an
-                // optional sparse accent layer over this signal rather than
-                // a replacement for it.
+
                 setHapticChannelsMuted(!_uiState.value.hapticPreviewEnabled)
             }
         }
@@ -1132,8 +1011,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun updateSensitivity(v: Float) {
-        // One user-facing strength value is shared by the encoded Offline
-        // OGG conversion, optional transient accents, and BitChord capture.
+
         AppSettings.setHapticStrength(v)
         _uiState.update { it.copy(sensitivity = v.coerceIn(0f, 1f)) }
     }

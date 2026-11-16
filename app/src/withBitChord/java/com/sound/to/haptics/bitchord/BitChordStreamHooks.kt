@@ -17,14 +17,6 @@ import com.sound.to.haptics.bitchord.data.innertube.StreamResolver
 import com.sound.to.haptics.bitchord.data.innertube.potoken.PoTokenGenerator
 import com.sound.to.haptics.bitchord.data.innertube.potoken.PoTokenWebView
 
-/**
- * The app's answers to what the ported BitChord stream-resolution layer asks
- * of its platform: a monotonic clock, a log line, the quality ceiling, and
- * InnerTubeX's configuration store + BotGuard PoToken minter.
- *
- * [ensureInstalled] is idempotent and safe to call from both the application
- * (once per process) and the playback service.
- */
 object BitChordStreamHooks {
 
     private const val TAG = "BitChord"
@@ -36,8 +28,7 @@ object BitChordStreamHooks {
         synchronized(this) {
             if (installed) return
             MonotonicClock.nowMs = SystemClock::elapsedRealtime
-            // Logcat on debug builds only; a release build keeps the lines for
-            // the export path (when wired) and writes them nowhere else.
+
             if (BuildConfig.DEBUG) {
                 TrackLog.echo = { level, tag, message, error ->
                     when (level) {
@@ -54,13 +45,12 @@ object BitChordStreamHooks {
         }
     }
 
-    /** What AndroidStreamHooks.initInnerTubeX did, minus the desktop extras. */
     fun initInnerTubeX(context: Context) {
         ensureInstalled(context)
         runCatching {
             val app = context.applicationContext
             val prefs = app.getSharedPreferences("innertubex_player_config", Context.MODE_PRIVATE)
-            // BotGuard PoTokens minted in a hidden WebView; what WEB_REMIX needs for age-restricted tracks.
+
             val webViewSupported by lazy { runCatching { android.webkit.CookieManager.getInstance() }.isSuccess }
             val poTokens = PoTokenGenerator(
                 createMinter = { PoTokenWebView.getNewPoTokenGenerator(app) },

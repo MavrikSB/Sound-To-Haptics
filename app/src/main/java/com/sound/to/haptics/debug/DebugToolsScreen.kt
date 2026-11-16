@@ -104,10 +104,6 @@ import com.sound.to.haptics.ui.theme.Spacing
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToInt
 
-/**
- * The developer debug menu. Only reachable from a `BuildConfig.DEBUG` build
- * — see RootScreen for the gating that keeps this out of release builds.
- */
 @Composable
 fun DebugToolsScreen(viewModel: DebugToolsViewModel = viewModel()) {
     val cs = MaterialTheme.colorScheme
@@ -550,7 +546,7 @@ private fun HapticTestingSection(viewModel: DebugToolsViewModel) {
     Text("Amplitude", color = cs.onSurfaceVariant, style = MaterialTheme.typography.labelLarge)
     RollingNumber(
         value = amplitude,
-        format = { "${it.roundToInt()} / 255" },
+        format = { "${it.roundToInt() / 255}" },
         color = cs.onSurfaceVariant,
         style = MaterialTheme.typography.bodySmall,
     )
@@ -664,7 +660,7 @@ private fun HapticSequencerSection(viewModel: DebugToolsViewModel) {
 
     LabeledSlider("Tempo", "${bpm.roundToInt()} BPM", bpm, 40f..220f) { bpm = it }
     LabeledSlider("Beats", "${beats.roundToInt()} hits", beats, 1f..32f) { beats = it }
-    LabeledSlider("Amplitude", "${amplitude.roundToInt()} / 255", amplitude, 1f..255f) { amplitude = it }
+    LabeledSlider("Amplitude", "${amplitude.roundToInt() / 255}", amplitude, 1f..255f) { amplitude = it }
 
     Row(
         modifier = Modifier.fillMaxWidth().padding(top = Spacing.Xs),
@@ -752,7 +748,7 @@ private fun HapticCalibrationSection(viewModel: DebugToolsViewModel) {
                 }
                 CalibrationStage.RUNNING -> {
                     Text(
-                        "Testing ${calibration.currentAmplitude} / 255 — feel that?",
+                        "Testing ${calibration.currentAmplitude / 255} — feel that?",
                         color = cs.onSurface,
                         fontWeight = FontWeight.Medium,
                         style = MaterialTheme.typography.bodyMedium,
@@ -1077,23 +1073,12 @@ private fun LayerGraph(label: String, values: List<Float>, color: Color) {
     }
 }
 
-/**
- * Developer-only Transient Mode diagnostics section (spec section 30):
- * shows the last analyzed track's BPM/beat-confidence estimate, per-band
- * spectral series with kick/snare/hi-hat onset markers, the resulting
- * haptic intensity envelope, live "what just fired" readout during
- * playback, and a synthetic quality-test harness (spec section 31, Tests
- * A-H) that runs the real analysis+rendering pipeline against known
- * signals so a developer can verify each event type feels distinct on the
- * actual device without needing a specific real track.
- */
 @Composable
 private fun TransientDiagnosticsSection(viewModel: DebugToolsViewModel) {
     val cs = MaterialTheme.colorScheme
     val diag by TransientDiagnostics.state.collectAsState()
     val qualityState by viewModel.qualityTestState.collectAsState()
 
-    // ── Last real analysis summary ──────────────────────────────────────
     if (diag.rms.isEmpty()) {
         Text(
             "Run an Offline conversion in Transient Mode to populate this timeline, or run a synthetic quality test below.",
@@ -1131,7 +1116,6 @@ private fun TransientDiagnosticsSection(viewModel: DebugToolsViewModel) {
         Text("${diag.eventCount} total scheduled events", color = cs.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
     }
 
-    // ── Live "what just fired" readout ──────────────────────────────────
     AnimatedVisibility(
         visible = diag.lastFiredType != null,
         enter = fadeIn(androidx.compose.animation.core.tween(150)),
@@ -1156,7 +1140,6 @@ private fun TransientDiagnosticsSection(viewModel: DebugToolsViewModel) {
         }
     }
 
-    // ── Synthetic quality-test harness (spec section 31) ────────────────
     Spacer(Modifier.height(Spacing.Lg))
     HorizontalDivider(modifier = Modifier.padding(bottom = Spacing.Md), color = cs.onSurface.copy(alpha = 0.08f))
     Text("Quality Tests", color = cs.onSurfaceVariant, style = MaterialTheme.typography.labelLarge)

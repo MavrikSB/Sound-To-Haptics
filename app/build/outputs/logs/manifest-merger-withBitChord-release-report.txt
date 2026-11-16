@@ -1,14 +1,14 @@
 -- Merging decision tree log ---
 provider#androidx.core.content.FileProvider
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:29:9-37:20
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:29:9-37:20
 	android:authorities
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml
 manifest
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:1-40:12
-MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:1-40:12
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-14:12
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-14:12
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-14:12
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:1-40:12
+MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:2:1-5:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:17:1-25:12
 MERGED from [androidx.media3:media3-datasource-okhttp:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\168882f56db3881e0cebd005b2e442fc\transformed\jetified-media3-datasource-okhttp-1.11.0\AndroidManifest.xml:17:1-22:12
@@ -111,50 +111,50 @@ MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\asser\.gradle\
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\43855325fcfe94c410172180d59c7e22\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\34fb2f49755a1c608b01330a357a1cf8\transformed\jetified-ffmpeg-kit-16kb-6.1.1\AndroidManifest.xml:2:1-7:12
 	package
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 	android:versionCode
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.VIBRATE
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:4:5-66
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:4:5-66
 MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:7:5-66
 MERGED from [io.hapticlabs:hapticlabsplayer:0.6.3] C:\Users\asser\.gradle\caches\8.11.1\transforms\0ead96bec4d76ab2bc51b61d93d4cb85\transformed\jetified-hapticlabsplayer-0.6.3\AndroidManifest.xml:7:5-66
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:4:22-63
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:4:22-63
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:5:5-67
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:5:5-67
 MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:8:5-67
 MERGED from [com.squareup.okhttp3:okhttp-android:5.5.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\91b18f41b978e536511d996063e125e0\transformed\jetified-okhttp\AndroidManifest.xml:8:5-67
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:5:22-64
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:5:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:6:5-79
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:6:5-79
 MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:22:5-79
 MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:22:5-79
 MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:22:5-79
 MERGED from [androidx.media3:media3-common:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\b2f2ece72aec168bc58b7b6111b5e222\transformed\jetified-media3-common-1.11.0\AndroidManifest.xml:22:5-79
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:6:22-76
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:6:22-76
 uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:7:5-77
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:7:5-77
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:7:22-74
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:7:22-74
 uses-permission#android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:8:5-92
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:8:5-92
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:8:22-89
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:8:22-89
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:9:5-77
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:9:5-77
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:9:22-74
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:9:22-74
 application
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
-MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
-MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:4:5-13:19
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
+MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
+MERGED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:11:5-38:19
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:4:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.media3:media3-session:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\bc18bca1372527147bb359fd77699eac\transformed\jetified-media3-session-1.11.0\AndroidManifest.xml:22:5-44:19
@@ -176,63 +176,49 @@ MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\asser\.g
 MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:23:5-29:19
 MERGED from [androidx.startup:startup-runtime:1.2.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\90f9ea2b46f276e1d9c8ba530ad4ffdd\transformed\jetified-startup-runtime-1.2.0\AndroidManifest.xml:23:5-29:19
 	android:extractNativeLibs
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\92307b1810903004e7c8a260381f40fd\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:17:9-35
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:17:9-35
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:17:9-35
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:17:9-35
 	android:label
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:15:9-41
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:15:9-41
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:15:9-41
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:15:9-41
 	android:icon
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:14:9-43
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:14:9-43
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:14:9-43
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:14:9-43
 	android:allowBackup
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:13:9-35
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:13:9-35
 	android:theme
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:16:9-48
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:16:9-48
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:16:9-48
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:16:9-48
 	android:enableOnBackInvokedCallback
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:12:9-51
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:12:9-51
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:12:9-51
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:12:9-51
 activity#com.sound.to.haptics.MainActivity
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:19:9-27:20
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:19:9-27:20
 	android:launchMode
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:22:13-44
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:22:13-44
 	android:exported
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:21:13-36
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:21:13-36
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:20:13-41
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:20:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:23:13-26:29
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:23:13-26:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:24:17-69
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:24:25-66
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:25:17-77
+ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:25:27-74
-service#com.sound.to.haptics.bitchord.playback.BitChordPlaybackService
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:5:9-12:19
-	android:exported
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:7:13-36
-	android:foregroundServiceType
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:8:13-58
-	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:6:13-70
-intent-filter#action:name:androidx.media3.session.MediaSessionService
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:9:13-11:29
-action#androidx.media3.session.MediaSessionService
-ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:10:17-86
-	android:name
-		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml:10:25-83
+		ADDED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\main\AndroidManifest.xml:25:27-74
 uses-sdk
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
-INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\6b0700fea4628166d84434e7252b1050\transformed\material-1.12.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:20:5-44
@@ -436,9 +422,9 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\asser\.gradle\cache
 MERGED from [com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\34fb2f49755a1c608b01330a357a1cf8\transformed\jetified-ffmpeg-kit-16kb-6.1.1\AndroidManifest.xml:5:5-44
 MERGED from [com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1] C:\Users\asser\.gradle\caches\8.11.1\transforms\34fb2f49755a1c608b01330a357a1cf8\transformed\jetified-ffmpeg-kit-16kb-6.1.1\AndroidManifest.xml:5:5-44
 	android:targetSdkVersion
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
+		INJECTED from C:\Users\asser\Downloads\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\sound-to-haptics-transient-mode\PRIVATE-SOUND-TO-HAPTICS-BUILDS-arena-01a0a5d3-private-sound-to-haptics-build\app\src\withBitChord\AndroidManifest.xml
 uses-permission#android.permission.WAKE_LOCK
 ADDED from [androidx.media3:media3-exoplayer:1.11.0] C:\Users\asser\.gradle\caches\8.11.1\transforms\a63574c8edd85762519fc308c1af3f81\transformed\jetified-media3-exoplayer-1.11.0\AndroidManifest.xml:23:5-68
 	android:name

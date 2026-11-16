@@ -23,12 +23,6 @@ import com.sound.to.haptics.settings.AppSettings
 import com.sound.to.haptics.ui.motion.PressSpring
 import com.sound.to.haptics.ui.LocalAmbientInteraction
 
-/**
- * Shrinks a composable slightly while pressed and springs back on release —
- * the same tactile signature Pixel apps use on cards, chips, and buttons.
- * Pair with `.clickable(interactionSource = interactionSource, ...)` so the
- * source actually tracks the press.
- */
 @Composable
 fun Modifier.pressScale(
     interactionSource: MutableInteractionSource,
@@ -44,19 +38,10 @@ fun Modifier.pressScale(
     return this.scale(scale)
 }
 
-/** Convenience overload for call sites that don't need to share the interaction source elsewhere. */
 @Composable
 fun Modifier.pressScale(pressedScale: Float = 0.94f): Modifier =
     pressScale(remember { MutableInteractionSource() }, pressedScale)
 
-/**
- * Drop-in replacements for the stock M3 buttons with the same press-scale
- * built in, plus an animated tonal elevation so the container color subtly
- * lifts while pressed — all in one, so call sites keep their simple API.
- * Deliberately skips a synthetic system haptic tick on press (see the note
- * inside PressableFilledTonalButton) since these buttons can be reachable
- * while real audio-driven haptics are playing.
- */
 @Composable
 fun PressableFilledTonalButton(
     onClick: () -> Unit,
@@ -74,10 +59,7 @@ fun PressableFilledTonalButton(
     )
     FilledTonalButton(
         onClick = {
-            // No performHapticFeedback: these buttons are reachable while a
-            // haptic-audio track or a live vibration test is running, and a
-            // system click vibration would steal the motor from it. See the
-            // note on RoundIconBtn in HapticStudioScreen.kt for the full story.
+
             ambientInteraction()
             onClick()
         },

@@ -20,19 +20,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.math.abs
 
-/**
- * Legacy direct-vibrator renderer for old serialized envelope experiments.
- *
- * The active Offline and BitChord playback paths do not instantiate this
- * class: their persisted haptic-enabled OGG is the source of truth and is
- * played through Android's haptic-aware MediaPlayer channel. It remains
- * isolated for compatibility/debug tooling and is intentionally not a
- * fallback when OGG playback fails.
- *
- * If a caller uses this compatibility component directly, it stays in step
- * with the supplied position and only restarts a waveform after meaningful
- * drift rather than on every position update.
- */
 class VibrationEnvelopePlayer(context: Context) {
 
     companion object {
@@ -59,15 +46,12 @@ class VibrationEnvelopePlayer(context: Context) {
     private var anchorRealtimeMs = 0L
     private var isPaused = true
 
-    // Where the currently-running waveform thinks it is, so drift can be measured.
     private var drivenAtPositionMs = -1L
     private var drivenAtRealtimeMs = 0L
     private var drivenStrength = -1f
 
-    /** Loads a serialized pattern and arms the sync loop. */
     fun load(file: File): Boolean = load(loadHapticEnvelope(file))
 
-    /** Loads an in-memory pattern and arms the sync loop. */
     fun load(pattern: HapticEnvelope?): Boolean {
         if (pattern == null || pattern.timingsMs.isEmpty() || pattern.amplitudes.size != pattern.timingsMs.size) return false
         release()
@@ -77,28 +61,6 @@ class VibrationEnvelopePlayer(context: Context) {
         return true
     }
 
-    /**
-     * Feed this whenever you have a fresh position/pause reading.
-     *
-     * Callers like BitChordViewModel call this on every emission from
-     * BitChord's player position flow, which fires far more often
-     * than once a second even during ordinary uninterrupted playback — not
-     * just on real seeks or pause/resume. The previous version restarted
-     * the entire vibration waveform (driveFrom) unconditionally on every
-     * call here, with no drift check at all (that check only existed in
-     * the separate internal ticker below), which tore down and restarted
-     * the pattern many times a second and is exactly what read as "tiny
-     * rapid vibrations that increase in intensity randomly" — each restart
-     * only got to play for a moment before being replaced by the next one,
-     * often jumping to a different point in the dynamic range each time.
-     *
-     * Now this only restarts the waveform when something actually changed
-     * enough to matter: a pause/resume transition, or the reported position
-     * drifting from where the currently-running waveform should be by more
-     * than the same ~400ms tolerance the ticker uses. Routine same-position
-     * updates just refresh the anchor so drift stays measured accurately,
-     * without touching the vibrator at all.
-     */
     fun syncTo(positionMs: Long, paused: Boolean) {
         val pauseStateChanged = paused != isPaused
         anchorPositionMs = positionMs
@@ -123,7 +85,7 @@ class VibrationEnvelopePlayer(context: Context) {
         if (abs(positionMs - impliedByWaveform) > DRIFT_TOLERANCE_MS) {
             driveFrom(positionMs)
         }
-        // else: still tracking closely enough, let the current waveform keep playing.
+
     }
 
     private fun driveFrom(positionMs: Long) {

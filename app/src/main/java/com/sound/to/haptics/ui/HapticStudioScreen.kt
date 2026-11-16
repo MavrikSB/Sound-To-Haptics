@@ -154,11 +154,6 @@ fun HapticStudioScreen(viewModel: MainViewModel) {
         contract = ActivityResultContracts.GetContent()
     ) { uri -> uri?.let { viewModel.onFileSelected(it) } }
 
-    // Reports this screen's playing state to the shared, app-wide signal so
-    // MainActivity can honor Settings → "Keep screen on while playing"
-    // without HapticStudioScreen needing to know anything about window
-    // flags itself. Cleared on leaving the screen so a forgotten "playing"
-    // state can't keep the display awake after navigating away.
     DisposableEffect(uiState.playerState.isPlaying) {
         PlaybackActivity.setPlaying(uiState.playerState.isPlaying)
         onDispose { PlaybackActivity.setPlaying(false) }
@@ -270,8 +265,6 @@ fun HapticStudioScreen(viewModel: MainViewModel) {
     }
 }
 
-// ─── Idle ───────────────────────────────────────────────────────────────────
-
 @Composable
 fun IdleContent(
     songs: List<HapticSong>,
@@ -283,10 +276,7 @@ fun IdleContent(
     btConnected: Boolean,
 ) {
     val cs = MaterialTheme.colorScheme
-    // Structural change from the old design, not just a decoration change:
-    // no card behind the headline at all (it sits directly on the
-    // background), and the page is asymmetric left-to-right instead of
-    // every element being a centered stack of same-shaped rounded boxes.
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -314,9 +304,7 @@ fun IdleContent(
                         lineHeight = MaterialTheme.typography.displayMedium.lineHeight,
                     )
                 }
-                // A single equalizer bar cluster living off to the side,
-                // not centered behind the text — an asymmetric accent
-                // rather than a background texture inside a box.
+
                 MiniEqualizerCluster(modifier = Modifier.padding(top = 10.dp))
             }
         }
@@ -358,11 +346,6 @@ fun IdleContent(
             }
         }
 
-        // Big rounded-square tiles, inset from the screen edges — not a
-        // small centered card like before, but not sharp full-bleed
-        // rectangles either (those read as a rendering bug, not a design
-        // choice, once actually on screen). 28dp corners is Material You's
-        // "large" rounding: enough to feel soft and tappable at this size.
         StaggeredEntrance(2, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.Xl)) {
             CardButton(
                 onClick = onUpload,
@@ -385,9 +368,6 @@ fun IdleContent(
         }
         Spacer(Modifier.height(Spacing.Md))
 
-        // The secondary action is a smaller-radius, flatter tile — different
-        // shape weight (not just a lighter color) is what signals
-        // "secondary" next to the primary tile above.
         StaggeredEntrance(3, modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.Xl)) {
             CardButton(
                 onClick = onDemo,
@@ -448,12 +428,6 @@ fun IdleContent(
     }
 }
 
-/**
- * A small cluster of animated bars — the asymmetric accent that replaces
- * the old full-width WaveformAnim-behind-a-headline treatment. Deliberately
- * compact and off to one side rather than spanning the screen as a
- * background texture.
- */
 @Composable
 private fun MiniEqualizerCluster(modifier: Modifier = Modifier) {
     val cs = MaterialTheme.colorScheme
@@ -485,8 +459,6 @@ private fun MiniEqualizerCluster(modifier: Modifier = Modifier) {
     }
 }
 
-// ─── Player ─────────────────────────────────────────────────────────────────
-
 @Composable
 fun PlayerContent(uiState: UiState, viewModel: MainViewModel) {
     val cs = MaterialTheme.colorScheme
@@ -510,10 +482,7 @@ fun PlayerContent(uiState: UiState, viewModel: MainViewModel) {
                     contentAlignment = Alignment.Center,
                 ) {
                     val size = minOf(maxWidth * 0.72f, 260.dp)
-                    // Ambient halo behind the disc, matching the startup
-                    // screen's glow language — brightens while playing so
-                    // the whole hero area feels "lit up" during playback
-                    // instead of only the disc itself moving.
+
                     val haloAlpha by animateFloatAsState(
                         targetValue = if (uiState.playerState.isPlaying) 0.85f else 0.45f,
                         animationSpec = tween(600, easing = EmphasizedDecelerate),
@@ -609,8 +578,7 @@ fun PlayerContent(uiState: UiState, viewModel: MainViewModel) {
                         RoundIconBtn(onClick = { viewModel.skipBackward() }, size = sideSz, bg = cs.surfaceContainerHigh, fg = cs.onSurface) {
                             AnimatedIcon(Icons.Rounded.Replay10, "Back 10s", modifier = Modifier.size(sideSz * 0.42f))
                         }
-                        // Breathing halo around the play button while playing —
-                        // a quiet, alive pulse that reads as "in motion".
+
                         Box(contentAlignment = Alignment.Center) {
                             if (uiState.playerState.isPlaying) {
                                 val pulse = rememberInfiniteTransition(label = "PlayPulse")
@@ -675,11 +643,7 @@ private fun SpinningArt(discSize: Dp, isPlaying: Boolean) {
         tonalElevation = 3.dp,
     ) {
         Box(contentAlignment = Alignment.Center) {
-            // Record-like surface: a faint label ring plus a soft arc sheen
-            // that slowly sweeps around while playing — the disc visibly
-            // spins without ever tilting the artwork.
-            // Note: the parameter is named `discSize` (not `size`) so that
-            // `size` inside the Canvas lambda resolves to DrawScope.size.
+
             Canvas(modifier = Modifier.fillMaxSize().graphicsLayer { rotationZ = angle * spin }) {
                 val r = minOf(size.width, size.height) / 2f
                 drawCircle(
@@ -697,14 +661,11 @@ private fun SpinningArt(discSize: Dp, isPlaying: Boolean) {
                     style = Stroke(width = size.width * 0.07f),
                 )
             }
-            // The equalizer stays upright and dances — never tilted by the
-            // disc rotation.
+
             EqualizerAnim(modifier = Modifier.fillMaxSize(0.52f), isPlaying = isPlaying)
         }
     }
 }
-
-// ─── Loading ────────────────────────────────────────────────────────────────
 
 private data class StageInfo(val stage: ConversionStage, val label: String)
 
@@ -841,9 +802,7 @@ private fun StageRow(info: StageInfo, currentStage: ConversionStage) {
                     tint = cs.onSurfaceVariant.copy(alpha = 0.35f),
                 )
             }
-            // AnimatedContent (not AnimatedVisibility) on purpose: inside a
-            // Row/Box scope, AnimatedVisibility's RowScope overload creates an
-            // implicit-receiver ambiguity that fails to compile.
+
             AnimatedContent(
                 targetState = active,
                 transitionSpec = {
@@ -871,8 +830,6 @@ private fun StageRow(info: StageInfo, currentStage: ConversionStage) {
         )
     }
 }
-
-// ─── Error ──────────────────────────────────────────────────────────────────
 
 @Composable
 fun ErrorContent(message: String? = null, onRetry: () -> Unit) {
@@ -930,8 +887,6 @@ fun ErrorContent(message: String? = null, onRetry: () -> Unit) {
     }
 }
 
-// ─── Settings ───────────────────────────────────────────────────────────────
-
 @Composable
 fun SettingsSheet(uiState: UiState, viewModel: MainViewModel) {
     val cs = MaterialTheme.colorScheme
@@ -987,8 +942,6 @@ fun SettingsSheet(uiState: UiState, viewModel: MainViewModel) {
     }
 }
 
-// ─── Reusable ───────────────────────────────────────────────────────────────
-
 @Composable
 fun CardButton(onClick: () -> Unit, modifier: Modifier = Modifier, containerColor: Color, content: @Composable () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
@@ -1032,10 +985,7 @@ fun RoundIconBtn(onClick: () -> Unit, size: Dp, bg: Color, fg: Color, content: @
         animationSpec = PressSpring,
         label = "RoundIconScale",
     )
-    // A small resting shadow that flattens on press — the same "lift while
-    // idle, settle while touched" language as PressableCard, so the round
-    // transport buttons read as part of the same design system rather than
-    // a flatter one-off control.
+
     val elevation by animateDpAsState(
         targetValue = if (pressed) 1.dp else 5.dp,
         animationSpec = spring(dampingRatio = Spring.DampingRatioNoBouncy, stiffness = Spring.StiffnessMediumLow),
@@ -1043,14 +993,7 @@ fun RoundIconBtn(onClick: () -> Unit, size: Dp, bg: Color, fg: Color, content: @
     )
     FilledIconButton(
         onClick = {
-            // Deliberately NOT calling performHapticFeedback here: this button
-            // lives in the transport row (skip/play/pause) which is active
-            // exactly when the haptic-coupled OGG channel is driving the
-            // vibrator. A system "click" vibration steals the motor from
-            // that continuous channel and it doesn't reclaim it afterwards,
-            // which read as "haptics stop when I tap skip". The bouncy scale
-            // + ambient glow below already give plenty of tactile/visual
-            // confirmation without touching the vibrator.
+
             ambientInteraction()
             onClick()
         },
@@ -1075,9 +1018,7 @@ fun BouncyIconButton(onClick: () -> Unit, content: @Composable () -> Unit) {
     )
     Surface(
         onClick = {
-            // Same reasoning as RoundIconBtn above — this button backs the
-            // top-bar Settings/Info actions, which the person taps *while*
-            // a track (and its haptics) is playing.
+
             ambientInteraction()
             onClick()
         },
@@ -1189,9 +1130,7 @@ fun EqualizerAnim(modifier: Modifier, isPlaying: Boolean) {
     ) {
         repeat(5) { i ->
             val t = rememberInfiniteTransition(label = "EQ$i")
-            // While playing the bars dance between 20% and full height;
-            // while paused they breathe gently at a clearly visible height
-            // (no more tiny idle dots).
+
             val h by t.animateFloat(
                 initialValue = 0.2f,
                 targetValue = if (isPlaying) 1f else 0.34f,

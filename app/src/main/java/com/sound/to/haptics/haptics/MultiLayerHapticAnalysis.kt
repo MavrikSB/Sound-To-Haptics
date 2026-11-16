@@ -11,19 +11,8 @@ import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-/**
- * Versioned analysis format shared by imported files and BitChord captures.
- *
- * This is deliberately a DSP/hybrid analyser rather than an embedded source
- * separation model. It is cheap enough to run on a mid-range Android device,
- * deterministic offline, and exposes the musical distinctions that matter to
- * the motor: low-frequency weight, sustained centre/mid movement, and sharp
- * percussive change. A neural stem model would add a large model, latency and
- * thermal cost without guaranteeing a better physical result on every phone.
- */
 object HapticProcessing {
-    // Bump when the encoded haptic OGG contract changes so stale files are
-    // never silently played with a profile produced by an older DSP pipeline.
+
     const val VERSION = 3
     const val FRAME_MS = 20L
     const val MAX_WAVEFORM_STEPS = 6_000
@@ -52,10 +41,7 @@ data class LayeredHapticAnalysis(
     val events: List<OnsetEvent>,
 ) {
     fun toEnvelope(): HapticEnvelope {
-        // Android waveform arrays are not unlimited. Coarsen only very long
-        // tracks so a ten-minute capture does not fail with an OEM-specific
-        // "too many vibration steps" exception; ordinary tracks retain the
-        // full 20 ms analysis resolution.
+
         val groupSize = ((frames.size + HapticProcessing.MAX_WAVEFORM_STEPS - 1) /
             HapticProcessing.MAX_WAVEFORM_STEPS).coerceAtLeast(1)
         val outputSize = (frames.size + groupSize - 1) / groupSize
@@ -95,7 +81,6 @@ data class LayeredHapticAnalysis(
     val percussionPeak: Float get() = frames.maxOfOrNull { it.percussion } ?: 0f
 }
 
-/** A compact, UI-safe snapshot for the developer visualizer. */
 data class AnalysisDiagnosticsState(
     val raw: List<Float> = emptyList(),
     val bass: List<Float> = emptyList(),
@@ -131,20 +116,6 @@ object AnalysisDiagnostics {
     }
 }
 
-/**
- * Three intentionally independent musical proxies:
- *
- *  - bass: a low-pass state around 150 Hz, retaining body and kick weight;
- *  - vocalFlow: persistent centre/mid energy, smoothed with attack/release so
- *    it describes movement rather than firing a thud for every syllable;
- *  - percussion: high-band energy plus positive short-term flux, with a
- *    refractory period so cymbals and dense mixes cannot overwhelm the motor.
- *
- * It is not claiming to identify a vocal stem perfectly. In a stereo mix,
- * vocal/melodic content is an informed, stable midrange/centre proxy rather
- * than "everything that is not bass". The result is more useful for haptics
- * and much more predictable on-device than pretending a band-pass is a stem.
- */
 object MultiLayerAudioAnalyzer {
     private const val MIN_BYTES = 4096L
     private const val MAX_FRAMES = 1_500_000
@@ -243,9 +214,7 @@ object MultiLayerAudioAnalyzer {
             val frame = raw[i]
             bass[i] = (normalise(frame.bass, bassScale) * (0.8f + bassEmphasis.coerceIn(0f, 1f) * 0.4f)).coerceIn(0f, 1f)
             val mid = normalise(frame.vocal, vocalScale)
-            // A held mid/centre envelope is the melodic/vocal proxy. It is
-            // intentionally quieter around the sharpest attacks so consonants
-            // and cymbals remain articulation, not a second bass hit.
+
             flowState = if (mid > flowState) flowState * 0.58f + mid * 0.42f else flowState * 0.88f + mid * 0.12f
             flow[i] = (flowState * (0.78f + (1f - normalise(frame.high, highScale)) * 0.22f)).coerceIn(0f, 1f)
             val flux = normalise(frame.flux, fluxScale)

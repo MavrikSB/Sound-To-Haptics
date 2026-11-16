@@ -4,12 +4,6 @@ import java.io.BufferedInputStream
 import java.io.File
 import kotlin.math.sqrt
 
-/**
- * Cheap validation for raw little-endian PCM before it is handed to FFmpeg.
- * A non-empty file is not necessarily usable: a projection can return a
- * stream of zeros, a recorder can stop on a partial sample, and a short
- * startup blip should never become a full-track cache entry.
- */
 data class PcmValidationResult(
     val valid: Boolean,
     val reason: String,

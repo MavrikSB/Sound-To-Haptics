@@ -4,24 +4,6 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 
-/**
- * A single detected beat/transient, with strength already normalized to
- * 0..1. This remains the Continuous-mode pipeline's onset representation
- * ([MultiLayerAudioAnalyzer]'s `events` list, persisted as the legacy
- * `.onsets` sidecar and folded into [LayeredHapticAnalysis.toEnvelope]'s
- * continuous waveform). It has nothing to do with Transient Mode anymore —
- * see [TransientEvent] for that pipeline's much richer, classified event
- * representation.
- *
- * Historical note: this file used to also contain `BeatOnsetDetector`, a
- * single-band energy-flux onset detector that was never actually wired
- * into any live playback path in this project (confirmed by exhaustive
- * search — nothing called `BeatOnsetDetector.detect(...)` anywhere). It has
- * been removed as obsolete/dead code rather than kept around as unused
- * scaffolding; the real, actively-used onset detection for Continuous mode
- * lives in [MultiLayerAudioAnalyzer], and Transient Mode now has its own
- * dedicated, much more capable detector in [TransientOnsetDetector].
- */
 data class OnsetEvent(
     val timestampMs: Long,
     val strength: Float,

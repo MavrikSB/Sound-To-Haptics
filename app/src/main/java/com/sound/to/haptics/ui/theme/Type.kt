@@ -6,12 +6,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-/**
- * Full Material 3 type scale, tuned for the density and hierarchy Google's
- * Pixel apps use: restrained weights (regular body, medium labels, bold
- * headlines where it matters) with generous line heights so every screen
- * breathes without ever feeling oversized.
- */
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = FontFamily.SansSerif,

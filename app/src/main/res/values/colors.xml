@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Material 3 light surface tone, matches the fallback light scheme. -->
+
     <color name="splash_background">#FFFBFE</color>
 </resources>

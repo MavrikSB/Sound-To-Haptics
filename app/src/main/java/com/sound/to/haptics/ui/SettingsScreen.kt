@@ -75,12 +75,6 @@ import com.sound.to.haptics.ui.motion.PressSpring
 import com.sound.to.haptics.ui.theme.Spacing
 import android.os.Build
 
-/**
- * App-wide, user-facing settings — theme, background, motion, haptics, and a
- * couple of housekeeping actions. Reads and writes straight through
- * [AppSettings], which is what actually drives MainActivity's theme and
- * RootScreen's background choice; nothing here is a debug-only toggle.
- */
 @Composable
 fun SettingsScreen(
     onClearHapticCache: () -> Unit,
@@ -132,7 +126,7 @@ fun SettingsScreen(
                             ToggleSettingRow(
                                 icon = Icons.Rounded.Contrast,
                                 label = "Dynamic color",
-                                description = "Match colors to your wallpaper (Android 12+)",
+                                description = "Makes the interface look prettier (atleast in my opinion). Requires Android 12 or up.",
                                 checked = settings.dynamicColor,
                                 onCheckedChange = AppSettings::setDynamicColor,
                             )
@@ -373,12 +367,6 @@ private fun SettingsSectionCard(title: String, icon: ImageVector, content: @Comp
     }
 }
 
-/**
- * A pill-shaped segmented control — the Material You way to pick one of a
- * small closed set of options (theme mode, background style) without the
- * visual weight of a full dialog or dropdown. The selected segment slides
- * into place with a spring rather than popping.
- */
 @Composable
 private fun <T> SegmentedSelector(
     options: List<T>,

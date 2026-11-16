@@ -6,20 +6,17 @@ package com.sound.to.haptics.bitchord
 // See THIRD_PARTY_LICENSES.txt.
 
 import android.app.Application
-import android.content.ComponentName
-import android.net.Uri
-import android.os.Bundle
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.os.Build
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.C
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.session.MediaController
-import androidx.media3.session.SessionToken
 import com.sound.to.haptics.bitchord.auth.AuthStore
 import com.sound.to.haptics.bitchord.auth.CapturedSession
 import com.sound.to.haptics.bitchord.auth.GoogleAccountSession
@@ -36,9 +33,6 @@ import com.sound.to.haptics.bitchord.data.model.SearchResult
 import com.sound.to.haptics.bitchord.data.model.Song
 import com.sound.to.haptics.bitchord.data.model.UserPlaylist
 import com.sound.to.haptics.bitchord.data.model.durationMillis
-import com.sound.to.haptics.bitchord.playback.BitChordLocalPlayer
-import com.sound.to.haptics.bitchord.playback.BitChordPlaybackService
-import com.sound.to.haptics.bitchord.playback.BitChordResolverDataSourceFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
@@ -47,12 +41,8 @@ import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
-import com.sound.to.haptics.haptics.CaptureDiagnostics
-import com.sound.to.haptics.haptics.CaptureDiagnosticsState
-import com.sound.to.haptics.haptics.HapticCaptureConverter
-import com.sound.to.haptics.haptics.HapticOggSyncPlayer
-import com.sound.to.haptics.haptics.HapticPcmTap
-import com.sound.to.haptics.haptics.MultiLayerAudioAnalyzer
+import com.sound.to.haptics.haptics.HapticAudioShaping
+import com.sound.to.haptics.haptics.HapticOggValidator
 import com.sound.to.haptics.haptics.TrackHapticCache
 import com.sound.to.haptics.haptics.TransientAudioAnalyzer
 import com.sound.to.haptics.haptics.TransientHapticRenderer
@@ -79,20 +69,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 private const val TAG = "BitChord"
-private const val SEEK_JUMP_TOLERANCE_MS = 750L
-/** Any backward movement beyond the player's own reporting noise abandons a capture. */
-private const val CAPTURE_BACKWARD_TOLERANCE_MS = 50L
-/** One bounded range per request when downloading audio (googlevideo paces an
- *  unbounded response down to playback speed). */
+
 private const val DOWNLOAD_CHUNK_BYTES = 1L * 1024 * 1024
-/** Hard ceiling for the whole resolve→download→decode→analyze→encode pipeline.
- *  Past it, playback falls back to the capture-armed stream instead of
- *  sitting on "Analyzing audio" forever. */
+
 private const val CONVERT_TIMEOUT_MS = 120_000L
 
 enum class BrowseStatus { IDLE, LOADING }
 
-/** Haptic-engine state for a track, mirroring Offline mode's pipeline states. */
 enum class HapticMode {
     IDLE,
     CAPTURING,
@@ -109,13 +92,6 @@ data class TrackHapticUiState(
     val lastError: String? = null,
 )
 
-/**
- * The "tap a track" conversion surface, modeled on Offline mode's
- * Solving → Analyzing → Building haptic track → Finishing states.
- * Loading audio off the wire happens first; the FFmpeg pass is the same
- * one Offline runs; the output is cached, so repeat plays skip straight
- * into SYNCED playback from the first second.
- */
 enum class ConvertStage { DOWNLOADING, ANALYZING, BUILDING }
 
 data class ConvertState(
@@ -136,7 +112,6 @@ data class BitChordSongItem(
     val durationMs: Long,
 )
 
-/** One tile on a Home/Discovery shelf — a track, playlist, album or artist. */
 data class HomeTileItem(
     val key: String,
     val title: String,
@@ -146,7 +121,6 @@ data class HomeTileItem(
     val browseId: String?,
 )
 
-/** A shelf of the YouTube Music home feed, parsed for this screen. */
 data class HomeShelfItem(
     val title: String,
     val subtitle: String,
@@ -189,11 +163,11 @@ data class BitChordConnectionState(
     val signingIn: Boolean = false,
     val accountName: String? = null,
     val error: String? = null,
-    val currentItem: BitChordSongItem? = null,
     val isPlaying: Boolean = false,
-    val isBuffering: Boolean = false,
+    val currentItem: BitChordSongItem? = null,
     val positionMs: Long = 0L,
     val durationMs: Long = 0L,
+    val isBuffering: Boolean = false,
 )
 
 data class BitChordScreenState(
@@ -223,6 +197,8 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
     private val appContext = application.applicationContext
     private val cache = TrackHapticCache(appContext)
     private val authStore = AuthStore(appContext)
+    private val audioManager = appContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     private val _connection = MutableStateFlow(BitChordConnectionState())
     private val _haptics = MutableStateFlow(
@@ -230,80 +206,44 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
     )
     private val _browse = MutableStateFlow(BitChordBrowseState())
 
-    private val _captureLevel = MutableStateFlow(0f)
-    /** Kept separate from [uiState] so the VU meter doesn't recompose the whole screen. */
-    val captureLevel: StateFlow<Float> = _captureLevel.asStateFlow()
-    val captureDiagnostics: StateFlow<CaptureDiagnosticsState> = CaptureDiagnostics.state
-
-    private val syncEngine = HapticOggSyncPlayer(appContext) { message ->
-        _haptics.update { it.copy(mode = HapticMode.PLAYBACK_FAILED, lastError = message) }
-    }
     private val transientRenderer by lazy { TransientHapticRenderer(appContext) }
 
     private var libraryJob: Job? = null
-    private var homeJob: Job? = null
     private var searchJob: Job? = null
     private var suggestionJob: Job? = null
     private var collectionJob: Job? = null
     private var progressJob: Job? = null
     private var convertJob: Job? = null
-    /** True when the running conversion was aborted by an explicit user action
-     *  (the "cancel conversion" button) as opposed to the timeout or a wedged
-     *  encoder — used to tell a deliberate stop apart from a dead backstop. */
-    private var convertAbortedByUser = false
-    /** Plays cached haptic OGGs through a MediaPlayer haptic path instead of
-     *  ExoPlayer — bitchord's haptics are perfectly aligned with the audible
-     *  track by construction on speaker output. */
-    private var localPlayer: BitChordLocalPlayer? = null
 
-    /** The tap-time "converting" surface — cleared before playback starts or when it falls back. */
+    private var convertAbortedByUser = false
+
     private val _convert = MutableStateFlow(ConvertState())
     val convertState: StateFlow<ConvertState> = _convert.asStateFlow()
 
     private var activeVideoId: String? = null
+    private var activeIndex: Int = -1
+    private var currentItem: BitChordSongItem? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var hapticOnlyPlayer: MediaPlayer? = null
     private var lastRequestedItem: BitChordSongItem? = null
-    private var pauseAnchorPositionMs: Long? = null
-    private var lastPollPositionMs: Long? = null
 
     val uiState: StateFlow<BitChordScreenState> =
         combine(_connection, _haptics, _browse) { connection, haptics, browse ->
             BitChordScreenState(connection, haptics, browse)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), BitChordScreenState())
 
-    private val controllerFuture = MediaController.Builder(
-        appContext,
-        SessionToken(appContext, ComponentName(appContext, BitChordPlaybackService::class.java)),
-    ).setApplicationLooper(Looper.getMainLooper()).buildAsync()
-
-    @Volatile
-    private var controller: MediaController? = null
-
     init {
         BitChordStreamHooks.initInnerTubeX(appContext)
         restoreSession()
+        _connection.update { it.copy(isControllerConnected = true) }
 
         viewModelScope.launch {
             AppSettings.state.map { it.hapticStrength }.distinctUntilChanged().collect { strength ->
                 _haptics.update { it.copy(sensitivity = strength) }
             }
         }
-
-        viewModelScope.launch {
-            val built = runCatching { awaitListenerFuture(controllerFuture) }.getOrElse { error ->
-                Log.e(TAG, "controller failed to build", error)
-                _connection.update { it.copy(error = "The music player couldn't start. ${error.message}") }
-                return@launch
-            }
-            controller = built
-            _connection.update { it.copy(isControllerConnected = true) }
-            wirePlayerListener(built)
-            startPositionLoop()
-        }
     }
 
-    // ─── Auth ────────────────────────────────────────────────────────────────
-
-    /** True when the stored session is present and shaped like a signed-in one. */
     fun isSignedIn(): Boolean = authStore.isSignedIn
 
     fun beginLogin() {
@@ -314,7 +254,6 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         _connection.update { it.copy(signingIn = false) }
     }
 
-    /** Called by the sign-in WebView relay after a page confirmed itself signed in. */
     fun onSessionCaptured(session: CapturedSession) {
         viewModelScope.launch {
             _connection.update { it.copy(signingIn = true, error = null) }
@@ -402,8 +341,7 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun signOut() {
-        stopControllerPlayback()
-        stopHaptics()
+        stopAll()
         authStore.signOut()
         Innertube.cookie = null
         Innertube.selectChannel(null, null, null)
@@ -431,16 +369,13 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    /** Lets the UI retry failed library/home fetches. */
     fun retryLibrary() {
         if (!isSignedIn()) return
         loadLibrary()
-        loadHome()
     }
 
     private fun restoreSession() {
-        // A corrupted keystore or prefs payload must not take the app down at
-        // launch — fall back to signed-out rather than crash.
+
         val session = runCatching {
             authStore.activeSession?.takeIf { authStore.isSignedIn }
         }.getOrElse { e ->
@@ -461,14 +396,11 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         )
         _connection.update { it.copy(isSignedIn = true, accountName = activeProfile?.name) }
         loadLibrary()
-        loadHome()
     }
 
-    /** Clears a dead session and asks the user to sign in again. */
     private fun handleExpiredSession() {
         Log.w(TAG, "session rejected by YouTube Music; clearing it")
-        stopControllerPlayback()
-        stopHaptics()
+        stopAll()
         authStore.signOut()
         Innertube.cookie = null
         Innertube.selectChannel(null, null, null)
@@ -483,15 +415,6 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         _browse.update { BitChordBrowseState() }
     }
 
-    // ─── Browse / search ─────────────────────────────────────────────────────
-
-    // ─── Home / discovery ─────────────────────────────────────────────────────
-
-    /**
-     * Maps a transport/service failure to honest copy. Never invents detail:
-     * everything not recognized falls back to a connection message we can
-     * stand behind.
-     */
     private fun serviceStatusCopy(raw: String?, fallback: String): String {
         val r = raw.orEmpty()
         return when {
@@ -508,50 +431,6 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    private fun loadHome() {
-        homeJob?.cancel()
-        _browse.update { it.copy(homeLoading = true, homeError = null) }
-        homeJob = viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) { YtMusicRepository.home() }
-            val feed = result.getOrNull()
-            val rawError = result.exceptionOrNull()?.message
-            val shelves = feed?.shelves.orEmpty()
-                .filter { it.layout != com.sound.to.haptics.bitchord.data.model.ShelfLayout.VIDEO }
-                .mapNotNull { shelf ->
-                    val items = shelf.items
-                        .filter { it.videoId != null || it.browseId != null }
-                        .take(12)
-                        .map { item ->
-                            HomeTileItem(
-                                key = item.videoId ?: "browse:${item.browseId}:${item.title}",
-                                title = item.title,
-                                subtitle = item.subtitle,
-                                thumbnailUrl = item.thumbnailUrl,
-                                videoId = item.videoId,
-                                browseId = item.browseId,
-                            )
-                        }
-                    if (items.isEmpty()) null
-                    else HomeShelfItem(shelf.title, shelf.subtitle, items)
-                }
-                .take(3)
-            _browse.update {
-                it.copy(
-                    homeShelves = shelves,
-                    homeLoading = false,
-                    // Empty home can mean "nothing recommended right now" just as
-                    // well as "request failed" — surface the difference honestly.
-                    homeError = if (shelves.isEmpty()) {
-                        serviceStatusCopy(rawError, "Discovery couldn't load — try again.")
-                    } else {
-                        null
-                    },
-                )
-            }
-        }
-    }
-
-    /** A Home tile either plays (tracks) or opens its collection (playlists/albums). */
     fun openHomeTile(item: HomeTileItem) {
         if (item.videoId != null) {
             playTrack(
@@ -585,9 +464,7 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         libraryJob = viewModelScope.launch {
             val libraryResult = withContext(Dispatchers.IO) { YtMusicRepository.library() }
             if (libraryResult.isFailure) {
-                // A 401/403 survives the repository's single refresh-and-retry too
-                // often to be transient. Confirm the session is really dead
-                // before clearing it — one extra request, off the UI thread.
+
                 val account = withContext(Dispatchers.IO) { YtMusicRepository.account() }
                 if (account.isFailure && isSignedIn()) {
                     handleExpiredSession()
@@ -674,8 +551,7 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
                     searchResults = tracks,
                     status = BrowseStatus.IDLE,
                     error = when {
-                        // "Failed" and "no results" are different states — the
-                        // failure deserves honest copy and a working retry.
+
                         thrown != null ->
                             serviceStatusCopy(thrown.message, "Search failed — try again.")
                         tracks.isEmpty() -> "No tracks found for \"$query\"."
@@ -727,36 +603,12 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         _browse.update { it.copy(selectedCollection = null, collectionTracks = emptyList(), collectionLoading = false) }
     }
 
-    // ─── Playback ────────────────────────────────────────────────────────────
-
-    private fun toMediaItem(item: BitChordSongItem): MediaItem {
-        val localAudio = cache.audioFileFor(item.videoId).takeIf { cache.audioExists(item.videoId) }
-        val hapticOgg = cache.fileFor(item.videoId).takeIf { cache.exists(item.videoId) }
-        // Prefer the haptic OGG as the track itself when it's cached — one
-        // pipeline, one clock, haptics aligned by construction (like Offline).
-        val localSource = hapticOgg ?: localAudio
-        return MediaItem.Builder()
-            .setMediaId(item.videoId)
-            .setUri(localSource?.let { Uri.fromFile(it) } ?: BitChordResolverDataSourceFactory.watchUri(item.videoId))
-            .setMediaMetadata(
-                MediaMetadata.Builder()
-                    .setTitle(item.title)
-                    .setArtist(item.artist)
-                    .setArtworkUri(item.thumbnailUrl?.let { Uri.parse(it) })
-                    .setExtras(Bundle().apply { putLong(DURATION_EXTRA, item.durationMs) })
-                    .build()
-            )
-            .build()
-    }
-
-    /** Plays [item] from a browse list; the rest of the visible list follows it. */
     fun playTrack(item: BitChordSongItem) {
         val queue = _browse.value.visibleTracks
         val startIndex = queue.indexOfFirst { it.videoId == item.videoId }.coerceAtLeast(0)
         playQueue(queue.ifEmpty { listOf(item) }, startIndex)
     }
 
-    /** Plays a collection's track list from [item]'s position. */
     fun playCollectionTrack(item: BitChordSongItem) {
         val queue = _browse.value.collectionTracks
         val startIndex = queue.indexOfFirst { it.videoId == item.videoId }.coerceAtLeast(0)
@@ -766,17 +618,12 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
     private fun playQueue(items: List<BitChordSongItem>, startIndex: Int) {
         val start = items.getOrNull(startIndex) ?: items.firstOrNull() ?: return
         val videoId = start.videoId
-        // Tapping the track that is already playing must never re-run the
-        // conversion — the caller opens the now-playing surface instead.
-        if (activeVideoId != null && activeVideoId == videoId && controller?.currentMediaItem != null) {
+
+        if (activeVideoId != null && activeVideoId == videoId && mediaPlayer != null) {
             return
         }
         if (!videoId.isNullOrBlank() && !cache.exists(videoId)) {
-            // First tap goes through the full Offline pipeline: resolve the
-            // best downloadable rendition, decode to raw PCM, shape it with
-            // the same FFmpeg graph Offline runs, cache the haptic OGG — and
-            // only then start playback, so haptics are live from second 0
-            // instead of after a capture pass.
+
             beginConvertThenPlay(start, items, startIndex)
             return
         }
@@ -784,101 +631,146 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun startPlayback(items: List<BitChordSongItem>, startIndex: Int) {
-        val start = items.getOrNull(startIndex) ?: items.firstOrNull() ?: return
-        // Cached haptic OGG ⇒ play it as the one and only media pipeline
-        // (offline-mode style): haptics are aligned by construction.
-        val localOgg = cache.fileFor(start.videoId).takeIf { cache.exists(start.videoId) }
-        if (localOgg != null) {
-            localPlayer?.release()
-            localPlayer = null
-            controller?.let { c -> c.pause(); c.clearMediaItems() }
-            val app = getApplication<Application>()
-            val player = BitChordLocalPlayer(
-                context = app,
-                onCompletion = { viewModelScope.launch { onLocalTrackCompleted() } },
-                onError = { message ->
-                    Log.e(TAG, "local player failed for ${start.videoId}: $message")
-                    viewModelScope.launch { fallbackLocalError(message, items, startIndex) }
-                },
-            )
-            if (startLocalPlayback(start, items, startIndex, localOgg, player)) return
-        }
-        startControllerPlayback(items, startIndex)
-    }
+        val start = items.getOrNull(startIndex) ?: return
+        val ogg = cache.fileFor(start.videoId)
+        if (!ogg.exists() || ogg.length() == 0L) {
 
-    /** Runs the local (MediaPlayer haptic path) pipeline for the cached OGG. */
-    private fun startLocalPlayback(
-        start: BitChordSongItem,
-        items: List<BitChordSongItem>,
-        startIndex: Int,
-        ogg: File,
-        player: BitChordLocalPlayer,
-    ): Boolean {
-        syncEngine.stop() // haptics ride the same player now
-        localPlayer = player
+            _connection.update { it.copy(error = "The cached haptic track is missing. Try again to rebuild it.") }
+            return
+        }
         _browse.update { it.copy(activeVideoId = start.videoId, queue = items, queueVisible = false) }
+        activeVideoId = start.videoId
+        activeIndex = startIndex
+        currentItem = start
         lastRequestedItem = start
-        lastPollPositionMs = 0L
-        _connection.update {
-            it.copy(currentItem = start, positionMs = 0L, durationMs = start.durationMs, isPlaying = true, isBuffering = false, error = null)
-        }
-        if (!player.load(ogg, 0L)) {
-            Log.w(TAG, "local player rejected cached OGG for ${start.videoId}; falling back to stream")
-            localPlayer = null
-            return false
-        }
-        beginHapticsFor(start.videoId, 0L)
-        return true
+        releasePlayers()
+        playOggFile(ogg)
     }
 
-    /** Local-player failure landing on the ExoPlayer streaming path — audio-only, never stuck. */
-    private fun fallbackLocalError(message: String, items: List<BitChordSongItem>, startIndex: Int) {
-        stopLocalPlayback()
-        _connection.update {
-            it.copy(error = "Haptics failed to load ($message). Playing without them.")
-        }
-        startControllerPlayback(items, startIndex)
-    }
+    private fun playOggFile(ogg: File) {
+        val ctx = getApplication<Application>().applicationContext
+        val btDevice = bluetoothDevice()
+        val useBluetoothSplit = btDevice != null
 
-    private fun stopLocalPlayback() {
-        localPlayer?.release()
-        localPlayer = null
-    }
+        mediaPlayer = MediaPlayer().apply {
+            if (useBluetoothSplit) {
 
-    /** Advance queue on local-track completion — same rules as the ExoPlayer auto-advance. */
-    private fun onLocalTrackCompleted() {
-        val queue = _browse.value.queue
-        val index = queue.indexOfFirst { it.videoId == activeVideoId }
-        if (index < 0) return
-        if (controller?.repeatMode == Player.REPEAT_MODE_ONE) {
-            startPlayback(queue, index)
-            return
+                setAudioAttributes(buildNeutralAudioAttributes(bluetooth = true))
+                setDataSource(ogg.absolutePath)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    setPreferredDevice(btDevice)
+                }
+                setVolume(1.0f, 1.0f)
+            } else {
+
+                setAudioAttributes(buildHapticAudioAttributes())
+                setDataSource(ogg.absolutePath)
+                findBuiltInSpeaker()?.let { speaker ->
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) setPreferredDevice(speaker)
+                }
+                setVolume(1.0f, 1.0f)
+            }
+            setOnErrorListener { _, what, extra ->
+                _connection.update {
+                    it.copy(
+                        error = "The haptic track stopped playing (decoder error $what/$extra).",
+                        isPlaying = false,
+                    )
+                }
+                releasePlayers()
+                true
+            }
+            setOnCompletionListener { onPlaybackCompleted() }
+            prepare()
+            start()
         }
-        val nextIndex = index + 1
-        if (nextIndex >= queue.size) {
-            onPlaybackEnded()
-            return
-        }
-        val next = queue[nextIndex]
-        if (cache.exists(next.videoId)) {
-            startPlayback(queue, nextIndex)
+        if (useBluetoothSplit) {
+
+            hapticOnlyPlayer = MediaPlayer().apply {
+                setAudioAttributes(buildHapticAudioAttributes())
+                setDataSource(ogg.absolutePath)
+                findBuiltInSpeaker()?.let { speaker ->
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) setPreferredDevice(speaker)
+                }
+                val strength = AppSettings.state.value.hapticStrength.coerceIn(0f, 1f)
+                setVolume(0.08f * strength, 0.08f * strength)
+                setOnErrorListener { _, what, extra ->
+                    Log.e(TAG, "BitChord haptic leg failed (decoder error $what/$extra)")
+                    true
+                }
+                prepare()
+                start()
+            }
         } else {
-            beginConvertThenPlay(next, queue, nextIndex)
+            hapticOnlyPlayer = null
         }
+        val item = currentItem
+        val duration = mediaPlayer?.duration?.takeIf { it > 0 }?.toLong() ?: item?.durationMs ?: 0L
+        _connection.update {
+            it.copy(
+                isPlaying = true,
+                isBuffering = false,
+                currentItem = item,
+                positionMs = 0L,
+                durationMs = duration,
+            )
+        }
+        _haptics.update { it.copy(mode = HapticMode.SYNCED, lastError = null) }
+        if (isTransientEngineActive() && activeVideoId != null) {
+            loadTransientFor(activeVideoId!!)
+        }
+        startProgressTracker()
     }
 
-    private fun startControllerPlayback(items: List<BitChordSongItem>, startIndex: Int) {
-        val c = controller ?: return
-        val start = items.getOrNull(startIndex) ?: items.firstOrNull() ?: return
-        stopLocalPlayback()
-        _browse.update { it.copy(activeVideoId = start.videoId, queue = items, queueVisible = false) }
-        lastRequestedItem = start
-        c.setMediaItems(items.map(::toMediaItem), startIndex, C.TIME_UNSET)
-        c.prepare()
-        c.play()
+    private fun buildNeutralAudioAttributes(bluetooth: Boolean = false) = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_MEDIA)
+        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        .apply {
+            if (bluetooth) {
+                setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                setHapticChannelsMuted(true)
+            }
+        }
+        .build()
+
+    private fun bluetoothDevice(): AudioDeviceInfo? =
+        audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).firstOrNull {
+            it.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
+                it.type == AudioDeviceInfo.TYPE_BLE_HEADSET ||
+                it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO
+        }
+
+    private fun buildHapticAudioAttributes() = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_MEDIA)
+        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        .apply {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                setHapticChannelsMuted(false)
+            }
+        }
+        .build()
+
+    private fun findBuiltInSpeaker(): AudioDeviceInfo? =
+        audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).firstOrNull {
+            it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER ||
+                it.type == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
+                it.type == AudioDeviceInfo.TYPE_WIRED_HEADSET
+        }
+
+    private fun releasePlayers() {
+        progressJob?.cancel()
+        mainHandler.removeCallbacksAndMessages(null)
+        transientRenderer.stop()
+        try { mediaPlayer?.release() } catch (_: Exception) {}
+        mediaPlayer = null
+        try { hapticOnlyPlayer?.release() } catch (_: Exception) {}
+        hapticOnlyPlayer = null
     }
 
-    /** Cancels an in-flight first-tap conversion and clears the converting surface. */
     fun cancelConvert() {
         convertAbortedByUser = true
         convertJob?.cancel()
@@ -896,32 +788,36 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
                 withTimeout(CONVERT_TIMEOUT_MS) {
                     convertThenPlay(head, items, startIndex, app, videoId)
                 }
-                // Conversion completed (haptic OGG cached or the encode failed) —
-                // either way it is safe to start playback.
+
                 _convert.value = ConvertState()
+                if (!cache.exists(videoId)) {
+                    reportUnplayable("This track couldn't be prepared for playback. Check your connection and tap retry.")
+                    return@launch
+                }
                 startPlayback(items, startIndex)
             } catch (e: CancellationException) {
                 if (convertAbortedByUser) {
-                    // Deliberate user abort — the surface was already cleared.
+
                     convertAbortedByUser = false
                     return@launch
                 }
-                // Timeout, or the encoder never returned: degrade to the
-                // capture-armed stream instead of leaving "Generating haptic track"
-                // up forever. Haptics catch up during the first play.
-                Log.w(TAG, "conversion ended without producing haptics for $videoId (${e.javaClass.simpleName}); falling back to capture-armed stream")
+                Log.w(TAG, "conversion failed for $videoId (${e.javaClass.simpleName})", e)
                 _convert.value = ConvertState()
-                startPlayback(items, startIndex)
+                reportUnplayable("This track couldn't be prepared — it timed out or the network dropped. Tap retry.")
             } catch (e: Exception) {
                 Log.w(TAG, "conversion failed for $videoId", e)
                 _convert.value = ConvertState()
-                startPlayback(items, startIndex)
+                reportUnplayable("This track couldn't be prepared for playback. Tap retry.")
             }
         }
     }
 
-    /** The resolve → download → decode → analyze → encode pipeline. Runs inside
-     *  [CONVERT_TIMEOUT_MS]; the caller falls back to streaming when it throws or times out. */
+    private fun reportUnplayable(message: String) {
+        _connection.update { it.copy(error = message, isPlaying = false) }
+        _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = message) }
+        releasePlayers()
+    }
+
     private suspend fun convertThenPlay(
         head: BitChordSongItem,
         items: List<BitChordSongItem>,
@@ -938,18 +834,8 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
                     progress = 0.05f,
                 )
             }
-            val downloadedAlready = cache.audioFileFor(videoId).takeIf { cache.audioExists(videoId) }
-                ?: findCompleteDownload(app.cacheDir, videoId)
-            val dlAudio = downloadedAlready ?: File(app.cacheDir, "bitchord_dl_${videoId}_${System.nanoTime()}.m4a")
-            if (downloadedAlready != null) {
-                Log.d(TAG, "reusing completed local audio for $videoId: ${downloadedAlready.name}")
-                // Sweep any abandoned partial downloads of the same track.
-                runCatching {
-                    app.cacheDir.listFiles { f ->
-                        f.name.startsWith("bitchord_dl_${videoId}_") && f.name.endsWith(".tmp")
-                    }?.forEach { it.delete() }
-                }
-            } else {
+
+            val dlAudio = File(app.cacheDir, "bitchord_dl_${videoId}_${System.nanoTime()}.m4a")
             try {
                 val stream = withContext(Dispatchers.IO) {
                     StreamResolver.resolveForDownload(videoId, maxKbps = 256, requireM4a = false)
@@ -964,13 +850,9 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
                 cleanupQuietly(dlAudio, File(app.cacheDir, "${dlAudio.name}.tmp"))
                 throw e
             } catch (e: Exception) {
-                // Couldn't load a local copy even though the stream may still
-                // play fine — fall back to the capture-armed stream so the tap
-                // never dead-ends. Haptics catch up during the first play.
-                Log.w(TAG, "download step failed; falling back to capture-armed stream", e)
+                Log.w(TAG, "download step failed for $videoId", e)
                 cleanupQuietly(dlAudio, File(app.cacheDir, "${dlAudio.name}.tmp"))
-                return
-            }
+                throw IllegalStateException("The track couldn't be downloaded: ${e.message ?: e.javaClass.simpleName}", e)
             }
 
             _convert.update { it.copy(stage = ConvertStage.ANALYZING, progress = 0.55f) }
@@ -994,35 +876,48 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
             if (analysis != null) runCatching { analysis.saveTo(cache.transientAnalysisFile(videoId)) }
 
             _convert.update { it.copy(stage = ConvertStage.BUILDING, progress = 0.8f) }
-            val ogg = try {
-                HapticCaptureConverter.convert(
-                    pcmFile = analysisPcm,
-                    sampleRate = 44100,
-                    channelCount = 2,
-                    outputOgg = cache.fileFor(videoId),
-                    sensitivity = AppSettings.state.value.hapticStrength,
-                    bassBoost = bass,
-                    density = density,
-                )
-            } finally {
-                analysisPcm.delete()
-                // The downloaded rendition (or a reused one) survives the whole
-                // pipeline by becoming the persistent audio cache entry.
-                persistAudio(dlAudio, videoId)
+
+            val encoded = encodeHapticOgg(dlAudio, cache.fileFor(videoId))
+            cleanupQuietly(analysisPcm, dlAudio, File(app.cacheDir, "${dlAudio.name}.tmp"))
+            if (!encoded) {
+                Log.w(TAG, "haptic OGG encode failed for $videoId")
+                throw IllegalStateException("The downloaded track couldn't be converted to a haptic file.")
             }
-            if (ogg == null) {
-                // Haptics failed but playback should still happen — the outer
-                // wrapper falls back to the capture-armed stream.
-                Log.w(TAG, "haptic OGG encode failed for $videoId; falling back to capture-armed stream")
-                return
+            val validation = withContext(Dispatchers.IO) {
+                runCatching { HapticOggValidator.validate(cache.fileFor(videoId)) }.getOrNull()
+            }
+            if (validation == null || !validation.valid) {
+                cache.delete(videoId)
+                throw IllegalStateException("Converted haptic OGG validation failed: ${validation?.reason ?: "unknown"}")
             }
     }
 
-    /** GET [url] with [headers] into a cache file, as a run of bounded ranges.
-     *  googlevideo paces an unbounded response down to roughly playback speed,
-     *  so a whole-track request arrives at a trickle and never finishes; the
-     *  same bytes asked for as bounded ranges are served at line rate. False
-     *  on transport failure. */
+    private suspend fun encodeHapticOgg(source: File, output: File): Boolean = withContext(Dispatchers.Default) {
+        val sensitivity = AppSettings.state.value.hapticStrength
+        val bass = AppSettings.state.value.bassEmphasis
+        val density = AppSettings.state.value.hapticDensity
+        val graph =
+            "[0:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asplit=2[a1][a2];" +
+                "[a1]aresample=44100:resampler=soxr:precision=28,asetpts=N/SR/TB," +
+                "aformat=sample_fmts=fltp:channel_layouts=stereo[a_sync];" +
+                HapticAudioShaping.filterChain(sensitivity, bass, density, "[a2]", "[h]") + ";" +
+                "[a_sync][h]join=inputs=2:channel_layout=3.0:" +
+                "map=0.0-FL|0.1-FR|1.0-FC[out]"
+        val cmd = "-y -i \"${source.absolutePath}\" -vn -filter_complex \"$graph\" " +
+            "-map \"[out]\" -map_metadata 0 -ar 44100 -c:a libvorbis -q:a 10 " +
+            "-metadata ANDROID_HAPTIC=1 " +
+            "-metadata title=\"Sound To Haptics\" -shortest \"${output.absolutePath}\""
+        Log.d(TAG, "FFmpeg source-faithful stereo + bass haptic channel (bitchord)")
+        suspendCancellableCoroutine<Boolean> { cont ->
+            val session = com.arthenica.ffmpegkit.FFmpegKit.executeAsync(cmd) { result ->
+                if (cont.isActive) {
+                    cont.resume(com.arthenica.ffmpegkit.ReturnCode.isSuccess(result.returnCode))
+                }
+            }
+            cont.invokeOnCancellation { session.cancel() }
+        }
+    }
+
     private fun downloadWithHeaders(url: String, headers: Map<String, String>, spool: File, dest: File): Boolean = try {
         val parsed = url.toHttpUrlOrNull()
         val total = parsed?.queryParameter("clen")?.toLongOrNull()
@@ -1056,8 +951,7 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
                         return@use
                     }
                     val type = response.header("Content-Type")
-                    // Only refuse what is clearly a refusal page, not a quirky
-                    // but valid media response.
+
                     if (type != null && (type.startsWith("text/") || type.startsWith("application/json") || type.contains("html"))) {
                         Log.w(TAG, "download refused: content-type=$type url=${url.take(140)}")
                         failed = true
@@ -1076,8 +970,7 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
                 }
                 if (failed) break
                 if (written == before) {
-                    // Server answered 200 but delivered nothing for this range —
-                    // without this the do/while would spin forever.
+
                     Log.w(TAG, "download stalled at $written bytes: no content-length progress")
                     failed = true
                 }
@@ -1098,7 +991,6 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         false
     }
 
-    /** One FFmpeg pass: container → raw stereo s16le 44.1 kHz for analysis + encode. */
     private suspend fun ffmpegDecodeToPcm(source: File, pcm: File): Boolean = withContext(Dispatchers.Default) {
         suspendCancellableCoroutine { cont ->
             val cmd = "-y -i \"${source.absolutePath}\" -vn -ac 2 -ar 44100 -f s16le \"${pcm.absolutePath}\""
@@ -1109,147 +1001,78 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    /** Moves the downloaded rendition (or a reused one) into the persistent
-     *  per-track audio cache so the next tap plays instantly with no network.
-     *  No-op when the source already IS the persistent entry. */
-    private fun persistAudio(dlAudio: File, videoId: String) {
-        val target = cache.audioFileFor(videoId)
-        if (dlAudio.absolutePath == target.absolutePath) return
-        if (cache.audioExists(videoId)) {
-            dlAudio.delete()
-            return
-        }
-        val promoted = runCatching {
-            if (dlAudio.renameTo(target)) true else {
-                dlAudio.copyTo(target, overwrite = true)
-                dlAudio.delete()
-                true
-            }
-        }.getOrDefault(false)
-        if (!promoted) {
-            Log.w(TAG, "couldn't persist audio for $videoId")
-        }
-    }
-
     private fun cleanupQuietly(vararg files: File) {
         files.forEach { runCatching { it.delete() } }
     }
 
-    /** A previously completed, non-temp download of [videoId], if one exists.
-     *  Replayed taps skip the network leg and go straight to Analyzing —
-     *  re-fetching 4 MB of already-downloaded audio is the single most common
-     *  way this flow "never finishes" on a slow link. */
-    private fun findCompleteDownload(cacheDir: File, videoId: String): File? =
-        cacheDir.listFiles { file ->
-            file.name.startsWith("bitchord_dl_${videoId}_") &&
-                file.name.endsWith(".m4a") &&
-                file.length() > 262_144L // > 256 KB — a real rendition, not a fragment
-        }?.maxByOrNull { it.length() }
-
-    /** Replays the last requested track after a failure. */
     fun retryPlayback() {
         val item = lastRequestedItem ?: return
         playTrack(item)
     }
 
     fun togglePlayPause() {
-        val local = localPlayer
-        if (local != null) {
-            if (local.isPlaying) local.pause() else local.start()
-            _connection.update { it.copy(isPlaying = local.isPlaying, isBuffering = false) }
+        val p = mediaPlayer
+        if (p == null) {
+
+            val item = currentItem ?: return
+            val queue = _browse.value.queue
+            val index = queue.indexOfFirst { it.videoId == item.videoId }.coerceAtLeast(0)
+            startPlayback(queue, index)
             return
         }
-        val c = controller ?: return
-        if (c.isPlaying) c.pause() else c.play()
+        if (p.isPlaying) {
+            p.pause()
+            hapticOnlyPlayer?.pause()
+            transientRenderer.stop()
+            _connection.update { it.copy(isPlaying = false) }
+        } else {
+            p.start()
+            hapticOnlyPlayer?.let { if (!it.isPlaying) runCatching { it.start() } }
+            activeVideoId?.let { loadTransientFor(it) }
+            startProgressTracker()
+            _connection.update { it.copy(isPlaying = true) }
+        }
     }
 
     fun skipNext() {
-        val local = localPlayer
-        if (local != null) {
-            if (!skipTrack(direction = 1)) onLocalTrackCompleted()
-            return
-        }
-        val c = controller ?: return
-        if (!skipTrack(direction = 1) && c.hasNextMediaItem()) c.seekToNextMediaItem()
+        skipTrack(direction = 1)
     }
 
     fun skipPrevious() {
-        val clamped = _connection.value.positionMs
-        val local = localPlayer
-        if (local != null) {
-            if (clamped > 3_000L) {
-                seekTo(0)
-                return
-            }
-            skipTrack(direction = -1)
+        val position = mediaPlayer?.currentPosition?.toLong() ?: _connection.value.positionMs
+        if (position > 3_000L) {
+            seekTo(0)
             return
         }
-        val c = controller ?: return
-        if (c.currentPosition > 3_000L) {
-            c.seekTo(0)
-            return
-        }
-        if (!skipTrack(direction = -1) && c.hasPreviousMediaItem()) c.seekToPreviousMediaItem()
+        skipTrack(direction = -1)
     }
 
-    /**
-     * Moves one track in [direction] within the current queue. If the target
-     * track has no cached haptic OGG, queue handling stops here and the
-     * conversion pipeline takes over — the audio does not reach the speaker
-     * before its haptics do. Returns false when no applicable move exists or
-     * the target already has a cached haptic profile.
-     */
     private fun skipTrack(direction: Int): Boolean {
         val queue = _browse.value.queue
         val index = queue.indexOfFirst { it.videoId == activeVideoId }
         if (index < 0) return false
-        val repeated = controller?.repeatMode == Player.REPEAT_MODE_ALL
         val raw = if (direction > 0) index + 1 else index - 1
-        val target = when {
-            raw in queue.indices -> raw
-            repeated && direction > 0 -> 0
-            repeated && direction < 0 -> queue.lastIndex
-            else -> return false
-        }
-        val track = queue[target]
+        if (raw !in queue.indices) return false
+        return startOrConvert(queue, raw)
+    }
+
+    private fun startOrConvert(queue: List<BitChordSongItem>, index: Int): Boolean {
+        val track = queue.getOrNull(index) ?: return false
         if (track.videoId.isBlank()) return false
         if (cache.exists(track.videoId)) {
-            startPlayback(queue, target)
+            startPlayback(queue, index)
             return true
         }
         return convertForTransition(track)
     }
 
     fun seekTo(positionMs: Long) {
-        val clamped = positionMs.coerceAtLeast(0L)
-        val local = localPlayer
-        if (local != null) {
-            local.seekTo(clamped)
-            lastPollPositionMs = clamped
-            _connection.update { it.copy(positionMs = clamped) }
-            return
-        }
-        val c = controller ?: return
-        val before = c.currentPosition
-        val backwardLimit = if (_haptics.value.mode == HapticMode.CAPTURING) CAPTURE_BACKWARD_TOLERANCE_MS else SEEK_JUMP_TOLERANCE_MS
-        if (clamped - before > SEEK_JUMP_TOLERANCE_MS) {
-            // Forward jump: no audio flows for the skipped stretch, but the
-            // OGG must still span it — hole-punch it.
-            if (_haptics.value.mode == HapticMode.CAPTURING) {
-                HapticPcmTap.activeCapture?.recordHole(before, clamped)
-            }
-        } else if (before - clamped > backwardLimit) {
-            // Backward seeks cannot be hole-punched; abandon the learning pass.
-            HapticPcmTap.cancel()
-            _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
-        }
-        c.seekTo(clamped)
-        lastPollPositionMs = clamped
-        // The pause-anchor path must not record the same jump a second time.
-        pauseAnchorPositionMs = null
-        if (_haptics.value.mode == HapticMode.SYNCED) {
-            syncEngine.syncTo(clamped, !c.isPlaying)
-        }
+        val duration = mediaPlayer?.duration?.takeIf { it > 0 }?.toLong()
+            ?: _connection.value.durationMs.takeIf { it > 0 }
+        val clamped = if (duration != null) positionMs.coerceIn(0L, duration) else positionMs.coerceAtLeast(0L)
+        try { mediaPlayer?.seekTo(clamped.toInt()) } catch (_: Exception) {}
+        try { hapticOnlyPlayer?.seekTo(clamped.toInt()) } catch (_: Exception) {}
+        runCatching { transientRenderer.notifySeek(clamped.toInt()) }
         _connection.update { it.copy(positionMs = clamped) }
     }
 
@@ -1259,333 +1082,123 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
 
     fun toggleQueue() {
         _browse.update { it.copy(queueVisible = !it.queueVisible) }
-        refreshQueue()
     }
 
-    /** Plays the queue item at [index]. */
     fun seekToQueueItem(index: Int) {
-        val local = localPlayer
-        if (local != null) {
-            val queue = _browse.value.queue
-            if (index < 0 || index >= queue.size) return
-            if (index == queue.indexOfFirst { it.videoId == activeVideoId }) {
-                seekTo(0)
-                return
-            }
-            val track = queue[index]
-            if (cache.exists(track.videoId)) {
-                startPlayback(queue, index)
-                return
-            }
-            convertForTransition(track)
+        val queue = _browse.value.queue
+        if (index < 0 || index >= queue.size) return
+        if (index == activeIndex) {
+
+            seekTo(0)
             return
         }
-        val c = controller ?: return
-        if (index < 0 || index >= c.mediaItemCount) return
-        val currentIndex = c.currentMediaItemIndex
-        if (index == currentIndex) {
-            // Restart the current track rather than no-op'ing.
-            seekTo(0)
-        } else {
-            // Same rule as skipNext: an unconverted track converts first —
-            // the audio does not reach the speaker before its haptics do.
-            val target = c.getMediaItemAt(index).let(::songItemFromMediaItem)
-            if (target != null && convertForTransition(target)) {
-                lastPollPositionMs = null
-                return
-            }
-            c.seekTo(index, 0L)
-        }
-        lastPollPositionMs = null
-        refreshQueue()
+        startOrConvert(queue, index)
     }
 
-    private fun refreshQueue() {
-        val c = controller ?: return
-        val items = (0 until c.mediaItemCount).mapNotNull { index ->
-            c.getMediaItemAt(index).let(::songItemFromMediaItem)
-        }
-        if (items.isNotEmpty()) {
-            _browse.update { it.copy(queue = items) }
-        }
-    }
-
-    private fun songItemFromMediaItem(mediaItem: MediaItem): BitChordSongItem? {
-        val videoId = mediaItem.mediaId.takeIf { it.isNotBlank() }
-        val title = mediaItem.mediaMetadata.title?.toString().orEmpty()
-        if (videoId.isNullOrBlank() && title.isBlank()) return null
-        return BitChordSongItem(
-            videoId = videoId.orEmpty(),
-            title = title,
-            artist = mediaItem.mediaMetadata.artist?.toString().orEmpty(),
-            thumbnailUrl = mediaItem.mediaMetadata.artworkUri?.toString(),
-            durationMs = mediaItem.mediaMetadata.extras?.getLong(DURATION_EXTRA) ?: 0L,
-        )
-    }
-
-    private fun currentSongItem(): BitChordSongItem? {
-        localPlayer?.let { _ -> _browse.value.queue.firstOrNull { it.videoId == activeVideoId }?.let { return it } }
-        return controller?.currentMediaItem?.let(::songItemFromMediaItem)
-    }
-
-    /**
-     * If [track] lacks a cached haptic OGG, divert playback into the
-     * conversion pipeline (the same UX as the first tap) and play it once
-     * it's ready. Returns true when the conversion was triggered and the
-     * caller must NOT proceed with the raw queue transition — ExoPlayer
-     * must not start the next track before its haptics can too.
-     */
     private fun convertForTransition(track: BitChordSongItem): Boolean {
         val videoId = track.videoId
         if (videoId.isNullOrBlank() || cache.exists(videoId)) return false
         val queue = _browse.value.queue
         val index = queue.indexOfFirst { it.videoId == videoId }
         if (index < 0) return false
-        controller?.pause()
-        controller?.clearMediaItems()
+        releasePlayers()
         beginConvertThenPlay(track, queue, index)
         return true
     }
 
-    private fun wirePlayerListener(c: MediaController) {
-        c.addListener(object : Player.Listener {
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                val item = mediaItem?.let(::songItemFromMediaItem)
-                if (item != null && reason != Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED) {
-                    // Auto-advance (e.g., track end): the next track must not
-                    // reach the speakers without its haptics either — route it
-                    // through the same convert-then-play flow as a manual skip.
-                    if (convertForTransition(item)) return
-                }
-                onActiveTrackChanged(item, reason)
-                _connection.update {
-                    it.copy(currentItem = item, positionMs = 0L, durationMs = item?.durationMs ?: 0L)
-                }
-                refreshQueue()
-            }
-
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                _connection.update { it.copy(isPlaying = isPlaying) }
-                val position = c.currentPosition.coerceAtLeast(0L)
-                if (!isPlaying) {
-                    pauseAnchorPositionMs = position
-                } else {
-                    val anchor = pauseAnchorPositionMs
-                    if (anchor != null && position - anchor > 150L) {
-                        HapticPcmTap.activeCapture?.recordHole(anchor, position)
-                    }
-                    pauseAnchorPositionMs = null
-                }
-                if (_haptics.value.mode == HapticMode.SYNCED) {
-                    syncEngine.syncTo(c.currentPosition, !isPlaying)
-                }
-                if (isPlaying) {
-                    if (isTransientEngineActive()) {
-                        transientRenderer.start { c.currentPosition.toInt() }
-                    }
-                } else {
-                    transientRenderer.stop()
-                }
-            }
-
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                _connection.update { it.copy(isBuffering = playbackState == Player.STATE_BUFFERING) }
-                if (playbackState == Player.STATE_ENDED) {
-                    onPlaybackEnded()
-                }
-            }
-
-            override fun onPlayerError(error: PlaybackException) {
-                Log.e(TAG, "playback error", error)
-                val reason = when {
-                    isPermanentlyUnplayable(error) ->
-                        "This track can't be played — it may be age-restricted or not available in your region."
-                    error.errorCode == PlaybackException.ERROR_CODE_IO_UNSPECIFIED ||
-                        error.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED ||
-                    error.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ||
-                        error.errorCode == PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS ->
-                        "Couldn't reach YouTube Music — check your connection and try again."
-                    else ->
-                        "This track couldn't be played. Tap retry."
-                }
-                _connection.update { it.copy(error = reason) }
-                // Leave nothing running behind a dead track.
-                syncEngine.stop()
-                transientRenderer.stop()
-                HapticPcmTap.cancel()
-                _haptics.update {
-                    it.copy(mode = HapticMode.IDLE, lastError = reason)
-                }
-                _captureLevel.value = 0f
-            }
-        })
-    }
-
-    /** Raw playback failures get mapped to actionable copy; nothing falls through raw. */
-    private fun isPermanentlyUnplayable(error: PlaybackException): Boolean {
-        var cause: Throwable? = error
-        var depth = 0
-        while (cause != null && depth++ < 8) {
-            if (cause.javaClass.simpleName == "PermanentlyUnplayableException") return true
-            val next = cause.cause
-            cause = if (next === cause) null else next
-        }
-        return false
-    }
-
-    private fun startPositionLoop() {
+    private fun startProgressTracker() {
         progressJob?.cancel()
         progressJob = viewModelScope.launch {
             while (true) {
-                val local = localPlayer
-                if (local != null) {
-                    val position = local.currentPositionMs.coerceAtLeast(0L)
-                    val duration = local.durationMs.takeIf { it > 0 } ?: _connection.value.durationMs
-                    _connection.update {
-                        it.copy(positionMs = position, durationMs = duration, isPlaying = local.isPlaying, isBuffering = false)
-                    }
-                    val item = currentSongItem()
-                    if (item != null && _browse.value.activeVideoId != item.videoId) {
-                        _browse.update { it.copy(activeVideoId = item.videoId) }
-                    }
-                } else {
-                    val c = controller
-                    if (c != null) {
-                        val position = c.currentPosition.coerceAtLeast(0L)
-                        val duration = c.duration.takeIf { it > 0 } ?: _connection.value.durationMs
-                        _connection.update { current -> current.copy(positionMs = position, durationMs = duration) }
-                        val item = currentSongItem()
-                        if (item != null && _browse.value.activeVideoId != item.videoId) {
-                            _browse.update { it.copy(activeVideoId = item.videoId) }
-                        }
-                        // Backward scrubs caught by the poll rather than by seekTo:
-                        // abandon the learning pass. Forward jumps land through seekTo.
-                        if (_haptics.value.mode == HapticMode.CAPTURING) {
-                            val last = lastPollPositionMs
-                            if (last != null && position - last < -CAPTURE_BACKWARD_TOLERANCE_MS) {
-                                HapticPcmTap.cancel()
-                                _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
-                            }
-                        }
-                        if (_haptics.value.mode == HapticMode.CAPTURING) {
-                            _captureLevel.value = HapticPcmTap.activeCapture?.level ?: 0f
-                        }
-                        lastPollPositionMs = position
-                        if (_haptics.value.mode == HapticMode.SYNCED) {
-                            syncEngine.syncTo(position, !c.isPlaying)
+                try {
+                    val p = mediaPlayer
+                    if (p != null && p.isPlaying) {
+                        _connection.update { current ->
+                            current.copy(
+                                positionMs = p.currentPosition.toLong(),
+                                durationMs = p.duration.takeIf { it > 0 }?.toLong() ?: current.durationMs,
+                            )
                         }
                     }
+                } catch (_: Exception) {
+
                 }
-                lastPollPositionMs = local?.currentPositionMs ?: lastPollPositionMs
-                delay(250)
+                delay(100)
             }
         }
     }
 
-    // ─── Haptics orchestration ───────────────────────────────────────────────
+    private fun onPlaybackCompleted() {
+        hapticOnlyPlayer?.let { try { it.pause() } catch (_: Exception) {} }
+        transientRenderer.stop()
+        val queue = _browse.value.queue
+        val next = activeIndex + 1
+        releasePlayers()
+        _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
+        if (next in queue.indices) {
+            startOrConvert(queue, next)
+            return
+        }
+        activeVideoId = null
+        activeIndex = -1
+        currentItem = null
+        _browse.update { it.copy(activeVideoId = null) }
+        _connection.update { it.copy(isPlaying = false, positionMs = 0L) }
+    }
+
+    val likedOverrides: StateFlow<Map<String, com.sound.to.haptics.bitchord.data.model.LikeStatus>> =
+        com.sound.to.haptics.bitchord.data.LikeState.overrides
+
+    fun toggleLike(videoId: String) {
+        if (videoId.isBlank()) return
+        val liked = likedOverrides.value[videoId] == com.sound.to.haptics.bitchord.data.model.LikeStatus.LIKE
+        val next = if (liked) {
+            com.sound.to.haptics.bitchord.data.model.LikeStatus.INDIFFERENT
+        } else {
+            com.sound.to.haptics.bitchord.data.model.LikeStatus.LIKE
+        }
+        com.sound.to.haptics.bitchord.data.LikeState.set(videoId, next)
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    com.sound.to.haptics.bitchord.data.innertube.Innertube.rate(videoId, next)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "like toggle rejected for $videoId", e)
+                com.sound.to.haptics.bitchord.data.LikeState.set(
+                    videoId,
+                    if (liked) com.sound.to.haptics.bitchord.data.model.LikeStatus.LIKE
+                    else com.sound.to.haptics.bitchord.data.model.LikeStatus.INDIFFERENT,
+                )
+            }
+        }
+    }
 
     fun updateSensitivity(v: Float) {
         AppSettings.setHapticStrength(v)
         _haptics.update { it.copy(sensitivity = v.coerceIn(0f, 1f)) }
     }
 
-    /** Re-arms capture/sync after the BitChord tab was temporarily left. */
     fun onScreenVisible() {
-        val c = controller ?: return
-        val item = currentSongItem()
-        if (item != null && activeVideoId == null) {
-            onActiveTrackChanged(item, Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT)
-        }
+
     }
 
-    /** Back to a clean slate: nothing active, nothing primed, nothing half-learned. */
     private fun resetPlaybackState() {
         activeVideoId = null
-        pauseAnchorPositionMs = null
-        lastPollPositionMs = null
-        _captureLevel.value = 0f
+        activeIndex = -1
+        currentItem = null
         _connection.update {
             it.copy(isPlaying = false, currentItem = null, positionMs = 0L, durationMs = 0L)
         }
         _browse.update { it.copy(activeVideoId = null) }
     }
 
-    private fun onActiveTrackChanged(item: BitChordSongItem?, reason: Int) {
-        val newId = item?.videoId
-        val previousId = activeVideoId
-        // Anchors always reset — never carry a stale position or pause anchor
-        // into a new track, even for a same-song repeat.
-        lastPollPositionMs = null
-        pauseAnchorPositionMs = null
-        if (newId == previousId && reason == Player.MEDIA_ITEM_TRANSITION_REASON_SEEK) {
-            // Same song, new position: the position loop reconciles haptics.
-            return
-        }
-        val sameSongRepeat = newId == previousId
-        val previousIdTrack = previousId ?: newId
-        if (newId == null) {
-            finalizeCapture(previousIdTrack, discard = false)
-            syncEngine.stop()
-            transientRenderer.stop()
-            resetPlaybackState()
-            _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
-            return
-        }
-        if (sameSongRepeat) {
-            // A repeated song is a track boundary too: cache the finished pass
-            // and start a fresh one for the repeat.
-            activeVideoId = newId
-            finalizeCapture(previousIdTrack, discard = false)
-            syncEngine.stop()
-            transientRenderer.stop()
-            _browse.update { it.copy(activeVideoId = newId) }
-            beginHapticsFor(newId, 0L)
-            return
-        }
-        val previousFinished = reason == Player.MEDIA_ITEM_TRANSITION_REASON_AUTO
-        activeVideoId = newId
-
-        // Stop whatever belonged to the previous track before loading the next one.
-        finalizeCapture(previousId, discard = previousId != null && !previousFinished)
-        syncEngine.stop()
-        transientRenderer.stop()
-
-        _browse.update { it.copy(activeVideoId = newId) }
-        beginHapticsFor(newId, controller?.currentPosition?.coerceAtLeast(0L) ?: 0L)
-    }
-
-    private fun beginHapticsFor(trackId: String, positionMs: Long) {
-        if (localPlayer != null) {
-            // The haptics live inside the local MediaPlayer (Offline-style):
-            // no second channel to arm — just make sure it's reported as SYNCED.
-            _haptics.update { it.copy(mode = HapticMode.SYNCED, lastError = null) }
-            return
-        }
-        if (cache.exists(trackId)) {
-            // The haptic OGG is the track source itself (single pipeline, single
-            // clock). Don't double-play it through the side channel; just load
-            // the transient preview if one's wanted.
-            loadTransientFor(trackId)
-            _haptics.update { it.copy(mode = HapticMode.SYNCED, lastError = null) }
-            return
-        }
-        // Learn from the decoded PCM the tap sees — no permission prompt, no mic, no capture stream.
-        HapticPcmTap.arm(
-            HapticPcmTap.ArmRequest(
-                scratchFile = cache.scratchPcmFile(trackId),
-                initialOffsetMs = positionMs,
-            )
-        )
-        _haptics.update { it.copy(mode = HapticMode.CAPTURING, lastError = null) }
-    }
-
     private fun loadTransientFor(trackId: String) {
         if (!isTransientEngineActive()) return
         val analysis = loadTransientAnalysis(cache.transientAnalysisFile(trackId)) ?: return
         transientRenderer.load(analysis)
-        val c = controller
-        if (c != null && c.isPlaying) {
-            transientRenderer.start { c.currentPosition.toInt() }
+        if (mediaPlayer?.isPlaying == true) {
+            transientRenderer.start { mediaPlayer?.currentPosition?.coerceAtLeast(0) ?: 0 }
         }
     }
 
@@ -1593,9 +1206,7 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         val ctx = getApplication<Application>()
         if (AppSettings.state.value.hapticEngine != HapticEngine.TRANSIENT) return false
         if (!TransientHapticRenderer.isSupported(ctx)) return false
-        // Mirror the offline rule: continuous haptics only while a Bluetooth
-        // output is connected; the phone's own motor still delivers them,
-        // but transient accents on top of that route are untestable there.
+
         return !isBluetoothOutputConnected()
     }
 
@@ -1610,244 +1221,33 @@ class BitChordViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    /**
-     * Ends the in-progress learning pass for [trackId], if any, on a background
-     * thread. When [discard] is true the partial capture is thrown away — a
-     * profile built from less than the track would drift out of sync with the
-     * real thing on a later replay.
-     *
-     * The [generationKey] mechanism stops a stale pass from deleting or
-     * overwriting a freshly-built profile: [recaptureCurrentTrack] bumps the
-     * counter, and any still-running conversion for that track aborts before
-     * it touches the cache.
-     */
-    private val hapticGenerations = java.util.concurrent.ConcurrentHashMap<String, Int>()
-
-    private fun finalizeCapture(trackId: String?, discard: Boolean) {
-        trackId ?: return
-        val active = HapticPcmTap.detachActive() ?: return
-        val generation = hapticGenerations.merge(trackId, 1) { old, _ -> old + 1 } ?: 1
-        _captureLevel.value = 0f
-        if (discard) {
-            viewModelScope.launch(Dispatchers.Default) { active.cancel() }
-            return
-        }
-        viewModelScope.launch(Dispatchers.Default) {
-            val result = active.finish()
-            if (result == null || !result.hadSignal || result.durationMs < 1500L) {
-                if (hapticGenerations[trackId] != generation) return@launch
-                cache.delete(trackId)
-                val reason = if (result == null) {
-                    "No usable audio arrived while this track played."
-                } else {
-                    "This capture was too short to build a profile from."
-                }
-                withContext(Dispatchers.Main) {
-                    if (trackId == activeVideoId) {
-                        _haptics.update { it.copy(mode = HapticMode.CAPTURE_FAILED, lastError = reason) }
-                    }
-                }
-                return@launch
-            }
-            runCatching {
-                val conversion = convertFor(trackId, result)
-                if (hapticGenerations[trackId] != generation) {
-                    // A redo or a track change superseded this pass; leave the
-                    // cache exactly as the newer pass left it.
-                    result.pcmFile.takeIf { it.exists() }?.delete()
-                    return@runCatching
-                }
-                applyConversion(trackId, result, conversion)
-            }.onFailure { error ->
-                Log.e(TAG, "haptic conversion failed", error)
-                if (hapticGenerations[trackId] == generation) {
-                    withContext(Dispatchers.Main) {
-                        if (trackId == activeVideoId) {
-                            cache.delete(trackId)
-                            _haptics.update {
-                                it.copy(
-                                    mode = HapticMode.ENCODE_FAILED,
-                                    lastError = "The track was captured, but the haptic profile couldn't be encoded.",
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /** FFmpeg + analyzers; runs on a background coroutine. */
-    private suspend fun convertFor(
-        trackId: String,
-        result: com.sound.to.haptics.haptics.PcmCapture.Result,
-    ): Triple<java.io.File?, com.sound.to.haptics.haptics.LayeredHapticAnalysis?, com.sound.to.haptics.haptics.TransientAnalysis?> {
-        val output = HapticCaptureConverter.convert(
-            pcmFile = result.pcmFile,
-            sampleRate = result.sampleRate,
-            channelCount = result.channelCount,
-            outputOgg = cache.fileFor(trackId),
-            sensitivity = _haptics.value.sensitivity,
-            bassBoost = AppSettings.state.value.bassEmphasis,
-            density = AppSettings.state.value.hapticDensity,
-        )
-        val analysis = output?.let {
-            MultiLayerAudioAnalyzer.analyze(
-                result.pcmFile,
-                result.sampleRate,
-                result.channelCount,
-                bassEmphasis = AppSettings.state.value.bassEmphasis,
-                density = AppSettings.state.value.hapticDensity,
-            )
-        }
-        val transient = output?.let {
-            TransientAudioAnalyzer.analyze(
-                result.pcmFile,
-                result.sampleRate,
-                result.channelCount,
-                bassEmphasis = AppSettings.state.value.bassEmphasis,
-                hapticDensity = AppSettings.state.value.hapticDensity,
-            )
-        }
-        result.pcmFile.takeIf { it.exists() }?.delete()
-        return Triple(output, analysis, transient)
-    }
-
-    private suspend fun applyConversion(
-        trackId: String,
-        result: com.sound.to.haptics.haptics.PcmCapture.Result,
-        conversion: Triple<java.io.File?, com.sound.to.haptics.haptics.LayeredHapticAnalysis?, com.sound.to.haptics.haptics.TransientAnalysis?>,
-    ) {
-        val (outputOgg, analysis, transient) = conversion
-        if (outputOgg == null) {
-            cache.delete(trackId)
-            withContext(Dispatchers.Main) {
-                if (trackId == activeVideoId) {
-                    _haptics.update {
-                        it.copy(
-                            mode = HapticMode.ENCODE_FAILED,
-                            lastError = "The track was captured, but the haptic profile couldn't be encoded.",
-                        )
-                    }
-                }
-            }
-            return
-        }
-        if (analysis != null) {
-            runCatching { analysis.saveTo(cache.analysisFile(trackId)) }
-        } else {
-            cache.analysisFile(trackId).delete()
-        }
-        if (transient != null) {
-            runCatching { transient.saveTo(cache.transientAnalysisFile(trackId)) }
-        } else {
-            cache.transientAnalysisFile(trackId).delete()
-        }
-        withContext(Dispatchers.Main) {
-            if (trackId == activeVideoId) {
-                if (syncEngine.load(outputOgg)) {
-                    val c = controller
-                    syncEngine.syncTo(c?.currentPosition ?: 0L, c == null || !c.isPlaying)
-                    loadTransientFor(trackId)
-                    _haptics.update { it.copy(mode = HapticMode.SYNCED, lastError = null) }
-                } else {
-                    cache.delete(trackId)
-                    _haptics.update {
-                        it.copy(
-                            mode = HapticMode.PLAYBACK_FAILED,
-                            lastError = "The saved haptic profile couldn't be played back on this device.",
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun onPlaybackEnded() {
-        stopLocalPlayback()
-        finalizeCapture(activeVideoId, discard = false)
-        syncEngine.stop()
-        transientRenderer.stop()
-        _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
-        resetPlaybackState()
-    }
-
-    /** Stops everything — used when the app switches to another section. */
     fun stopAll() {
-        controller?.pause()
-        stopLocalPlayback()
-        resetCapture()
-    }
-
-    private fun resetCapture() {
-        val previous = activeVideoId
-        finalizeCapture(previous, discard = true)
-        syncEngine.stop()
-        transientRenderer.stop()
-        HapticPcmTap.cancel()
+        releasePlayers()
         _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
         resetPlaybackState()
-    }
-
-    private fun stopControllerPlayback() {
-        controller?.pause()
-        controller?.clearMediaItems()
-    }
-
-    private fun stopHaptics() {
-        HapticPcmTap.cancel()
-        syncEngine.stop()
-        transientRenderer.stop()
-        _haptics.update { it.copy(mode = HapticMode.IDLE, lastError = null) }
     }
 
     fun recaptureCurrentTrack() {
         val trackId = activeVideoId ?: return
-        finalizeCapture(trackId, discard = _haptics.value.mode == HapticMode.CAPTURING)
+        val queue = _browse.value.queue
+        val index = queue.indexOfFirst { it.videoId == trackId }.let { if (it >= 0) it else activeIndex }
+        val item = queue.getOrNull(index) ?: return
         cache.delete(trackId)
-        syncEngine.stop()
-        transientRenderer.stop()
-        stopLocalPlayback()
-        beginHapticsFor(trackId, localPlayer?.currentPositionMs ?: controller?.currentPosition?.coerceAtLeast(0L) ?: 0L)
+        releasePlayers()
+        beginConvertThenPlay(item, queue, index.coerceAtLeast(0))
     }
 
-    /** Stops the in-progress pass without caching a partial, out-of-sync track. */
     fun stopLearning() {
-        val trackId = activeVideoId ?: return
-        if (_haptics.value.mode != HapticMode.CAPTURING) return
-        finalizeCapture(trackId, discard = true)
-        syncEngine.stop()
-        _haptics.update {
-            it.copy(
-                mode = HapticMode.CAPTURE_FAILED,
-                lastError = "Learning stopped. Play this track again to build its full haptic profile.",
-            )
-        }
+
     }
 
     override fun onCleared() {
         super.onCleared()
         stopAll()
-        controller?.release()
-        controller = null
+        transientRenderer.release()
     }
 
     companion object {
-        private const val DURATION_EXTRA = "bitchord_duration_ms"
         private const val LIKED_COLLECTION_ID = "liked"
     }
 }
-
-private suspend fun <T> awaitListenerFuture(
-    future: com.google.common.util.concurrent.ListenableFuture<T>,
-): T = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
-    future.addListener({
-        try {
-            cont.resume(future.get())
-        } catch (e: Exception) {
-            cont.resumeWithException(e)
-        }
-    }, { it.run() })
-    cont.invokeOnCancellation { future.cancel(true) }
-}
-

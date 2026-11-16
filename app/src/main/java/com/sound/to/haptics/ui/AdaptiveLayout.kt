@@ -8,10 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-/**
- * Caps content width on large screens so cards and text don't stretch
- * edge-to-edge on tablets or landscape phones.
- */
 @Composable
 fun AdaptiveContentWidth(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {

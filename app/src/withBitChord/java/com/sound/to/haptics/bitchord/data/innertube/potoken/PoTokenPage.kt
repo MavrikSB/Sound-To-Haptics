@@ -5,11 +5,6 @@ package com.sound.to.haptics.bitchord.data.innertube.potoken
 // few files, minimally edited. Copyright remains with the BitChord authors.
 // See THIRD_PARTY_LICENSES.txt.
 
-/**
- * The page a PoToken browser loads: the BgUtils-style BotGuard client whose
- * `runBotGuard`, `createPoTokenMinter` and `obtainPoToken` the minter drives.
- * One copy for the phone's WebView and the desktop's JavaFX WebView alike.
- */
 const val PO_TOKEN_HTML = """<!DOCTYPE html>
 <html lang="en"><head><title></title><script>
     /**

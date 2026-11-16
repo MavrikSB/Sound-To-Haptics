@@ -10,17 +10,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
-/**
- * One analysis frame's worth of real spectral features for Transient Mode.
- *
- * Unlike [MultiLayerHapticAnalysis]'s one-pole filter cascade (which is
- * cheap and good enough for the continuous bass/flow/percussion mix), the
- * musical-event classifier in Transient Mode genuinely needs a spectral
- * centroid and true band energies to tell a kick from a snare from a
- * hi-hat — that requires an actual frequency-domain transform, not just a
- * handful of IIR filters. This is why Transient Mode has its own,
- * independent analysis pipeline: it answers a different, harder question.
- */
 data class RawSpectralFrame(
     val timestampMs: Long,
     val rms: Float,
@@ -33,27 +22,6 @@ data class RawSpectralFrame(
     val centroidHz: Float,
 )
 
-/**
- * Windowed-FFT (STFT) feature extractor for Transient Mode.
- *
- * Design rationale:
- *  - FFT size and hop come from [TransientConfig] (46ms window / 20ms hop —
- *    inside the spec's recommended 20-40ms analysis window once you account
- *    for the fact that a real spectral-centroid/flux measurement needs a
- *    genuine transform, not just a short RMS window).
- *  - A single reusable float buffer slides forward by [hopSamples] each
- *    frame; only the newly-read samples are copied in, so this never
- *    reprocesses the same PCM bytes into a second temporary array and never
- *    allocates a new window array per frame (see class 25's performance
- *    requirements).
- *  - The FFT itself is a standard iterative radix-2 Cooley-Tukey transform
- *    on real input (imaginary part fed as zero) — the simplest FFT that is
- *    still O(n log n), avoiding a "big ML/DSP dependency" the project does
- *    not already have.
- *  - A Hann window is precomputed once and reused for every frame to reduce
- *    spectral leakage, which otherwise makes spectral-flux/centroid noisy
- *    frame to frame.
- */
 object TransientFeatureExtractor {
 
     private const val MIN_BYTES = 4096L
@@ -66,7 +34,6 @@ object TransientFeatureExtractor {
         val hopSamples = (sampleRate * TransientConfig.HOP_MS / 1000L).toInt().coerceAtLeast(1)
         val bytesPerInputFrame = channelCount * 2
 
-        // Precomputed once, reused for every window — no per-frame allocation.
         val hannWindow = FloatArray(fftSize) { i ->
             (0.5 - 0.5 * cos(2.0 * PI * i / (fftSize - 1))).toFloat()
         }
@@ -76,7 +43,6 @@ object TransientFeatureExtractor {
         val magnitude = FloatArray(fftSize / 2)
         val previousMagnitude = FloatArray(fftSize / 2)
 
-        // Bin index ranges for each perceptual band (TransientConfig Hz ranges).
         val binHz = sampleRate.toFloat() / fftSize
         fun binFor(hz: Float): Int = (hz / binHz).toInt().coerceIn(0, fftSize / 2 - 1)
         val subBassRange = binFor(TransientConfig.SUB_BASS_LOW_HZ)..binFor(TransientConfig.SUB_BASS_HIGH_HZ)
@@ -90,7 +56,7 @@ object TransientFeatureExtractor {
 
         try {
             BufferedInputStream(FileInputStream(pcmFile), 64 * 1024).use { input ->
-                var filledSamples = 0 // how much of slidingBuffer currently holds real audio
+                var filledSamples = 0
                 var frameTimestampMs = 0L
                 while (frames.size < MAX_FRAMES) {
                     val bytesRead = readFully(input, readBuffer)
@@ -98,8 +64,6 @@ object TransientFeatureExtractor {
                     val hopFrameCount = bytesRead / bytesPerInputFrame
                     if (hopFrameCount <= 0) break
 
-                    // Shift the window left by hopSamples, then append the new
-                    // hop's mono-downmixed samples at the end.
                     if (filledSamples >= fftSize) {
                         System.arraycopy(slidingBuffer, min(hopSamples, fftSize), slidingBuffer, 0, fftSize - hopSamples)
                     }
@@ -118,7 +82,7 @@ object TransientFeatureExtractor {
                     filledSamples = min(filledSamples + hopFrameCount, fftSize)
 
                     if (filledSamples >= fftSize) {
-                        // Window + FFT into reusable real/imag buffers.
+
                         for (i in 0 until fftSize) {
                             real[i] = slidingBuffer[i] * hannWindow[i]
                             imag[i] = 0f
@@ -202,15 +166,6 @@ object TransientFeatureExtractor {
         return raw.toShort().toInt()
     }
 
-    /**
-     * In-place iterative radix-2 Cooley-Tukey FFT. `real`/`imag` must both be
-     * a power-of-two length (guaranteed by [TransientConfig.FFT_SIZE]). This
-     * is a textbook implementation, not a hand-optimized SIMD kernel — that
-     * tradeoff is intentional: analysis runs once per imported/captured
-     * track, off the UI thread, well within the CPU budget of a mid-range
-     * phone, so a simple/correct/dependency-free FFT is preferable to
-     * pulling in a native FFT library for a one-shot offline pass.
-     */
     private fun fft(real: FloatArray, imag: FloatArray) {
         val n = real.size
         var j = 0

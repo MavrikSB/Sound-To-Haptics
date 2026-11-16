@@ -118,10 +118,6 @@ enum class MotionSpeed(val label: String, val scale: Float) {
     FROZEN("0x", 0f),
 }
 
-/**
- * Backs the debug menu. Nothing here ships to release builds — see the
- * BuildConfig.DEBUG check in RootScreen.
- */
 class DebugToolsViewModel(application: Application) : AndroidViewModel(application), SensorEventListener {
 
     data class MotionReading(val x: Float = 0f, val y: Float = 0f, val z: Float = 0f) {
@@ -134,8 +130,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
         application.getSharedPreferences("debug_tools", Context.MODE_PRIVATE)
 
     private val hapticCache = TrackHapticCache(application)
-
-    // ---- Motion + environmental sensors ----
 
     private val _gyroscope = MutableStateFlow(MotionReading())
     val gyroscope: StateFlow<MotionReading> = _gyroscope.asStateFlow()
@@ -156,8 +150,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
     fun hasSensor(type: Int) = type in availableSensors
 
     private val sensorManager = application.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-    // ---- Vibrator ----
 
     private val vibrator: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         (application.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
@@ -180,8 +172,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
             likelySupportsAudioCoupledHaptics = hasAmplitude && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
         )
     }
-
-    // ---- Calibration ----
 
     private val _calibration = MutableStateFlow(
         CalibrationState(savedThreshold = prefs.getInt(KEY_CALIBRATION, -1).takeIf { it >= 0 })
@@ -211,8 +201,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
         _calibration.value = CalibrationState()
     }
 
-    // ---- Sound meter ----
-
     private val _soundLevelDb = MutableStateFlow(0f)
     val soundLevelDb: StateFlow<Float> = _soundLevelDb.asStateFlow()
 
@@ -221,11 +209,7 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
 
     private var soundMeterJob: Job? = null
 
-    // ---- 8D audio demo ----
-
     val eightDPlayer = EightDAudioPlayer()
-
-    // ---- Continuous vibration + amplitude sweep ----
 
     private val _isVibratingContinuously = MutableStateFlow(false)
     val isVibratingContinuously: StateFlow<Boolean> = _isVibratingContinuously.asStateFlow()
@@ -237,8 +221,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
     private val _isSequencing = MutableStateFlow(false)
     val isSequencing: StateFlow<Boolean> = _isSequencing.asStateFlow()
     private var sequencerJob: Job? = null
-
-    // ---- System stats ----
 
     private val _battery = MutableStateFlow(BatteryInfo())
     val battery: StateFlow<BatteryInfo> = _battery.asStateFlow()
@@ -259,10 +241,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
     private val _heap = MutableStateFlow(HeapInfo())
     val heap: StateFlow<HeapInfo> = _heap.asStateFlow()
 
-    // Layout/motion/feature flags all live in the app-global DebugFlags
-    // object now (see its kdoc for why) — these are thin pass-throughs so
-    // DebugToolsScreen's existing calls to viewModel.<flow>/.set<X>() keep
-    // working unchanged.
     val featureFlags: StateFlow<DebugFeatureFlags> = DebugFlags.featureFlags
     val wireframeBounds: StateFlow<Boolean> = DebugFlags.wireframeBounds
     val alignmentGrid: StateFlow<Boolean> = DebugFlags.alignmentGrid
@@ -500,7 +478,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
         _soundLevelDb.value = 0f
     }
 
-    /** Fires a single 200ms pulse at the given 1-255 amplitude. */
     fun testVibration(amplitude: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, amplitude.coerceIn(1, 255)))
@@ -510,21 +487,18 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    /** Fires one of Android's built-in tuned effects (API 29+). */
     fun testPredefinedEffect(effectId: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             vibrator.vibrate(VibrationEffect.createPredefined(effectId))
         }
     }
 
-    /** Fires a single composed primitive at full scale (API 30+). */
     fun testPrimitive(primitiveId: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             vibrator.vibrate(VibrationEffect.startComposition().addPrimitive(primitiveId, 1f).compose())
         }
     }
 
-    /** Fires a named custom timing/amplitude waveform. */
     fun testWaveform(timings: LongArray, amplitudes: IntArray) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createWaveform(timings, amplitudes, -1))
@@ -549,7 +523,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    /** Ramps amplitude from 0 to 255 over a few seconds, useful for feeling out where a device's motor actually starts responding. */
     fun startAmplitudeSweep() {
         if (_isSweeping.value) return
         _isSweeping.value = true
@@ -618,12 +591,6 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
 
     fun clearBitChordHapticCache() = hapticCache.clearAll()
 
-    // ---- Transient Mode musical-haptic quality test (spec section 31) ----
-    // Generates a known synthetic PCM signal, runs it through the real
-    // Transient analysis pipeline, and plays the resulting event timeline
-    // back live through TransientHapticRenderer so a developer can verify
-    // each event type actually feels distinct on real hardware.
-
     private var qualityTestRenderer: com.sound.to.haptics.haptics.TransientHapticRenderer? = null
     private var qualityTestJob: Job? = null
 
@@ -650,9 +617,7 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
             }
             val renderer = com.sound.to.haptics.haptics.TransientHapticRenderer(getApplication()).also { qualityTestRenderer = it }
             renderer.load(analysis)
-            // Drives the renderer with a simple elapsed-time clock instead
-            // of a real MediaPlayer — there's no audio to play for a
-            // synthetic test signal, only the haptic timeline itself.
+
             val startedAt = android.os.SystemClock.elapsedRealtime()
             renderer.start { (android.os.SystemClock.elapsedRealtime() - startedAt).toInt() }
             _qualityTestState.value = QualityTestState.Playing(test, analysis.events.size)
@@ -685,7 +650,7 @@ class DebugToolsViewModel(application: Application) : AndroidViewModel(applicati
             appendLine("Calibrated threshold: ${_calibration.value.savedThreshold ?: "not set"}")
             appendLine("Battery: ${b.percent}%, charging: ${b.isCharging}, temp: ${b.temperatureC}°C")
             appendLine("Memory: ${m.availableMb}MB / ${m.totalMb}MB free, low: ${m.lowMemory}")
-            appendLine("Display: ${displayInfo.widthPx}x${displayInfo.heightPx} @ ${displayInfo.densityDpi}dpi")
+            appendLine("Display: ${displayInfo.widthPx}×${displayInfo.heightPx} @ ${displayInfo.densityDpi}dpi")
             appendLine("Debug tools: sound meter=${_isMeteringSound.value}, sweep=${_isSweeping.value}, sequencer=${_isSequencing.value}")
             val capture = com.sound.to.haptics.haptics.CaptureDiagnostics.state.value
             appendLine("Capture: ${capture.stage}, projection=${capture.projectionActive}, format=${capture.sampleRate}Hz/${capture.channelCount}ch, buffer=${capture.bufferBytes}, bytes=${capture.bytesWritten}, signal=${capture.hadSignal}")

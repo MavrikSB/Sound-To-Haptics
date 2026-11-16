@@ -25,16 +25,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
-/**
- * Captures Spotify's device playback, not the microphone.
- *
- * The format negotiation is intentionally defensive. Some Android devices
- * expose playback capture only at 48 kHz or only as mono; asking for a fixed
- * 44.1 kHz stereo AudioRecord was the most common reason the old pipeline
- * reached the UI's generic "capture failed" state before it had received a
- * single frame. We try the platform-friendly combinations and report the
- * selected format to the debug diagnostics.
- */
 @RequiresApi(Build.VERSION_CODES.Q)
 class SystemAudioCaptureRecorder {
 
@@ -81,10 +71,7 @@ class SystemAudioCaptureRecorder {
 
         val captureConfig = try {
             AudioPlaybackCaptureConfiguration.Builder(mediaProjection)
-                // Spotify publishes music as USAGE_MEDIA. Do not add UNKNOWN,
-                // GAME, or VOICE_COMMUNICATION: that captures unrelated app
-                // audio and can make the learned profile fail to match the
-                // track the person is hearing.
+
                 .addMatchingUsage(AudioAttributes.USAGE_MEDIA)
                 .build()
         } catch (e: Exception) {
@@ -106,9 +93,7 @@ class SystemAudioCaptureRecorder {
 
         outFile.parentFile?.mkdirs()
         try {
-            // Starting before launching the loop makes a true initialization
-            // failure observable to the caller; the previous implementation
-            // returned success before startRecording() ran on its coroutine.
+
             record.startRecording()
             if (record.recordingState != AudioRecord.RECORDSTATE_RECORDING) {
                 throw IllegalStateException("AudioRecord state ${record.recordingState} after startRecording")
@@ -166,8 +151,7 @@ class SystemAudioCaptureRecorder {
 
                         val framesRead = read / format.channels
                         if (isPaused) {
-                            // Preserve Spotify's elapsed timeline while paused,
-                            // but never write stale audio frames into the pass.
+
                             writeSilenceFrames(raf, framesRead.toLong(), format.channels)
                         } else {
                             val bytes = ByteArray(read * 2)

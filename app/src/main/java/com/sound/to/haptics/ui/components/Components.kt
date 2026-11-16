@@ -73,12 +73,6 @@ import com.sound.to.haptics.ui.motion.PressSpring
 import com.sound.to.haptics.ui.theme.Spacing
 import com.sound.to.haptics.ui.LocalAmbientInteraction
 
-/**
- * A card that responds to touch like a Pixel card: it scales down slightly,
- * rounds its corners, drops its tonal elevation, and shows a ripple while
- * pressed, then springs back on release. Pressing also triggers a light
- * haptic tick so every interaction feels confirmed.
- */
 @Composable
 fun PressableCard(
     onClick: () -> Unit,
@@ -107,10 +101,7 @@ fun PressableCard(
         ),
         label = "PressableCardElevation",
     )
-    // Corner "settle": the default Pixel-style card tightens its radius
-    // slightly while pressed. Custom shapes keep their own geometry and get
-    // the scale + tonal elevation feedback instead. (Detected via the public
-    // CornerSize(Dp) factory — DpCornerSize itself is private.)
+
     val settleShape = (shape as? RoundedCornerShape)?.topStart == CornerSize(28.dp)
     val cornerRadius by androidx.compose.animation.core.animateDpAsState(
         targetValue = if (pressed) 22.dp else 28.dp,
@@ -122,7 +113,7 @@ fun PressableCard(
     )
     Surface(
         onClick = {
-            // UI confirmation must never compete with a musical haptic stream.
+
             if (!musicPlaying) haptics.performHapticFeedback(HapticFeedbackType.LongPress)
             ambientInteraction()
             onClick()
@@ -134,18 +125,13 @@ fun PressableCard(
         tonalElevation = elevation,
         interactionSource = interaction,
     ) {
-        // M3's clickable Surface content has no receiver scope, so give the
-        // Column-scoped content a Column to live in.
+
         Column(modifier = Modifier.fillMaxWidth()) {
             content()
         }
     }
 }
 
-/**
- * Swaps icons with a spring pop — scale in + fade, old icon fades out fast.
- * Used for play/pause, stop/start, and any stateful icon.
- */
 @Composable
 fun AnimatedIcon(
     icon: ImageVector,
@@ -165,10 +151,6 @@ fun AnimatedIcon(
     }
 }
 
-/**
- * Shimmering placeholder used for skeleton loading states. Cheap: a single
- * animated gradient sweep, no blur, no per-frame layout work.
- */
 @Composable
 fun SkeletonBox(
     modifier: Modifier,
@@ -192,7 +174,6 @@ fun SkeletonBox(
     Box(modifier = modifier.clip(shape).background(brush))
 }
 
-/** Skeleton variant that fills its parent's width, useful for list rows. */
 @Composable
 fun SkeletonRow(modifier: Modifier = Modifier, trailing: Boolean = false) {
     Row(
@@ -210,11 +191,6 @@ fun SkeletonRow(modifier: Modifier = Modifier, trailing: Boolean = false) {
     }
 }
 
-/**
- * Smoothly rolls a numeric value toward its target using spring physics —
- * sensor reads, percentages, timestamps. The text only reformats when the
- * animated value actually changes, so fast sources stay cheap.
- */
 @Composable
 fun RollingNumber(
     value: Float,
@@ -240,10 +216,6 @@ fun RollingNumber(
     )
 }
 
-/**
- * Small tonal pill for live status — "Synced", "Learning…", "Needs access".
- * The colored dot pulses while [active] is true.
- */
 @Composable
 fun StatusPill(
     text: String,
@@ -283,7 +255,6 @@ fun StatusPill(
     }
 }
 
-/** Section header with a tinted icon chip — consistent across all screens. */
 @Composable
 fun SectionHeader(
     icon: ImageVector,
@@ -321,10 +292,6 @@ fun SectionHeader(
     }
 }
 
-/**
- * Staggered entrance: content fades in and settles from below, delayed by
- * [index] so sequences of siblings animate in one after another.
- */
 @Composable
 fun StaggeredEntrance(
     index: Int,
@@ -345,12 +312,6 @@ fun StaggeredEntrance(
     }
 }
 
-/**
- * Animated success checkmark: the halo circle pops in with a bouncy spring,
- * then a rounded stroke draws the check — the "done" moment of Pixel-style
- * confirmation states. Rendered on a single Canvas, so it is cheap enough
- * for inline list rows and status headers.
- */
 @Composable
 fun SuccessCheckmark(
     modifier: Modifier = Modifier,

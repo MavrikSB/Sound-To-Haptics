@@ -7,15 +7,6 @@ import java.io.File
 import java.util.Properties
 import java.util.UUID
 
-/**
- * A small, deliberately boring persistence layer for converted audio.
- *
- * Converted songs are library content, not cache content: they live below
- * Context.filesDir/haptic_library and are therefore private to this app and
- * retained across normal process death, upgrades, and app launches. Metadata
- * is kept beside each OGG in a tiny properties file so a damaged entry can
- * be skipped without making the whole library unreadable.
- */
 data class HapticSong(
     val id: String,
     val title: String,
@@ -31,16 +22,6 @@ data class HapticSong(
     val onsetFile: File get() = File(file.parentFile, "${file.nameWithoutExtension}.onsets")
     val layerFile: File get() = File(file.parentFile, "${file.nameWithoutExtension}.layers")
 
-    /**
-     * Sidecar for the musical-haptic Transient Mode renderer's scheduled
-     * event timeline (see [com.sound.to.haptics.haptics.TransientAnalysis]).
-     * Independent of [onsetFile]/[layerFile]: those remain the continuous-
-     * mode diagnostics/legacy artifacts, versioned by
-     * [com.sound.to.haptics.haptics.HapticProcessing.VERSION]; this one is
-     * versioned by [com.sound.to.haptics.haptics.TransientConfig.PROCESSING_VERSION]
-     * so a Transient-only algorithm change never invalidates Continuous
-     * mode's cache, or vice versa.
-     */
     val transientFile: File get() = File(file.parentFile, "${file.nameWithoutExtension}.transient")
 }
 
@@ -54,13 +35,10 @@ class HapticLibrary(context: Context) {
     private val directory = File(context.applicationContext.filesDir, DIRECTORY).apply { mkdirs() }
 
     init {
-        // Older builds wrote haptic_<timestamp>.ogg directly into filesDir.
-        // Move those entries once so an upgrade does not make a person's
-        // existing converted songs disappear from the new library screen.
+
         migrateLegacyFiles(context.applicationContext.filesDir)
     }
 
-    /** Returns only playable OGGs. One bad file cannot hide the remaining library. */
     @Synchronized
     fun scan(): List<HapticSong> = directory.listFiles()
         ?.asSequence()
@@ -73,10 +51,6 @@ class HapticLibrary(context: Context) {
         ?.toList()
         .orEmpty()
 
-    /**
-     * Atomically-ish promotes a successful conversion into the library. The
-     * caller may safely delete [convertedFile] after this returns.
-     */
     @Synchronized
     fun addConverted(
         convertedFile: File,
@@ -101,6 +75,17 @@ class HapticLibrary(context: Context) {
             staging.delete()
         }
 
+        runCatching {
+            val companion = File(
+                convertedFile.parentFile,
+                "${convertedFile.nameWithoutExtension}.stereo.ogg",
+            )
+            val targetCompanion = File(directory, "${target.nameWithoutExtension}.stereo.ogg")
+            if (companion.exists() && companion.length() > 0L) {
+                companion.copyTo(targetCompanion, overwrite = true)
+            }
+        }
+
         val song = HapticSong(
             id = id,
             title = target.nameWithoutExtension,
@@ -121,6 +106,10 @@ class HapticLibrary(context: Context) {
         song.file.parentFile
             ?.resolve(song.file.nameWithoutExtension + META_EXTENSION)
             ?.delete()
+
+        song.file.parentFile
+            ?.resolve("${song.file.nameWithoutExtension}.stereo.ogg")
+            ?.delete()
         song.onsetFile.delete()
         song.layerFile.delete()
         song.transientFile.delete()
@@ -129,9 +118,7 @@ class HapticLibrary(context: Context) {
 
     @Synchronized
     fun clear(): Int {
-        // Report songs, not their sidecar properties/onset files. The return
-        // value is useful to callers that want to confirm how much content
-        // was removed, while every temporary/staging file is still cleaned.
+
         val count = directory.listFiles()?.count {
             it.isFile && it.extension.equals(OGG_EXTENSION.removePrefix("."), ignoreCase = true)
         } ?: 0
@@ -141,7 +128,6 @@ class HapticLibrary(context: Context) {
 
     fun findByPath(path: String): HapticSong? = scan().firstOrNull { it.filePath == path }
 
-    /** Persists recency separately from creation time for stable library ordering. */
     @Synchronized
     fun markPlayed(song: HapticSong): HapticSong? {
         if (!song.file.exists()) return null

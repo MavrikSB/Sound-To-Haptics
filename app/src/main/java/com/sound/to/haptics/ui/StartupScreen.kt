@@ -82,9 +82,6 @@ fun StartupScreen(modifier: Modifier = Modifier) {
         label = "StartupOffset",
     )
 
-    // A tonal wash that fades in a beat after the logo settles — reads as an
-    // intentional Material You "scrim" rather than the background just
-    // sitting there, and gives the logo/text more contrast to land on.
     val scrimAlpha by animateFloatAsState(
         targetValue = if (entered) 1f else 0f,
         animationSpec = tween(700, delayMillis = 60, easing = FastOutSlowInEasing),
@@ -93,10 +90,7 @@ fun StartupScreen(modifier: Modifier = Modifier) {
 
     Box(modifier.fillMaxSize().background(cs.background)) {
         DriftingBackground(energy = 0.34f, lowFx = true)
-        // Vertical scrim, darkest at the edges where the logo/text sit —
-        // Brush.verticalGradient resolves against actual layout size, unlike
-        // a radial gradient with an unspecified center/infinite radius
-        // (which isn't a valid combination).
+
         Box(
             Modifier
                 .fillMaxSize()
@@ -117,10 +111,7 @@ fun StartupScreen(modifier: Modifier = Modifier) {
                 .padding(horizontal = Spacing.Xxl),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // Soft halo behind the mark — a large, very low-alpha radial glow
-            // in the primary color, the same "ambient light" language as the
-            // drifting background, so the logo feels like it belongs to the
-            // rest of the app rather than being a sticker on top of it.
+
             Box(contentAlignment = Alignment.Center) {
                 Box(
                     Modifier
@@ -243,12 +234,11 @@ private fun StartupAtmosphere() {
     Canvas(Modifier.fillMaxSize()) {
         val center = Offset(size.width / 2f, size.height * 0.42f)
         val radius = size.minDimension * 0.22f
-        val maxOrbitRadius = size.minDimension * 0.68f // Pre-calculate
-        val widthFactor = size.width * 0.06f // Pre-calculate
-        val heightFactor = size.height * 0.04f // Pre-calculate
-        val strokeWidthBasePx = 1.1f.dp.toPx() // Pre-calculate
-        val strokeWidthIncrementPx = 0.2f.dp.toPx() // Pre-calculate
-
+        val maxOrbitRadius = size.minDimension * 0.68f
+        val widthFactor = size.width * 0.06f
+        val heightFactor = size.height * 0.04f
+        val strokeWidthBasePx = 1.1f.dp.toPx()
+        val strokeWidthIncrementPx = 0.2f.dp.toPx()
 
         drawCircle(
             brush = Brush.radialGradient(
@@ -260,12 +250,12 @@ private fun StartupAtmosphere() {
             center = center,
         )
         repeat(3) { index ->
-            val orbitMultiplier = 1.65f + index * 0.42f // Pre-calculate constant per index
+            val orbitMultiplier = 1.65f + index * 0.42f
             val orbit = radius * orbitMultiplier * breath
 
-            val phaseFactorX = 0.32f + index * 0.04f // Pre-calculate constant per index
-            val phaseFactorY = 0.26f + index * 0.03f // Pre-calculate constant per index
-            val angleOffset = index.toFloat() // Convert to float once
+            val phaseFactorX = 0.32f + index * 0.04f
+            val phaseFactorY = 0.26f + index * 0.03f
+            val angleOffset = index.toFloat()
 
             val orbitCenter = Offset(
                 center.x + cos(phase * phaseFactorX + angleOffset) * widthFactor,
@@ -300,8 +290,7 @@ private fun StartupMark() {
         val cx = size.width / 2f
         val cy = size.height / 2f
         val barWidth = 12.dp.toPx()
-        val xOffsetMultiplier = 20.dp.toPx() // Pre-calculate
-
+        val xOffsetMultiplier = 20.dp.toPx()
 
         repeat(5) { i ->
             val x = cx + (i - 2) * xOffsetMultiplier
@@ -322,11 +311,6 @@ private fun StartupMark() {
     }
 }
 
-/**
- * A single equalizer-style bar rather than a bouncing dot — echoes the
- * EqualizerAnim motif used on the player screen so the startup animation
- * reads as "this app is about audio" from the very first frame.
- */
 @Composable
 private fun LoadingBeat(index: Int) {
     val cs = MaterialTheme.colorScheme

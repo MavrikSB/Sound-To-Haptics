@@ -11,17 +11,6 @@ import com.sound.to.haptics.settings.AppSettings
 import java.io.File
 import kotlin.math.abs
 
-/**
- * Plays a cached haptic-enabled OGG file as a second, muted-audio
- * [MediaPlayer] alongside Spotify's real playback. The OGG's third channel
- * remains the physical haptic source; this class only keeps that actual OGG
- * player aligned with Spotify's externally reported position.
- *
- * It deliberately does not decode a sidecar into a VibrationEffect. The
- * sidecar is available for analysis/debug information, but the persisted OGG
- * is the playback artifact and Android's haptic-aware audio path is the
- * source of continuous haptic output.
- */
 class HapticOggSyncPlayer(
     private val context: Context,
     private val onPlaybackError: (String) -> Unit = {},
@@ -34,7 +23,6 @@ class HapticOggSyncPlayer(
 
     private var player: MediaPlayer? = null
 
-    /** Loads [file] and prepares it paused for synchronized playback. */
     fun load(file: File): Boolean {
         release()
         if (!file.exists() || file.length() < 4096L) return false
@@ -75,10 +63,7 @@ class HapticOggSyncPlayer(
                     true
                 }
                 isLooping = false
-                // Keep the OGG's audible stereo branch quiet because Spotify
-                // itself supplies the audible track. The haptic channel stays
-                // enabled through setHapticChannelsMuted(false); the same
-                // strength setting also scales this secondary OGG route.
+
                 val strength = AppSettings.state.value.hapticStrength.coerceIn(0f, 1f)
                 setVolume(0.08f * strength, 0.08f * strength)
             }
@@ -90,7 +75,6 @@ class HapticOggSyncPlayer(
         }
     }
 
-    /** Feed this whenever Spotify reports a fresh position/pause reading. */
     fun syncTo(positionMs: Long, paused: Boolean) {
         val p = player ?: return
         try {

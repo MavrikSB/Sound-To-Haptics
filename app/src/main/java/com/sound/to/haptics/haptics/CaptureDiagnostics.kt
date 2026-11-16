@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-/** Technical capture facts shared with the debug screen without leaking them into normal UI copy. */
 data class CaptureDiagnosticsState(
     val stage: String = "Idle",
     val projectionGranted: Boolean = false,

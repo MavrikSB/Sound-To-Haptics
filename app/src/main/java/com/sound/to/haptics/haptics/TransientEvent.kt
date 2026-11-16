@@ -4,53 +4,28 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 
-/**
- * Perceptual category assigned by [TransientEventClassifier]. These are
- * heuristic buckets, not real instrument recognition (see spec section 9):
- * "the system does not need to perfectly identify instruments, it needs to
- * produce useful perceptual categories."
- */
 enum class TransientEventType {
-    /** Strong low-frequency energy, fast attack, low spectral centroid. */
+
     KICK,
 
-    /** Strong mid/high-frequency energy with fast spectral flux, short duration. */
     SNARE,
 
-    /** High-frequency energy, very short, little bass. */
     HIHAT,
 
-    /** A real onset that doesn't cleanly match kick/snare/hat (e.g. toms, claps, guitar pick attacks). */
     PERCUSSIVE_OTHER,
 
-    /** Not a discrete onset at all — persistent low-frequency energy driving the continuous bed. */
     BASS_BED,
 }
 
-/** Which of the four conceptual haptic layers (spec section 10) an event belongs to. */
 enum class TransientLayer {
-    /** Layer A — sustained low-frequency musical energy, gently rising and falling. */
+
     BED,
 
-    /** Layer B — significant attacks: kick, snare, clap, strong percussion, major accents. */
     ACCENT,
 
-    /** Layer C — heavily-limited selection of smaller events (hats, fine rhythmic detail). */
     TEXTURE,
 }
 
-/**
- * One scheduled haptic event in Transient Mode's musical rendering timeline.
- *
- * [intensity] and [sharpness] are two independent perceptual dimensions
- * (spec section 13): a kick can be high-intensity/low-sharpness while a
- * hi-hat is low-intensity/high-sharpness. Both are already fully shaped
- * (onset strength -> spectral relevance -> local prominence -> soft-knee
- * compression -> perceptual curve) by the time this object exists; the
- * user's haptic-strength multiplier is deliberately NOT baked in here — it
- * is applied only in [TransientHapticRenderer] at final render time so
- * relative ordering between event types survives any strength setting.
- */
 data class TransientEvent(
     val timestampMs: Long,
     val type: TransientEventType,
@@ -61,12 +36,6 @@ data class TransientEvent(
     val isMajorAccent: Boolean = false,
 )
 
-/**
- * The full result of analyzing one track for Transient Mode: the scheduled
- * event timeline plus the beat-tracking estimate that helped prioritize it.
- * [bpm]/[beatConfidence] are exposed mainly for the debug menu (spec
- * section 30) — playback itself never quantizes to them (spec section 16).
- */
 data class TransientAnalysis(
     val version: Int,
     val sampleRate: Int,
@@ -76,18 +45,8 @@ data class TransientAnalysis(
     val events: List<TransientEvent>,
 )
 
-private const val TRANSIENT_MAGIC = 0x54484150 // "THAP"
+private const val TRANSIENT_MAGIC = 0x54484150
 
-/**
- * Serializes a [TransientAnalysis] next to its haptic OGG (see
- * [com.sound.to.haptics.library.HapticSong.transientFile]), exactly like
- * [LayeredHapticAnalysis.saveTo] does for the continuous pipeline. Kept as
- * its own compact binary format rather than reusing [LayeredHapticAnalysis]'s
- * on-disk shape, since the two pipelines' data no longer overlap (frames vs.
- * scheduled events) and are versioned independently (TransientConfig vs.
- * HapticProcessing) so a Transient-only algorithm change can never
- * accidentally invalidate the Continuous mode cache, or vice versa.
- */
 fun TransientAnalysis.saveTo(file: File) {
     file.parentFile?.mkdirs()
     DataOutputStream(file.outputStream().buffered()).use { out ->

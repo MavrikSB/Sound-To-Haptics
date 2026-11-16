@@ -73,7 +73,7 @@ private const val SETTINGS_TAB_INDEX = 2
 
 @Composable
 fun RootScreen() {
-    // Version the saved navigation key after removing the obsolete dashboard route.
+
     var selectedTab by rememberSaveable("navigation_functional_v3") { mutableIntStateOf(OFFLINE_TAB_INDEX) }
     val tabStack = remember { mutableStateListOf(selectedTab) }
     var navForward by remember { mutableStateOf(true) }
@@ -139,9 +139,7 @@ fun RootScreen() {
         Box(
             Modifier
                 .fillMaxSize()
-                // Keep a theme-aware base under the optional Canvas. Without
-                // this, turning the dynamic field off exposes the black
-                // transparent window even when Material You is in light mode.
+
                 .background(MaterialTheme.colorScheme.background)
         ) {
             if (featureFlags.dynamicBackground && appSettings.backgroundStyle != BackgroundStyle.OFF) {

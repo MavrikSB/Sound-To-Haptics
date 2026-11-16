@@ -10,19 +10,6 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
-/**
- * The visual half of the debug menu's "Layout & Motion Inspector" section.
- * Purely additive — draws on top of the real UI, never intercepts touches.
- *
- * - [alignmentGrid]: an 8dp baseline grid, the same increment every spacing
- *   token in [com.sound.to.haptics.ui.theme.Spacing] is built from, so
- *   misaligned padding is easy to spot by eye.
- * - [marginPaddingOverlay]: a dashed safe-content-area guide at the
- *   16dp/24dp margins used throughout the screens.
- * - [wireframeBounds]: a bright border around the full content area (inside
- *   the app bars) plus a center crosshair, so you can see exactly how much
- *   room content has to work with on the current device/window size.
- */
 @Composable
 fun DebugOverlay(
     wireframeBounds: Boolean,

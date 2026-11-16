@@ -92,7 +92,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
             ) { SignalArtwork(cs.primary, cs.secondary, mode = 1) },
             TutorialPage(
                 "BitChord",
-                "Connect BitChord to your YouTube Music account. The app plays through ExoPlayer and learns each track from the decoded audio itself — no microphone.",
+                "Connect BitChord to your YouTube Music account. The app plays through ExoPlayer and learns each track from the decoded audio itself.",
                 Icons.Rounded.MusicNote,
             ) { SignalArtwork(cs.tertiary, cs.primary, mode = 2) },
             TutorialPage(
@@ -102,12 +102,12 @@ fun OnboardingScreen(onFinished: () -> Unit) {
             ) { LayerLegend(cs) },
             TutorialPage(
                 "Haptic Strength",
-                "Control the strength and intensity of the haptic feedback easily to your comfort.",
+                "Control the strength and intensity of the haptic feedback easily to your comfort, may not work with some devices.",
                 Icons.Rounded.Tune,
             ) { StrengthArtwork(cs) },
             TutorialPage(
                 "Start Listening",
-                "Choose Offline or BitChord below and begin.",
+                "Choose Offline or BitChord below and begin feeling your music.",
                 Icons.Rounded.SkipNext,
             ) { SignalArtwork(cs.primary, cs.error, mode = 3) },
         )

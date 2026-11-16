@@ -4,12 +4,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-/**
- * A compact, UI-safe snapshot of the last Transient Mode analysis, for the
- * developer debug menu (spec section 30). Extends the existing debug menu
- * rather than replacing it — this sits alongside [AnalysisDiagnostics]
- * (the continuous-mode layer visualizer), not instead of it.
- */
 data class TransientDiagnosticsState(
     val bpm: Float = 0f,
     val beatConfidence: Float = 0f,
@@ -28,9 +22,9 @@ data class TransientDiagnosticsState(
     val bedCount: Int = 0,
     val majorAccentCount: Int = 0,
     val analysisLatencyMs: Long = 0L,
-    /** Last observed (renderTimestampMs - audioPositionMs) from the live renderer — see TransientHapticRenderer. */
+
     val audioHapticOffsetMs: Long = 0L,
-    /** Set by the live renderer each time it fires an event, for a real-time "what just fired" readout. */
+
     val lastFiredType: TransientEventType? = null,
     val lastFiredIntensity: Float = 0f,
     val lastFiredLayer: TransientLayer? = null,
@@ -41,7 +35,6 @@ object TransientDiagnostics {
     private val _state = MutableStateFlow(TransientDiagnosticsState())
     val state: StateFlow<TransientDiagnosticsState> = _state.asStateFlow()
 
-    /** Called once after [TransientAudioAnalyzer.analyze] finishes, from the analysis coroutine. */
     fun publish(analysis: TransientAnalysis, frames: List<RawSpectralFrame>, candidates: List<RawOnsetCandidate>, analysisLatencyMs: Long = 0L) {
         val count = 64
         fun <T> sample(values: List<T>, fallback: T): List<T> {
@@ -89,7 +82,6 @@ object TransientDiagnostics {
         )
     }
 
-    /** Called by [TransientHapticRenderer] each time it actually fires a haptic event during live playback. */
     fun reportFired(type: TransientEventType, layer: TransientLayer, intensity: Float, audioHapticOffsetMs: Long, eventsInLastSecond: Int) {
         _state.value = _state.value.copy(
             lastFiredType = type,

@@ -15,30 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-/**
- * Thin wrapper around Spotify's official Android SDKs:
- *  - auth-lib for the login (OAuth) flow
- *  - app-remote-lib for "Now Playing" state + play/pause/skip/seek control
- *
- * IMPORTANT: Spotify's App Remote SDK gives control + metadata (track name,
- * artist, artwork, position, play/pause) — it deliberately does NOT expose
- * decoded/raw audio to third-party apps directly. Haptics for this tab
- * instead come from [com.sound.to.haptics.haptics.SystemAudioCaptureRecorder],
- * which captures the device's own audio *output* (via MediaProjection
- * playback capture, not the microphone) the first time a track plays, then
- * [com.sound.to.haptics.haptics.HapticCaptureConverter] preserves that
- * shaped capture as a validated haptic-enabled OGG (see
- * [com.sound.to.haptics.haptics.TrackHapticCache]) that plays back in
- * sync with Spotify on every later play — see
- * [com.sound.to.haptics.spotify.SpotifyViewModel] for the orchestration.
- *
- * This file lives under `app/src/withSpotify/` — it only compiles into the
- * `withSpotify` product flavor, which is the one that pulls in the App
- * Remote `.aar` (see app/libs/README.md) and Spotify's auth dependency.
- * [SpotifyConfig] itself stays in `main` since it's plain constants with no
- * SDK dependency.
- */
-
 data class SpotifyTrack(
     val uri: String? = null,
     val title: String = "",
@@ -54,7 +30,7 @@ data class SpotifyConnectionState(
     val isConnecting: Boolean = false,
     val error: String? = null,
     val track: SpotifyTrack = SpotifyTrack(),
-    /** Web API bearer token from the login flow — used by [SpotifyWebApi] for search/library metadata only. */
+
     val accessToken: String? = null,
 )
 
@@ -86,7 +62,6 @@ class SpotifyController(private val appContext: Context) {
         AuthorizationClient.openLoginActivity(activity, SpotifyConfig.AUTH_REQUEST_CODE, request)
     }
 
-    /** Call from Activity.onActivityResult for [SpotifyConfig.AUTH_REQUEST_CODE]. */
     fun handleAuthResult(requestCode: Int, resultCode: Int, data: android.content.Intent?): Boolean {
         if (requestCode != SpotifyConfig.AUTH_REQUEST_CODE) return false
         val response = AuthorizationClient.getResponse(resultCode, data)
@@ -149,7 +124,6 @@ class SpotifyController(private val appContext: Context) {
         if (_state.value.track.isPaused) remote.playerApi.resume() else remote.playerApi.pause()
     }
 
-    /** Explicit pause (not a toggle) — used when the person switches away to another section of the app. */
     fun pause() {
         appRemote?.playerApi?.pause()
     }
@@ -158,12 +132,6 @@ class SpotifyController(private val appContext: Context) {
     fun skipPrevious() = appRemote?.playerApi?.skipPrevious()
     fun seekTo(positionMs: Long) = appRemote?.playerApi?.seekTo(positionMs.coerceAtLeast(0L))
 
-    /**
-     * Starts playback of [uri] (a `spotify:track:...` URI from search or
-     * library results) inside the real Spotify app via App Remote. This is
-     * the only playback path in the app — there is no offline/downloaded
-     * playback of Spotify content, by design (see class doc above).
-     */
     fun play(uri: String) = appRemote?.playerApi?.play(uri)
 
     fun disconnect() {

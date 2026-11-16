@@ -84,7 +84,7 @@ fun HapticSongRow(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete ${song.title}?") },
+            title = { Text("Delete ${song.title}") },
             text = { Text("This removes the saved haptic track from this device. The original audio is not changed.") },
             confirmButton = {
                 TextButton(onClick = { showDeleteDialog = false; onDelete() }) { Text("Delete") }

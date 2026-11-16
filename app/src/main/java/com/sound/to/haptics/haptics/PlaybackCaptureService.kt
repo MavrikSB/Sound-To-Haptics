@@ -14,13 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-/**
- * Keeps the MediaProjection capture session alive while Spotify plays in the
- * background. Android 14 requires the explicit media-projection foreground
- * service type; omitting it allows the service to start on some devices but
- * causes the projection/AudioRecord session to be revoked immediately on
- * others.
- */
 class PlaybackCaptureService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null

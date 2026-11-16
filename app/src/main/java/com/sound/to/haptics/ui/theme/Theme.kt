@@ -16,11 +16,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-/**
- * Fallback dark scheme, expressed as full Material You tonal roles so it
- * degrades gracefully on API < 31 (or whenever dynamic color is off) instead
- * of falling back to a handful of flat hard-coded colors.
- */
 private val AppDarkColorScheme = darkColorScheme(
     primary = Primary80,
     onPrimary = Primary20,
@@ -95,12 +90,6 @@ private val AppLightColorScheme = lightColorScheme(
     onErrorContainer = Color(0xFF410002),
 )
 
-/**
- * App-wide Material You theme. Prefers the wallpaper-derived dynamic color
- * scheme on Android 12+ (exactly what Pixel/Material You is about); falls
- * back to the hand-tuned violet tonal scheme above on older devices. Also
- * wires up the full type scale and Pixel-style corner radii.
- */
 @Composable
 fun HapticStudioTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -119,9 +108,7 @@ fun HapticStudioTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            // Edge-to-edge: bars stay transparent, content draws under them
-            // and consumes WindowInsets itself so padding adapts per-device
-            // instead of being baked in as fixed dp.
+
             window.statusBarColor = Color.Transparent.toArgb()
             window.navigationBarColor = Color.Transparent.toArgb()
             val controller = WindowCompat.getInsetsController(window, view)

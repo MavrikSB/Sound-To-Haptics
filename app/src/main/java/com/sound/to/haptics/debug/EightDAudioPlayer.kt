@@ -15,14 +15,6 @@ import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.sin
 
-/**
- * Synthesizes a tone and sweeps it stereo left-right-and-back in a slow
- * loop — the same trick behind those "8D audio" tracks, just generated
- * live instead of baked into a file. Doubles as a demo of what this app's
- * core idea looks like end-to-end: [rotationHz] and [depth] are read live
- * every buffer, and [hapticSyncEnabled] fires a callback each time the pan
- * crosses center, so a haptic pulse can be timed to it.
- */
 class EightDAudioPlayer {
 
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
@@ -37,7 +29,6 @@ class EightDAudioPlayer {
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying: StateFlow<Boolean> = _isPlaying.asStateFlow()
 
-    /** 0 (hard left) .. 1 (hard right), for a little visual indicator while playing. */
     private val _panPosition = MutableStateFlow(0.5f)
     val panPosition: StateFlow<Float> = _panPosition.asStateFlow()
 

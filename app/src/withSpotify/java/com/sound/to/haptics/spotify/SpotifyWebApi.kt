@@ -9,7 +9,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 
-/** A track's metadata only — never its audio. See class doc below. */
 data class SpotifyTrackItem(
     val id: String,
     val uri: String,
@@ -27,18 +26,6 @@ data class SpotifyPlaylistItem(
     val trackCount: Int = 0,
 )
 
-/**
- * Minimal wrapper around the Spotify Web API's read-only catalog/library
- * endpoints (search, saved tracks, top tracks) using the access token
- * obtained by [SpotifyController]'s login flow.
- *
- * This class is deliberately metadata-only: track name, artist, artwork URL,
- * duration. It never requests and Spotify never serves decoded/raw audio
- * over this API — actual playback happens exclusively through
- * [SpotifyController.play], which hands a track URI to the real Spotify app
- * via App Remote. There is no method here that returns audio bytes, and none
- * should be added; see [SpotifyController]'s doc comment for why.
- */
 object SpotifyWebApi {
 
     private const val BASE = "https://api.spotify.com/v1"
@@ -129,7 +116,6 @@ object SpotifyWebApi {
         )
     }
 
-    /** Returns null (rather than throwing) on any network/HTTP error — callers treat that as "no results". */
     private fun get(urlStr: String, accessToken: String): JSONObject? {
         var conn: HttpURLConnection? = null
         return try {

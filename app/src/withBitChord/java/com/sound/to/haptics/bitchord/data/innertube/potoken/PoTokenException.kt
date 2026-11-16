@@ -7,7 +7,6 @@ package com.sound.to.haptics.bitchord.data.innertube.potoken
 
 class PoTokenException(message: String) : Exception(message)
 
-// to be thrown if the WebView provided by the system is broken
 class BadWebViewException(message: String) : Exception(message)
 
 fun buildExceptionForJsError(error: String): Exception {

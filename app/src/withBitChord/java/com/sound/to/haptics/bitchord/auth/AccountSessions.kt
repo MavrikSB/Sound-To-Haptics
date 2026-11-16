@@ -9,7 +9,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.security.MessageDigest
 
-/** A Google login kept independently from every other captured login. */
 data class GoogleAccountSession(
     val accountId: String,
     val cookie: String,
@@ -19,7 +18,6 @@ data class GoogleAccountSession(
     val activeProfileId: String? = null,
 )
 
-/** One Personal or Brand identity available under a Google login. */
 data class YouTubeProfile(
     val profileId: String,
     val name: String,
@@ -31,7 +29,6 @@ data class YouTubeProfile(
     val isBrandAccount: Boolean = false,
 )
 
-/** Stable selector/swipe order: account insertion order, then profile order. */
 fun flattenedProfiles(accounts: List<GoogleAccountSession>): List<Pair<String, String>> =
     accounts.flatMap { account -> account.profiles.map { account.accountId to it.profileId } }
 

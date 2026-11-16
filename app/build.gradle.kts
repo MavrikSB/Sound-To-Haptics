@@ -44,10 +44,6 @@ android {
         }
     }
 
-    // Release signing reads local.properties (git-ignored):
-    //   release.storeFile, release.storePassword, release.keyAlias, release.keyPassword
-    // Without it, release builds fall back to the debug key so contributors
-    // can still assemble a release APK.
     signingConfigs {
         create("release") {
             val localProps = Properties().apply {
@@ -104,9 +100,7 @@ kotlin {
 }
 
 // NewPipeExtractor ships org.schabi.newpipe.extractor.utils.Utils; this module
-// carries a patched copy at the same package path (see the file for details).
-// Release builds merge to one dex set, so the library's copy is stripped from
-// its jar at packaging time and exactly one definition survives.
+
 val newPipeExtractorRaw: Configuration by configurations.creating {
     isTransitive = false
     isCanBeConsumed = false
@@ -120,8 +114,7 @@ val newPipeExtractorStripped = tasks.register<org.gradle.api.tasks.bundling.Jar>
     archiveFileName.set("NewPipeExtractor-v0.26.3-noutils.jar")
     destinationDirectory.set(layout.buildDirectory.dir("stripped-libs"))
     from(provider { newPipeExtractorRaw.map { zipTree(it) } }) {
-        // The class itself, plus any nested or synthetic siblings the upstream
-        // compiler emitted alongside it, so nothing from the jar's Utils survives.
+
         exclude("org/schabi/newpipe/extractor/utils/Utils.class")
         exclude("org/schabi/newpipe/extractor/utils/Utils\$*.class")
     }
@@ -149,16 +142,11 @@ dependencies {
     implementation("com.moizhassan.ffmpeg:ffmpeg-kit-16kb:6.1.1")
     implementation("io.hapticlabs:hapticlabsplayer:0.6.3")
 
-    // ---- BitChord integration (withBitChord only; offlineOnly stays independent) ----
-
-    // Playback: BitChord plays in-app through a Media3 ExoPlayer + media session.
     "withBitChordImplementation"("androidx.media3:media3-exoplayer:1.11.0")
     "withBitChordImplementation"("androidx.media3:media3-session:1.11.0")
     "withBitChordImplementation"("androidx.media3:media3-common:1.11.0")
     "withBitChordImplementation"("androidx.media3:media3-datasource-okhttp:1.11.0")
 
-    // InnerTube API client (search / browse / library / stream resolution).
-    // Versions track InnerTubeX v0.11.7's required runtime.
     "withBitChordImplementation"("io.ktor:ktor-client-core:3.6.0")
     "withBitChordImplementation"("io.ktor:ktor-client-okhttp:3.6.0")
     "withBitChordImplementation"("io.ktor:ktor-client-content-negotiation:3.6.0")
@@ -166,13 +154,10 @@ dependencies {
     "withBitChordImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
     "withBitChordImplementation"("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Stream resolution engine: client catalog and cipher tiers.
     "withBitChordImplementation"("com.github.MetrolistGroup.innertubex:innertubex-android:v0.11.7")
 
-    // Stream resolution: NewPipe solves YouTube's signature + `n` throttling as
-    // the failsafe behind InnerTubeX. Consumed as a stripped jar — see the
     // newPipeExtractorStripped task above; the transitive dependencies it would
-    // have brought are listed here because dropping its artifact drops them too.
+
     "withBitChordImplementation"(files(newPipeExtractorStripped))
     "withBitChordImplementation"("com.github.TeamNewPipe:nanojson:e9d656ddb49a412a5a0a5d5ef20ca7ef09549996")
     "withBitChordImplementation"("org.jsoup:jsoup:1.22.2")
@@ -181,10 +166,8 @@ dependencies {
     "withBitChordImplementation"("org.mozilla:rhino:1.8.1")
     "withBitChordImplementation"("org.mozilla:rhino-engine:1.8.1")
 
-    // Encrypted-at-rest storage for the YouTube Music session cookie.
     "withBitChordImplementation"("androidx.security:security-crypto:1.1.0-alpha06")
 
-    // WebView PoToken minter (BotGuard) used for session-bound stream URLs.
     "withBitChordImplementation"("androidx.collection:collection-ktx:1.4.5")
 
     testImplementation("junit:junit:4.13.2")

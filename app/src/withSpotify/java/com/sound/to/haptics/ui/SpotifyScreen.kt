@@ -139,17 +139,12 @@ fun SpotifyScreen(viewModel: SpotifyViewModel) {
         viewModel.onScreenVisible()
     }
 
-    // Same shared "is something playing" signal HapticStudioScreen reports,
-    // so Settings → "Keep screen on while playing" also covers Spotify mode.
     val isActivelyPlaying = uiState.connection.isConnected && !uiState.connection.track.isPaused
     androidx.compose.runtime.DisposableEffect(isActivelyPlaying) {
         com.sound.to.haptics.settings.PlaybackActivity.setPlaying(isActivelyPlaying)
         onDispose { com.sound.to.haptics.settings.PlaybackActivity.setPlaying(false) }
     }
 
-    // Chained flow: RECORD_AUDIO is required for AudioRecord regardless of
-    // source, then the one-time system "record/cast screen" consent lets us
-    // actually capture Spotify's own audio output instead of the mic.
     val captureConsentLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result -> viewModel.onCaptureConsentResult(result.resultCode, result.data) }
@@ -751,9 +746,7 @@ private fun NowPlayingCard(viewModel: SpotifyViewModel, track: SpotifyTrack) {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Box {
-            // Artwork is a visual light source for the player, not a
-            // separate screen: keeping it in the card makes track changes
-            // feel like a soft scene transition rather than a flash.
+
             track.albumArtUri?.takeIf { it.isNotBlank() }?.let { artwork ->
                 AsyncImage(
                     model = artwork,
@@ -768,10 +761,7 @@ private fun NowPlayingCard(viewModel: SpotifyViewModel, track: SpotifyTrack) {
                 )
                 Box(Modifier.fillMaxSize().background(cs.surfaceContainer.copy(alpha = 0.74f)))
             }
-            // Faint brand-colored wash in the corner behind the artwork
-            // chip — same "ambient glow" language as the offline player,
-            // tinted with Spotify green instead of the app's primary so
-            // this screen still reads as distinctly "Spotify mode".
+
             Box(
                 Modifier
                     .size(180.dp)
@@ -850,8 +840,7 @@ private fun NowPlayingCard(viewModel: SpotifyViewModel, track: SpotifyTrack) {
                         AnimatedIcon(Icons.Rounded.SkipPrevious, contentDescription = "Previous")
                     }
                     Spacer(Modifier.width(Spacing.Lg))
-                    // Same breathing halo as the offline player's play button
-                    // while actively playing, tinted Spotify green.
+
                     Box(contentAlignment = Alignment.Center) {
                         if (!track.isPaused) {
                             val pulse = rememberInfiniteTransition(label = "SpotifyPlayPulse")
@@ -1156,13 +1145,6 @@ private fun ErrorDetailBox(detail: String?) {
     }
 }
 
-/**
- * Isolated on purpose: [captureLevel][SpotifyViewModel.captureLevel] ticks ~10-15x/sec
- * while capturing, so collecting it here — rather than up in [SpotifyScreen]
- * or even [TrackHapticsPanel] — keeps that churn scoped to just this bar
- * instead of recomposing the whole screen every tick (which is what was
- * causing the frame-rate dips while a track was being learned).
- */
 @Composable
 private fun CaptureLevelBar(mode: HapticMode, levelFlow: StateFlow<Float>) {
     val cs = MaterialTheme.colorScheme

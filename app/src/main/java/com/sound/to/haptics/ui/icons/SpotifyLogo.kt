@@ -10,15 +10,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 
-/**
- * Scalable Spotify mark for navigation and Spotify surfaces.
- *
- * The circle and the three white/contrast arcs follow the real Spotify
- * construction: one circular silhouette, then three shorter wave bands with
- * the same curvature and progressively smaller width. The colors are separate
- * so the geometry can remain recognizable while the navigation supplies
- * Material You selected/unselected colors.
- */
 @Composable
 fun SpotifyLogo(
     modifier: Modifier = Modifier,
@@ -46,9 +37,6 @@ fun SpotifyLogo(
             ),
         )
 
-        // All three bands use the same cubic profile. Only their width and
-        // vertical position change, which preserves the recognizable Spotify
-        // proportions instead of drawing three unrelated arcs.
         fun wave(
             start: Float,
             end: Float,

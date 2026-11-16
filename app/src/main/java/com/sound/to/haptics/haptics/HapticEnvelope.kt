@@ -4,10 +4,6 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 
-/**
- * A vibration pattern: parallel arrays of segment durations and amplitudes,
- * the same shape [android.os.VibrationEffect.createWaveform] expects.
- */
 data class HapticEnvelope(
     val timingsMs: LongArray,
     val amplitudes: IntArray,
@@ -43,7 +39,6 @@ fun loadHapticEnvelope(file: File): HapticEnvelope? {
     }
 }
 
-/** The remaining timings/amplitudes starting at [positionMs] into the track, or null once it's past the end. */
 fun HapticEnvelope.sliceFrom(positionMs: Long): Pair<LongArray, IntArray>? {
     if (positionMs < 0) return null
     var cumulative = 0L
