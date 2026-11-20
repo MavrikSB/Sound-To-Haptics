@@ -326,15 +326,15 @@ Compatibility depends on the manufacturer, not all of the devices written down o
 
 # Q&A
 
-### Will this project be open-source soon?
+### Is it safe?
 
-Yes! Infact, it is now fully open-source now!
+Yep! You can view the full source-code and clone it to build your own client if you want.
 
 # Credits
 
 This project wouldn't be possible without the people and libraries that helped make it happen <3.
 
-## Libraries
+## Libraries and Projects
 
 * **HapticLabs Kotlin Library** — Haptic playback functionality
 * **Google Haptic Audio / Haptic Playback Library** — Haptic playback and audio to haptic integration
