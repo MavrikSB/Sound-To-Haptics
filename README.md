@@ -1,3 +1,5 @@
+<img src="Banner.png" alt="Sound-To-Haptics banner" width="100%" />
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="logo/logo.png">
   <source media="(prefers-color-scheme: light)" srcset="logo/logo.png">
@@ -25,6 +27,7 @@ Please do not use any type of music/audio that has heavy bass drops or a lot of 
 - Convert MP3 files into Android-compatible haptic tracks using the OGG Haptic support.
 - Automatic audio conversion using FFmpeg.
 - Synchronized haptic playback using the Haptics Labs Kotlin Library.
+- Comes with the BitChord YouTube Music client pre-bundled, so you can stream songs and feel them as haptics.
 
 # How It Works
 
@@ -336,6 +339,7 @@ This project wouldn't be possible without the people and libraries that helped m
 * **HapticLabs Kotlin Library** — Haptic playback functionality
 * **Google Haptic Audio / Haptic Playback Library** — Haptic playback and audio to haptic integration
 * **FFmpeg** — Audio processing and conversion
+* **BitChord** — YouTube Music client pre-bundled with the app
 
 ## People
 
