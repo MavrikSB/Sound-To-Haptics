@@ -1,4 +1,4 @@
-<img src="Banner.png" alt="Sound-To-Haptics banner" width="100%" />
+<img src="logo/Banner.png" alt="Sound-To-Haptics banner" width="100%" />
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="logo/logo.png">
