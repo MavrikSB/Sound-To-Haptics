@@ -343,7 +343,7 @@ This project wouldn't be possible without the people and libraries that helped m
 
 ## People
 
-* **RandomBlenderGuy** — Current developer
+* **MavrikSB** — Current developer
 * **kon39892-svg** — README revisor
 * **ConsciousBone** — Device testing
 
